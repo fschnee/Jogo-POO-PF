@@ -39,5 +39,5 @@ Seguem as dependências do projeto (apenas as versões testadas)
 ###### C
   * GCC (== 6.3.0)
 
-### Intruções de compilação
+## Intruções de compilação
 TODO
