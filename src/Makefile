@@ -13,7 +13,7 @@ test_binds: test_1 test_2 cleanup
 # Testa se C consegue chamar Haskell
 .PHONY: test_1
 test_1:
-	cd Tests && \
+	@cd Tests && \
 	ghc -fforce-recomp -c -O HaskellTestFunctions.hs && \
 	ghc -fforce-recomp --make -no-hs-main -optc-O test1_binds.c HaskellTestFunctions -o test_1 && \
 	echo Rodando teste 1 -- chamando Haskell a partir de C: && \
@@ -22,7 +22,7 @@ test_1:
 # Testa se Java consegue chamar C (que está chamando Haskell)
 .PHONY: test_2
 test_2:
-	cd Tests && \
+	@cd Tests && \
 	javac JavaHaskellTest.java && \
 	javah -jni JavaHaskellTest && \
 	ghc -fforce-recomp -c -O HaskellTestFunctions.hs && \
@@ -34,13 +34,13 @@ test_2:
 # Apaga os arquivos dos Testes
 .PHONY: cleanup
 cleanup:
-	rm -f */*_stub.h */*.o */*.hi */*.class Tests/test_1 Tests/*.h \
+	@rm -f */*_stub.h */*.o */*.hi */*.class Tests/test_1 Tests/*.h \
 	*/*.so */*.out
 
 # Apaga tudo menos o README de ../bin/
 .PHONY: clean
 clean:
-	cd ../bin/ && \
+	@cd ../bin/ && \
 	find . ! -name README.md -delete
 
 .PHONY: cleanall
