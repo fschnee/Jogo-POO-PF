@@ -36,5 +36,7 @@ hs_err_pid*
 *.so
 *.out
 *.log
+bin/libs/bin/*
+!bin/libs/bin/.keep
 src/Tests/*.h
 src/Tests/test_1
