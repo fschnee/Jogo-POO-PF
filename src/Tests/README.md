@@ -39,3 +39,19 @@ complicada, pois precisa fazer uma biblioteca unica com o codigo em Haskell e C.
 
 Vale ressaltar que no final desse processo nenhum arquivo fora a biblioteca
 gerada é necessário e, portanto, podem ser deletados posteriormente.
+
+O algoritmo final fica o seguinte:
+1. Gerar headers Haskell <-> C com `ghc -c moduloHaskell.hs` (tem que ser
+escrito com a FFI para gerar os header)
+3. Escrever classe em Java com a interface nativa.
+4. Gerar headers Java <-> C com `javac ClasseJava.java` e depois `javah -jni
+ClasseJava`
+5. Escrever o código em C para colar tudo, importanto os headers gerados, alem
+de `jni.h` e `HsFFI.h`, lembrando de inicializar e fechar quando não mais
+necessário o runtime do Haskell.
+6. Compilar o arquivo C com o GHC incluindo o diretório que contém `jni.h`,
+usando o comando `ghc -I$(DIRETORIO_DO_JNI.H) -dynamic -shared
+-lHSrts-ghc$(SUA_VERSAO_DO_GHC_AQUI) arquivoEmC.c moduloHaskell.hs -o
+$(NOME_DA_BIBLIOTECA_FINAL)`
+7. Rodar o programa java com `java
+-Djava.library.path=$(LOCAL_DA_BIBLIOTECA_FINAL) ClasseJava`

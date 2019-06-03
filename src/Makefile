@@ -2,10 +2,12 @@ SHELL := /bin/bash
 # Botar o caminho para jni.h aqui
 java_includes = /home/fschnee/Programs/Java/jdk1.8.0_111/include
 makedir = $(shell pwd)
+bindir = $(subst /src, /bin, $(makedir)) # Perigoso, achar outra maneira de fazer isso
 # Mude isso de acordo com a sua versão
 ghc_version = 8.0.1
 
-all: test_binds build
+.PHONY: all
+all: test_binds libs build
 
 .PHONY: test_binds
 test_binds: test_1 test_2 cleanup
@@ -26,7 +28,7 @@ test_2:
 	javac JavaHaskellTest.java && \
 	javah -jni JavaHaskellTest && \
 	ghc -fforce-recomp -c -O HaskellTestFunctions.hs && \
-	ghc -I$(java_includes) -I$(java_includes)/linux -fforce-recomp -dynamic -shared -fPIC -lHSrts-ghc$(ghc_version)\
+	ghc -I$(java_includes) -I$(java_includes)/linux -fforce-recomp -dynamic -shared -lHSrts-ghc$(ghc_version)\
 		test2_binds.c HaskellTestFunctions.hs -o libHaskellBinds.so && \
 	echo Rodando teste2 -- chamando Haskell a partir de Java usando C como ponte: && \
 	java -Djava.library.path="$(makedir)/Tests" JavaHaskellTest
@@ -36,6 +38,10 @@ test_2:
 cleanup:
 	@rm -f */*_stub.h */*.o */*.hi */*.class Tests/test_1 Tests/*.h \
 	*/*.so */*.out
+
+.PHONY: libs
+libs:
+
 
 # Apaga tudo menos o README de ../bin/
 .PHONY: clean
