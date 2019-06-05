@@ -3,11 +3,8 @@ Java.
 A ideia basica é criar uma biblioteca dinâmica que poderá ser chamada em Java
 contendo as funções em Haskell e suas binds em C para que possam ser chamadas.
 
-obs: Para rodar tudo é só voltar para a pasta `src` e chamar `make test_binds`
+obs: Para rodar tudo é só voltar para a pasta `src` e chamar `make test_all`
 no terminal de sua escolha.
-
-obs2: Atente para a versão do GHC especificada no makefile, ela é usada para
-compilar a bibioteca com o codigo misto, se especificar a versão errada da erro.
 
 ## Teste 1
 Testa se é possivel criar um programa em C que chama uma função em Haskell.
