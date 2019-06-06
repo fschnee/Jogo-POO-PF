@@ -40,7 +40,7 @@ cleanup:
 libs_standalones:
 	@echo Compilando os módulos Haskell como executáveis
 	cd Haskell && \
-	ghc -fforce-recomp Blackjack.hs -o ../../bin/libs/bin/Blackjack
+	ghc -fforce-recomp Blackjack.hs -o ../../bin/libs/Blackjack
 	@echo
 
 .PHONY: libs

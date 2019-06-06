@@ -37,7 +37,7 @@ Seguem as dependências do projeto (apenas as versões testadas)
   * openJDK (== 1.8.0_181)
 
 ###### C
-  * GCC (== 6.3.0)
+  * GCC (== 6.3.0) -> Usado pelo GHC
 
 ## Intruções de compilação
 TODO
