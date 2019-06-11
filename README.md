@@ -40,4 +40,7 @@ Seguem as dependências do projeto (apenas as versões testadas)
   * GCC (== 6.3.0) -> Usado pelo GHC
 
 ## Intruções de compilação
-TODO
+Para compilar somente o necessário para rodar o projeto basta ir à pasta `src`
+e rodar o comando `make run`, ja para compilar tudo (`make run` + testes +
+bibliotecas Haskell como executáveis) é necessário rodar o comando `make all` e
+para rodar sem recompilar use `make justrun`
