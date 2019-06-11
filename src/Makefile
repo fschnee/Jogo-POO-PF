@@ -1,9 +1,10 @@
 SHELL := /bin/bash
 makedir = $(shell pwd)
+projdir = ..# $(shell `cd .. && pwd`)
 ghc_version = $(shell ghc --numeric-version)
 
 .PHONY: all
-all: test_all libs_all build
+all: test_all libs_standalones build
 
 .PHONY: test_all
 test_all: test_1 test_2 cleanup
@@ -30,21 +31,35 @@ test_2:
 	java -Djava.library.path="$(makedir)/Tests" JavaHaskellTest
 	@echo
 
-# Apaga os arquivos dos Testes
+# Apaga os arquivos de compilação da pasta src
 .PHONY: cleanup
 cleanup:
-	@rm -f */*_stub.h */*.o */*.hi */*.class Tests/test_1 Tests/*.h \
-	*/*.so */*.out
+	@rm -f */*_stub.h */*.o */*.hi Tests/test_1 Tests/*.h */*.so */*.out
+	@find . -type f -name '*.class' -delete
 
 .PHONY: libs_standalones
 libs_standalones:
 	@echo Compilando os módulos Haskell como executáveis
-	cd Haskell && \
-	ghc -fforce-recomp Blackjack.hs -o ../../bin/libs/Blackjack
+	@cd Haskell && ghc -fforce-recomp Blackjack.hs -o ../../bin/libs/Blackjack
 	@echo
 
 .PHONY: libs
 libs:
+	@# TODO: deixar mais enxuto
+	@echo Compilando as libs para serem usadas em Java
+	@ghc -fforce-recomp -DUSE_JAVA_BACKEND Haskell/Deck.hs Haskell/BitField.hs \
+	Haskell/CommonIO.hs Haskell/Blackjack.hs -c \
+	-hidir ../bin/auto_gen/Hs -odir ../bin/auto_gen/Hs -stubdir ../bin/auto_gen/Hs && \
+	mv ../bin/auto_gen/Hs/Main_stub.h ../bin/auto_gen/Hs/Blackjack_stub.h && \
+	mv ../bin/auto_gen/Hs/Main.hi ../bin/auto_gen/Hs/Blackjack.hi && \
+	mv ../bin/auto_gen/Hs/Main.o ../bin/auto_gen/Hs/Blackjack.o
+	@javac -classpath Java Java/cardgames/Blackjack.java -d ../bin/auto_gen/Java && \
+	cd ../bin/auto_gen/Java && javah -jni cardgames.Blackjack
+	@ghc -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux \
+	-I$(projdir)/bin/auto_gen/Hs -I$(projdir)/bin/auto_gen/Java -fforce-recomp -dynamic \
+	-shared -lHSrts-ghc$(ghc_version) -DUSE_JAVA_BACKEND C/Blackjack.c Haskell/Blackjack.hs \
+	Haskell/Deck.hs Haskell/BitField.hs Haskell/CommonIO.hs -o ../bin/libBlackjack.so
+
 
 .PHONY: libs_all
 libs_all: libs_standalones libs
@@ -60,4 +75,6 @@ cleanall: cleanup clean
 
 
 .PHONY: build
-build:
+build: libs
+	@java -Djava.library.path="../bin" \
+	-cp ../bin/auto_gen/Java cardgames.Blackjack

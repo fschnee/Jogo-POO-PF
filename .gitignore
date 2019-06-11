@@ -36,7 +36,11 @@ hs_err_pid*
 *.so
 *.out
 *.log
-bin/libs/bin/*
-!bin/libs/bin/.keep
+bin/libs/*
+!bin/libs/.keep
+bin/auto_gen/Hs/*
+!bin/auto_gen/Hs/.keep
+bin/auto_gen/Java/*
+!bin/auto_gen/Java/.keep
 src/Tests/*.h
 src/Tests/test_1

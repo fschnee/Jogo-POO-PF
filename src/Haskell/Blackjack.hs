@@ -1,18 +1,20 @@
-{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE CPP, ForeignFunctionInterface #-}
 
 module Main where
 
-import Foreign.C.Types
+import CommonIO
 import System.Random
 import BitField
 import Deck
+#ifdef USE_JAVA_BACKEND
+import Foreign.C.Types
+foreign export ccall run :: CInt -> CInt -> IO CFloat
+#else
+type CInt = Int
+type CFloat = Float
+#endif
 
--- Cuidado: usar a flag Debug deixa as instruções
--- de impressão excessivamente lentas (da para ver
--- quando imprime o baralho embaralhado)
 data GameOptions = Debug | Verbose | UseSeed
-  deriving (Eq, Ord, Show, Enum)
-data GameResult = P1Win | P2Win | P_3to2
   deriving (Eq, Ord, Show, Enum)
 
 main :: IO ()
@@ -20,16 +22,22 @@ main = do
   run (fromIntegral (compose [Verbose]) :: CInt) (0::CInt)
   return ()
 
-run :: CInt -> CInt -> IO CInt
+-- retorna o fração que corresponde ao valor ganho, por exemplo:
+-- 0   = jogador perde tudo
+-- 0.5 = jogador perde metade da aposta (insurance)
+-- 1   = jogador não perde nem ganha
+-- 2   = jogador ganha (house bust)
+-- 2.5 = jogador fez blackjack
+run :: CInt -> CInt -> IO CFloat
 run n seed = do
   if isDebug
     then do
-      putStrLn $ "----------------"
-      putStrLn $ "Seed    = " ++ show seed
-      putStrLn $ "Debug   = " ++ show isDebug
-      putStrLn $ "Verbose = " ++ show isVerbose
-      putStrLn $ "UseSeed = " ++ show useSeed
-      putStrLn $ "----------------"
+      sendToOut $ "----------------"
+      sendToOut $ "Seed    = " ++ show seed
+      sendToOut $ "Debug   = " ++ show isDebug
+      sendToOut $ "Verbose = " ++ show isVerbose
+      sendToOut $ "UseSeed = " ++ show useSeed
+      sendToOut $ "----------------"
     else return ()
 
   if useSeed
@@ -43,24 +51,25 @@ run n seed = do
 
   if isDebug
     then do
-      putStrLn $ "Baralho original    = " ++ show (map (unhideCard) deck)
-      putStrLn $ "Baralho embaralhado = " ++ show (map (unhideCard) shuffled)
+      sendToOut $ "Baralho original    = " ++ show (map (unhideCard) deck)
+      sendToOut $ "Baralho embaralhado = " ++ show (map (unhideCard) shuffled)
     else return ()
 
   if isVerbose
-    then putStrLn "Welcome to Blackjack"
+    then do
+#ifdef USE_JAVA_BACKEND
+      putStrLn "WELCOME TO BLACKJACK FROM HASKELL BITCH, THIS FUCKING MAD-SCIENTIST SHIT FUCKING WORKS MAN"
+#endif
+      sendToOut "Welcome to Blackjack"
     else return ()
 
-  let result = [P1Win]
-  return (fromIntegral (compose result) :: CInt)
+  return (fromIntegral (1) :: CFloat)
 
   where
     x = fromIntegral n :: Int
     isDebug   = x `has` Debug
     isVerbose = x `has` Verbose
     useSeed   = x `has` UseSeed
-
-foreign export ccall run :: CInt -> CInt -> IO CInt
 
 cardValue :: Card -> [Int]
 cardValue (FrenchCard v _ _)
