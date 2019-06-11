@@ -1,21 +1,15 @@
 package cardgames;
 
 import cardgames.CardGame;
+import cardgames.GameOptions;
 
 public class Blackjack implements CardGame
 {
-  public static class Options
-  {
-    public static final int DEBUG = 1;
-    public static final int VERBOSE = 2;
-    public static final int USESEED = 4;
-  }
-
   static
   {
     System.loadLibrary("Blackjack");
   }
-  public native float callhaskell(int options, int seed);
+  private native float callhaskell(int options, int seed);
 
   public static void main(String[] args)
   {
@@ -24,7 +18,7 @@ public class Blackjack implements CardGame
 
   public int play(int bet)
   {
-    int x = Math.round(bet * begin_with(Options.VERBOSE));
+    int x = Math.round(bet * begin_with(GameOptions.VERBOSE | GameOptions.DEBUG));
     return x;
   }
 

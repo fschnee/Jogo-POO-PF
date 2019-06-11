@@ -6,9 +6,10 @@ import CommonIO
 import System.Random
 import BitField
 import Deck
+import Foreign.Ptr
 #ifdef USE_JAVA_BACKEND
 import Foreign.C.Types
-foreign export ccall run :: CInt -> CInt -> IO CFloat
+foreign export ccall run :: CInt -> CInt -> Ptr () -> IO CFloat
 #else
 type CInt = Int
 type CFloat = Float
@@ -19,7 +20,7 @@ data GameOptions = Debug | Verbose | UseSeed
 
 main :: IO ()
 main = do
-  run (fromIntegral (compose [Verbose]) :: CInt) (0::CInt)
+  run (fromIntegral (compose [Verbose]) :: CInt) (0::CInt) (nullPtr)
   return ()
 
 -- retorna o fração que corresponde ao valor ganho, por exemplo:
@@ -28,16 +29,16 @@ main = do
 -- 1   = jogador não perde nem ganha
 -- 2   = jogador ganha (house bust)
 -- 2.5 = jogador fez blackjack
-run :: CInt -> CInt -> IO CFloat
-run n seed = do
+run :: CInt -> CInt -> Ptr () -> IO CFloat
+run n seed jenv = do
   if isDebug
     then do
-      sendToOut $ "----------------"
-      sendToOut $ "Seed    = " ++ show seed
-      sendToOut $ "Debug   = " ++ show isDebug
-      sendToOut $ "Verbose = " ++ show isVerbose
-      sendToOut $ "UseSeed = " ++ show useSeed
-      sendToOut $ "----------------"
+      sendToOut jenv $ "----------------"
+      sendToOut jenv $ "Seed    = " ++ show seed
+      sendToOut jenv $ "Debug   = " ++ show isDebug
+      sendToOut jenv $ "Verbose = " ++ show isVerbose
+      sendToOut jenv $ "UseSeed = " ++ show useSeed
+      sendToOut jenv $ "----------------"
     else return ()
 
   if useSeed
@@ -51,16 +52,13 @@ run n seed = do
 
   if isDebug
     then do
-      sendToOut $ "Baralho original    = " ++ show (map (unhideCard) deck)
-      sendToOut $ "Baralho embaralhado = " ++ show (map (unhideCard) shuffled)
+      sendToOut jenv $ "Baralho original    = " ++ show (map (unhideCard) deck)
+      sendToOut jenv $ "Baralho embaralhado = " ++ show (map (unhideCard) shuffled)
     else return ()
 
   if isVerbose
     then do
-#ifdef USE_JAVA_BACKEND
-      putStrLn "WELCOME TO BLACKJACK FROM HASKELL BITCH, THIS FUCKING MAD-SCIENTIST SHIT FUCKING WORKS MAN"
-#endif
-      sendToOut "Welcome to Blackjack"
+      sendToOut jenv "Welcome to Blackjack"
     else return ()
 
   return (fromIntegral (1) :: CFloat)
