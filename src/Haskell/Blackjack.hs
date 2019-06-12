@@ -9,7 +9,7 @@ import Deck
 import Foreign.Ptr
 #ifdef USE_JAVA_BACKEND
 import Foreign.C.Types
-foreign export ccall run :: CInt -> CInt -> Ptr () -> IO CFloat
+foreign export ccall run :: CInt -> CInt -> Ptr () -> Ptr () -> IO CFloat
 #else
 type CInt = Int
 type CFloat = Float
@@ -20,7 +20,7 @@ data GameOptions = Debug | Verbose | UseSeed
 
 main :: IO ()
 main = do
-  run (fromIntegral (compose [Verbose]) :: CInt) (0::CInt) (nullPtr)
+  run (fromIntegral (compose [Verbose]) :: CInt) (0::CInt) (nullPtr) (nullPtr)
   return ()
 
 -- retorna o fração que corresponde ao valor ganho, por exemplo:
@@ -29,16 +29,16 @@ main = do
 -- 1   = jogador não perde nem ganha
 -- 2   = jogador ganha (house bust)
 -- 2.5 = jogador fez blackjack
-run :: CInt -> CInt -> Ptr () -> IO CFloat
-run n seed jenv = do
+run :: CInt -> CInt -> Ptr () -> Ptr ()-> IO CFloat
+run n seed jenv jobj = do
   if isDebug
     then do
-      sendToOut jenv $ "----------------"
-      sendToOut jenv $ "Seed    = " ++ show seed
-      sendToOut jenv $ "Debug   = " ++ show isDebug
-      sendToOut jenv $ "Verbose = " ++ show isVerbose
-      sendToOut jenv $ "UseSeed = " ++ show useSeed
-      sendToOut jenv $ "----------------"
+      sendToOut jenv jobj $ "----------------"
+      sendToOut jenv jobj $ "Seed    = " ++ show seed
+      sendToOut jenv jobj $ "Debug   = " ++ show isDebug
+      sendToOut jenv jobj $ "Verbose = " ++ show isVerbose
+      sendToOut jenv jobj $ "UseSeed = " ++ show useSeed
+      sendToOut jenv jobj $ "----------------"
     else return ()
 
   if useSeed
@@ -52,13 +52,13 @@ run n seed jenv = do
 
   if isDebug
     then do
-      sendToOut jenv $ "Baralho original    = " ++ show (map (unhideCard) deck)
-      sendToOut jenv $ "Baralho embaralhado = " ++ show (map (unhideCard) shuffled)
+      sendToOut jenv jobj $ "Baralho original    = " ++ show (map (unhideCard) deck)
+      sendToOut jenv jobj $ "Baralho embaralhado = " ++ show (map (unhideCard) shuffled)
     else return ()
 
   if isVerbose
     then do
-      sendToOut jenv "Welcome to Blackjack"
+      sendToOut jenv jobj $ "Welcome to Blackjack"
     else return ()
 
   return (fromIntegral (1) :: CFloat)

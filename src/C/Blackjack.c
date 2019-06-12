@@ -14,9 +14,12 @@
 // Coisas do Haskell
 #include <HsFFI.h>
 #ifdef __GLASGOW_HASKELL__
-#include "Blackjack_stub.h" // define "HsFloat run(HsInt32 a1, HsInt32 a2, HsPtr a3)"
+#include "Blackjack_stub.h" // define "HsFloat run(HsInt32 a1, HsInt32 a2, HsPtr a3, HsPtr a4)"
 extern void __stginit_Main(void);
 #endif
+
+void sendToJava (void* envptr, void* objptr, const char* stringFromHaskell);
+char* getFromJava (void* envptr, void* objptr);
 
 // Código-cola para chamar o jogo de dentro da JVM
 JNIEXPORT jfloat JNICALL Java_cardgames_Blackjack_callhaskell
@@ -27,26 +30,37 @@ JNIEXPORT jfloat JNICALL Java_cardgames_Blackjack_callhaskell
   hs_add_root(__stginit_Main);
 #endif
 
-  float payout = run(options, seed, env);
+  float payout = run(options, seed, env, obj);
 
   hs_exit();
 
-  return payout;
+  return 1.0;
+  // return payout;
 }
 
-// TODO: implementar
-// Stub (declarada em CommonIO.hs), manda uma linha para a JVM (usada para a
+// declarada em CommonIO.hs; Manda uma linha para a JVM (usada para a
 // comunicação com a GUI do Swing)
-void sendToJava (void* envptr, const char* stringFromHaskell)
+void sendToJava (void* envptr, void* objptr, const char* stringFromHaskell)
 {
   JNIEnv* env = envptr;
-  printf("IN C: %s\n", stringFromHaskell);
+  jobject obj = objptr;
+
+  jclass objclass = (*env)->GetObjectClass(env, obj);
+  jmethodID sendToGUI = (*env)->GetMethodID(env, objclass, "sendToGUI", "(Ljava/lang/String;)V");
+
+  jstring stringToJava = (*env)->NewStringUTF(env, stringFromHaskell);
+  (*env)->CallVoidMethod(env, obj, sendToGUI, stringToJava);
+  // TODO: descobrir se precisa liberar a string em algum momento
 }
 
 // TODO: implementar
 // Stub (declarada em CommonIO.hs), pega uma linha da JVM (usada para a
 // comunicação com a GUI do Swing)
-char* getFromJava (void* envptr)
+char* getFromJava (void* envptr, void* objptr)
 {
   JNIEnv* env = envptr;
+  jobject obj = objptr;
+
+  // (*env)->getStringChars(...)
+  // (*env)->ReleaseStringChars(...)
 }

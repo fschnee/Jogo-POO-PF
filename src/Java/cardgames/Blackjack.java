@@ -24,4 +24,13 @@ public class Blackjack implements CardGame
 
   private float begin_with(int options, int seed) {return callhaskell(options, seed);}
   private float begin_with(int options) {return callhaskell(options, 0);}
+
+  public void sendToGUI(String str)
+  {
+    System.out.println("In Java: " + str);
+  }
+
+  public void getFromGUI(String str)
+  {
+  }
 }

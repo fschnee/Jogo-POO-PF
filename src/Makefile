@@ -77,7 +77,7 @@ libs_all: libs_standalones libs
 # Apaga os arquivos de compilação da pasta src
 .PHONY: cleanup
 cleanup:
-	@rm -f */*_stub.h */*.o */*.hi Tests/test_1 Tests/*.h */*.so */*.out
+	@rm -f */*_stub.h */*.o */*.hi Tests/test_1 Tests/*.h */*.so */*.out *.log core
 	@find . -type f -name '*.class' -delete
 
 # Apaga tudo menos os README e .keep de ../bin/
