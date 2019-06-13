@@ -1,4 +1,4 @@
-package cardgames;
+package proj.cardgames;
 
 public interface CardGame
 {

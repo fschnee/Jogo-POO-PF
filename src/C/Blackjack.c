@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 // Coisas do Java
-#include "cardgames_Blackjack.h"
+#include "proj_cardgames_Blackjack.h"
 #include <jni.h>
 
 // Coisas do Haskell
@@ -22,7 +22,7 @@ void sendToJava (void* envptr, void* objptr, const char* stringFromHaskell);
 char* getFromJava (void* envptr, void* objptr);
 
 // Código-cola para chamar o jogo de dentro da JVM
-JNIEXPORT jfloat JNICALL Java_cardgames_Blackjack_callhaskell
+JNIEXPORT jfloat JNICALL Java_proj_cardgames_Blackjack_callhaskell
   (JNIEnv* env, jobject obj, jint options, jint seed)
 {
   hs_init(0, NULL);
@@ -34,8 +34,7 @@ JNIEXPORT jfloat JNICALL Java_cardgames_Blackjack_callhaskell
 
   hs_exit();
 
-  return 1.0;
-  // return payout;
+  return payout;
 }
 
 // declarada em CommonIO.hs; Manda uma linha para a JVM (usada para a

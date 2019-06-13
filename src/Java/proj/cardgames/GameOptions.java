@@ -1,4 +1,4 @@
-package cardgames;
+package proj.cardgames;
 
 public class GameOptions
 {

@@ -3,7 +3,7 @@ projdir := $(shell cd .. && pwd)
 ghc_version := $(shell ghc --numeric-version)
 ghc_includes := -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux \
 	-I$(projdir)/bin/auto_gen/Hs -I$(projdir)/bin/auto_gen/Java
-mainclass := cardgames.Blackjack
+mainclass := proj.jogo.Main
 
 .PHONY: all
 all: test_all libs_standalones run
@@ -58,9 +58,9 @@ libs:
 	mv Main.hi Blackjack.hi && \
 	mv Main.o Blackjack.o
 
-	@echo Passo 2: Compilando headers dos *.java
-	@javac -classpath Java Java/cardgames/Blackjack.java -d $(projdir)/bin/auto_gen/Java && \
-	cd $(projdir)/bin/auto_gen/Java && javah -jni cardgames.Blackjack
+	@echo Passo 2: Compilando headers dos cardgames/*.java
+	@javac -classpath Java Java/proj/jogo/Main.java -d $(projdir)/bin/auto_gen/Java && \
+	cd $(projdir)/bin/auto_gen/Java && javah -jni proj.cardgames.Blackjack
 
 	@echo Passo 3: Compilando libBlackjack.so
 	@cd Haskell && \
@@ -98,7 +98,7 @@ buildall: libs build
 .PHONY: build
 build:
 	@echo Construindo o jar
-	@javac -classpath Java Java/cardgames/Blackjack.java \
+	@javac -classpath Java Java/proj/jogo/Main.java \
 		-d $(projdir)/bin/auto_gen/Java && \
 	cd $(projdir)/bin/auto_gen/Java && \
 	jar cvfe $(projdir)/bin/Jogo.jar $(mainclass) \
