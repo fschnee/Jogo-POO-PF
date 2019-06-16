@@ -1,15 +1,14 @@
 package proj.view;
 
 import proj.view.Writeable;
-import javax.swing.*;
-import javax.swing.text.*;
-import java.awt.*;
+import proj.view.WriteOnlyScrollableTextPane;
+import javax.swing.JFrame;
+import java.awt.BorderLayout;
 
-public class GuiTeste implements Writeable
+public class GuiTeste
 {
-  private JTextPane janeladetexto;
-  private JScrollPane janeladetextowrapper;
   private JFrame frame;
+  private WriteOnlyScrollableTextPane tpw;
 
   public GuiTeste()
   {
@@ -18,26 +17,14 @@ public class GuiTeste implements Writeable
     frame.setLayout(new BorderLayout());
     frame.setSize(600, 600);
 
-    janeladetexto = new JTextPane();
-    janeladetexto.setBounds(0, 0, 600, 600);
-    janeladetexto.setEditable(false);
-    janeladetexto.setText("Teste");
-    janeladetextowrapper = new JScrollPane(janeladetexto);
+    tpw = new WriteOnlyScrollableTextPane();
 
-    frame.add(janeladetextowrapper);
+    frame.add(tpw.getWrapper());
     frame.setVisible(true);
   }
 
-  public void appendText(String s)
+  public Writeable getTextOut()
   {
-    try
-    {
-      StyledDocument doc = janeladetexto.getStyledDocument();
-      doc.insertString(doc.getLength(), s, null);
-    }
-    catch (Exception e)
-    {
-      System.out.println(e);
-    }
+    return tpw;
   }
 }

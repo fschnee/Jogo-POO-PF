@@ -1,6 +1,8 @@
 package proj.view;
 
+import java.awt.Font;
+
 public interface Writeable
 {
-  public void appendText(String s);
+  public void appendText(String s, Font f);
 }

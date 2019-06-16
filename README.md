@@ -22,11 +22,11 @@ porém podem ser definidas brevemente da seguinte maneira:
   Contém o codigo fonte e arquivos de build.
 
 2. assets:
-Contém todas as imagens e qualquer tipo de arquivo necessário ao funcionamento
-do projeto que não seja codigo fonte
+  Contém todas as imagens e qualquer tipo de arquivo necessário ao funcionamento
+  do projeto que não seja codigo fonte
 
 3. bin:
-Contém os arquivos finais (resultado da compilação)
+  Contém os arquivos finais (resultado da compilação)
 
 ## Dependências
 Seguem as dependências do projeto (apenas as versões testadas)

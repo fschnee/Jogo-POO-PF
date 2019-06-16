@@ -102,7 +102,10 @@ build:
 		-d $(projdir)/bin/auto_gen/Java && \
 	cd $(projdir)/bin/auto_gen/Java && \
 	jar cvfe $(projdir)/bin/Jogo.jar $(mainclass) \
-		$(subst $(projdir)/bin/auto_gen/Java/,,$(shell find $(projdir)/bin/auto_gen/Java -name '*.class'))
+		$(subst $(projdir)/bin/auto_gen/Java/,,$(shell find $(projdir)/bin/auto_gen/Java -name '*.class')) && \
+	cd $(projdir) && \
+	jar -uf $(projdir)/bin/Jogo.jar \
+		$(subst $(projdir)/,,$(shell find $(projdir)/assets -type f -not -name README.md))
 	@echo
 
 .PHONY: justrun
