@@ -5,7 +5,7 @@ import java.awt.*;
 import proj.ResourceLoader;
 import proj.cardgames.Blackjack;
 import proj.jogo.Personagem;
-import proj.view.GuiTeste;
+import proj.view.GameTerm;
 
 public class Main
 {
@@ -14,13 +14,13 @@ public class Main
     loader.loadFont("VCR_OSD_MONO_1.001.ttf");
     loader.loadFont("Perfect-DOS-VGA-437.ttf");
 
-    GuiTeste gui = new GuiTeste();
+    GameTerm cgt = new GameTerm();
     // SwingUtilities.invokeLater(new Runnable() {
       // public void run() {
         // gui.init();
       // }
     // });
 
-    new Blackjack(gui.getTextOut()).play(0);
+    new Blackjack(cgt.getTextOut()).play(0);
   }
 }

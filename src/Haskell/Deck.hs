@@ -68,11 +68,9 @@ shuffle (c:x) n (k:w) = shuffle ((fst popped):(snd popped)) (n - 1) w
   where
     popped = popindex (c:x) [] k
 
-    -- Não precisa se preocupar em retornar um Maybe porque shuffle certifica
-    -- que vão ser passados apenas vetores com elementos para a função
-    -- TODO: otimizar, pois o operador (++) parece ser pesado
-    popindex :: Eq t => [t] -> [t] -> Int -> (t, [t])
-    popindex (c:x) seen 0 = (c, seen ++ x)
-    popindex (c:x) seen num
-      | x == []   = (c, seen)
-      | otherwise = popindex x (seen ++ [c]) (abs num - 1)
+-- TODO: otimizar, pois o operador (++) parece ser pesado
+popindex :: Eq t => [t] -> [t] -> Int -> (t, [t])
+popindex (c:x) seen 0 = (c, seen ++ x)
+popindex (c:x) seen num
+  | x == []   = (c, seen)
+  | otherwise = popindex x (seen ++ [c]) (abs num - 1)

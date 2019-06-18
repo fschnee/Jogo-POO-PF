@@ -30,16 +30,8 @@ main = do
 -- 2   = jogador ganha (house bust)
 -- 2.5 = jogador fez blackjack
 run :: CInt -> CInt -> Ptr () -> Ptr ()-> IO CFloat
-run n seed jenv jobj = do
-  if isDebug
-    then do
-      sendToOut jenv jobj $ "----------------"
-      sendToOut jenv jobj $ "Seed    = " ++ show seed
-      sendToOut jenv jobj $ "Debug   = " ++ show isDebug
-      sendToOut jenv jobj $ "Verbose = " ++ show isVerbose
-      sendToOut jenv jobj $ "UseSeed = " ++ show useSeed
-      sendToOut jenv jobj $ "----------------"
-    else return ()
+run cFlags seed jenv jobj = do
+  printFlags isDebug isVerbose useSeed (fromIntegral seed :: Int) jenv jobj
 
   if useSeed
     then setStdGen $ mkStdGen (fromIntegral seed :: Int)
@@ -49,25 +41,68 @@ run n seed jenv jobj = do
   let deck = makeDecks 6 Hidden
   let decklen = length deck
   let shuffled = shuffle deck (decklen * 8) (randomRs (0, decklen - 1) g :: [Int])
+  printDecks isDebug deck shuffled jenv jobj
 
-  if isDebug
-    then do
-      sendToOut jenv jobj $ "Baralho original    = " ++ show (map (unhideCard) deck)
-      sendToOut jenv jobj $ "Baralho embaralhado = " ++ show (map (unhideCard) shuffled)
-    else return ()
-
-  if isVerbose
-    then do
-      sendToOut jenv jobj $ "Welcome to Blackjack"
-    else return ()
+  printGreeting isDebug isVerbose jenv jobj
+  let hands = firstdeal shuffled ([], []) True
+  printHands isDebug isVerbose jenv jobj hands
 
   return (fromIntegral (1) :: CFloat)
 
   where
-    x = fromIntegral n :: Int
-    isDebug   = x `has` Debug
-    isVerbose = x `has` Verbose
-    useSeed   = x `has` UseSeed
+    flags = fromIntegral cFlags :: Int
+    isDebug   = flags `has` Debug
+    isVerbose = flags `has` Verbose
+    useSeed   = flags `has` UseSeed
+
+
+-- shuffled deck -> (PlayerHand, DealerHand) -> giveToDealer -> (PlayerHand, DealerHand)
+firstdeal :: Deck -> (Hand, Hand)-> Bool -> (Hand, Hand)
+firstdeal xs (c, x) True
+  | length x == 1 = firstdeal (snd popped) (c, (unhideCard (fst popped)):x) False
+  | length x == 2 = firstdeal xs (c, x) False
+  | otherwise     = firstdeal (snd popped) (c, (fst popped):x) False
+  where popped = popindex xs [] 1
+firstdeal xs (c, x) False
+  | length c >= 2 = (map (unhideCard) c, x)
+  | otherwise     = firstdeal (snd popped) ((fst popped):c, x) True
+  where popped = popindex xs [] 1
+
+printFlags :: Bool -> Bool -> Bool -> Int -> Ptr () -> Ptr () -> IO ()
+printFlags isDebug isVerbose useSeed seed jenv jobj
+  | isDebug == True = do
+      sendToOut jenv jobj $ "-- Seed    = " ++ show seed
+      sendToOut jenv jobj $ "-- Debug   = " ++ show isDebug
+      sendToOut jenv jobj $ "-- Verbose = " ++ show isVerbose
+      sendToOut jenv jobj $ "-- UseSeed = " ++ show useSeed
+      return ()
+  | otherwise = return ()
+
+printDecks :: Bool -> Deck -> Deck -> Ptr () -> Ptr () -> IO ()
+printDecks debug deck shuffled jenv jobj
+  | debug == True = do
+      sendToOut jenv jobj $ "-- Deck          = " ++ show (map (unhideCard) deck)
+      sendToOut jenv jobj $ "-- Shuffled Deck = " ++ show (map (unhideCard) shuffled)
+      return ()
+  | otherwise = return ()
+
+printGreeting :: Bool -> Bool -> Ptr () -> Ptr () -> IO ()
+printGreeting _ verbose jenv jobj
+  | verbose == True = sendToOut jenv jobj $ "- Welcome to Blackjack -"
+  | otherwise       = sendToOut jenv jobj $ "Blackjack:"
+
+printHands :: Bool -> Bool -> Ptr () -> Ptr () -> (Hand, Hand)-> IO ()
+printHands False False jenv jobj (p, d) =
+  sendToOut jenv jobj $ (show p) ++ "\n" ++ (show d)
+printHands False True jenv jobj (p, d) = do
+  sendToOut jenv jobj $ "Your have " ++ show p
+  sendToOut jenv jobj $ "The dealer's has " ++ show d
+  return ()
+printHands True x jenv jobj (p, d) = do
+  sendToOut jenv jobj $ "-- Your hand is " ++ show p
+  sendToOut jenv jobj $ "-- The dealer's hand is " ++ show (map (unhideCard) d)
+  printHands False x jenv jobj (p, d)
+  return ()
 
 cardValue :: Card -> [Int]
 cardValue (FrenchCard v _ _)

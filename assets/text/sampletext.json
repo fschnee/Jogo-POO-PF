@@ -1,0 +1,10 @@
+[
+  {
+    "text": ["Teste no primeiro estilo"],
+    "img": "imagemteste1.jpg",
+    "style": [{
+      "font": "Default",
+      "effects": [1, 2, 3]
+    }]
+  }
+]

@@ -13,14 +13,8 @@ public abstract class CardGame
 
   public void sendToGUI(String str)
   {
-    output.appendText(str + '\n', outfont);
+    output.appendText(str + '\n', "terminal");
   }
 
-  public void getFromGUI(String str) {}
-
-  protected void setupFont()
-  {
-    outfont = Font.decode("VCR OSD Mono").deriveFont(16f);
-    // TODO: se não funcionar, carregar "Perfect DOS VGA 437"
-  }
+  public String getFromGUI() {return "PLACEHOLDER";}
 }

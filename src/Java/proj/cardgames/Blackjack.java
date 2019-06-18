@@ -17,7 +17,6 @@ public class Blackjack extends CardGame
     super();
 
     this.output = out;
-    setupFont();
   }
 
   public int play(int bet)
