@@ -39,6 +39,10 @@ Seguem as dependências do projeto (apenas as versões testadas)
 ###### C
   * GCC (== 6.3.0) -> Usado pelo GHC
 
+###### Haxe (Para aplicar efeito na imagem)
+  * Haxe (== 3.4.7)
+  * [format](https://github.com/HaxeFoundation/format) (== 3.4.2)
+
 ## Intruções de compilação
 Para compilar somente o necessário para rodar o projeto basta ir à pasta `src`
 e rodar o comando `make run`, ja para compilar tudo (`make run` + testes +

@@ -32,6 +32,11 @@ hs_err_pid*
 
 
 
+# Coisas do Haxe
+*.n
+
+
+
 # Outras coisas
 *.so
 *.out

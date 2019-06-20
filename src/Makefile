@@ -116,3 +116,10 @@ justrun:
 
 .PHONY: run
 run: buildall justrun
+
+.PHONY: images
+images:
+	@cd Haxe && \
+	haxe -neko Main.n -lib format -main Main && \
+	neko Main.n $(projdir)/assets/img/final \
+		$(shell find $(projdir)/assets/img/original -type f -name '*.png')
