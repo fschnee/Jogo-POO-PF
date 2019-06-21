@@ -4,7 +4,6 @@ import javax.swing.SwingUtilities;
 import java.awt.*;
 import proj.ResourceLoader;
 import proj.cardgames.Blackjack;
-import proj.jogo.Personagem;
 import proj.view.GameTerm;
 
 public class Main

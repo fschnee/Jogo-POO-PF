@@ -95,8 +95,8 @@ printHands :: Bool -> Bool -> Ptr () -> Ptr () -> (Hand, Hand)-> IO ()
 printHands False False jenv jobj (p, d) =
   sendToOut jenv jobj $ (show p) ++ "\n" ++ (show d)
 printHands False True jenv jobj (p, d) = do
-  sendToOut jenv jobj $ "Your have " ++ show p
-  sendToOut jenv jobj $ "The dealer's has " ++ show d
+  sendToOut jenv jobj $ "Your hand is " ++ show p
+  sendToOut jenv jobj $ "The dealer's hand is " ++ show d
   return ()
 printHands True x jenv jobj (p, d) = do
   sendToOut jenv jobj $ "-- Your hand is " ++ show p

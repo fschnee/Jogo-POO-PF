@@ -13,7 +13,8 @@ public abstract class CardGame
 
   public void sendToGUI(String str)
   {
-    output.appendText(str + '\n', "terminal");
+    if(str.startsWith("--")) System.out.println(str);
+    else output.appendText(str + '\n', "terminal");
   }
 
   public String getFromGUI() {return "PLACEHOLDER";}

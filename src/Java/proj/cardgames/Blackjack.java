@@ -3,12 +3,13 @@ package proj.cardgames;
 import proj.cardgames.CardGame;
 import proj.cardgames.GameOptions;
 import proj.view.Writeable;
+import proj.ResourceLoader;
 
 public class Blackjack extends CardGame
 {
   static
   {
-    System.loadLibrary("Blackjack");
+    ResourceLoader.loadLibrary("libBlackjack.so");
   }
   private native float callhaskell(int options, int seed);
 

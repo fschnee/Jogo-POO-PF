@@ -66,7 +66,7 @@ libs:
 	@cd Haskell && \
 	ghc $(ghc_includes) Blackjack.hs ../C/Blackjack.c -fforce-recomp \
 		-DUSE_JAVA_BACKEND -dynamic -shared -lHSrts-ghc$(ghc_version) \
-		-o $(projdir)/bin/libBlackjack.so
+		-o $(projdir)/bin/libs/libBlackjack.so
 	@echo
 
 .PHONY: libs_all
@@ -105,14 +105,17 @@ build:
 		$(subst $(projdir)/bin/auto_gen/Java/,,$(shell find $(projdir)/bin/auto_gen/Java -name '*.class')) && \
 	cd $(projdir) && \
 	jar -uf $(projdir)/bin/Jogo.jar \
-		$(subst $(projdir)/,,$(shell find $(projdir)/assets -type f -not -name README.md))
+		$(subst $(projdir)/,,$(shell find $(projdir)/assets -type f -not -name README.md)) && \
+	cd bin && \
+	jar -uf $(projdir)/bin/Jogo.jar \
+		$(subst $(projdir)/bin/,,$(shell find $(projdir)/bin/libs -type f -name '*.so'))
 	@echo
 
 .PHONY: justrun
 justrun:
 	@echo Rodando o projeto com o comando: \
-	java -jar -Djava.library.path='$(projdir)/bin' $(projdir)/bin/Jogo.jar
-	@java -jar -Djava.library.path='$(projdir)/bin' $(projdir)/bin/Jogo.jar
+	java -jar $(projdir)/bin/Jogo.jar
+	@java -jar $(projdir)/bin/Jogo.jar
 
 .PHONY: run
 run: buildall justrun
