@@ -74,7 +74,7 @@ public abstract class ResourceLoader
         HashMap<String, JSONEncoded> content = (HashMap<String, JSONEncoded>)item.getData();
         if(content.get("description") != null)
           if(content.get("description").getType() == JSONValue.Str)
-            return (String)content.get("description").getData();
+            return (String)(content.get("description").getData());
       }
     }
     return "null";
