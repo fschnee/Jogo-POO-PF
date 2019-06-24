@@ -3,7 +3,7 @@ projdir := $(shell cd .. && pwd)
 ghc_version := $(shell ghc --numeric-version)
 ghc_includes := -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux \
 	-I$(projdir)/bin/auto_gen/Hs -I$(projdir)/bin/auto_gen/Java
-mainclass := proj.jogo.Main
+mainclass := proj.Main
 
 .PHONY: all
 all: test_all libs_standalones run
@@ -13,8 +13,8 @@ all: test_all libs_standalones run
 # Testa se C consegue chamar Haskell
 .PHONY: test_1
 test_1:
-	@echo Teste 1 -- chamando Haskell a partir de C: && \
-	cd Tests && \
+	@echo Teste 1 -- chamando Haskell a partir de C...
+	@cd Tests && \
 	ghc -fforce-recomp -c HaskellTestFunctions.hs && \
 	ghc -fforce-recomp -no-hs-main test1_binds.c HaskellTestFunctions -o test_1 && \
 	./test_1
@@ -23,8 +23,8 @@ test_1:
 # Testa se Java consegue chamar C (que está chamando Haskell)
 .PHONY: test_2
 test_2:
-	@echo Teste 2 -- chamando Haskell a partir de Java usando C como ponte: && \
-	cd Tests && \
+	@echo Teste 2 -- chamando Haskell a partir de Java usando C como ponte...
+	@cd Tests && \
 	javac JavaHaskellTest.java && \
 	javah -jni JavaHaskellTest && \
 	ghc -fforce-recomp -c HaskellTestFunctions.hs && \
@@ -40,15 +40,15 @@ test_all: test_1 test_2
 
 .PHONY: libs_standalones
 libs_standalones:
-	@echo Compilando os módulos Haskell como executáveis
+	@echo Compilando os módulos Haskell como executáveis...
 	@cd Haskell && ghc -fforce-recomp Blackjack.hs -o $(projdir)/bin/libs/Blackjack
 	@echo
 
 .PHONY: libs
 libs:
-	@echo Compilando as libs para serem usadas em Java
+	@echo Compilando as libs para serem usadas em Java...
 
-	@echo Passo 1: Compilando headers dos *.hs
+	@echo Passo 1: Compilando headers dos *.hs...
 	@cd Haskell && ghc -fforce-recomp --make -DUSE_JAVA_BACKEND Blackjack.hs -c \
 		-hidir $(projdir)/bin/auto_gen/Hs \
 		-odir $(projdir)/bin/auto_gen/Hs \
@@ -58,11 +58,11 @@ libs:
 	mv Main.hi Blackjack.hi && \
 	mv Main.o Blackjack.o
 
-	@echo Passo 2: Compilando headers dos cardgames/*.java
-	@javac -classpath Java Java/proj/jogo/Main.java -d $(projdir)/bin/auto_gen/Java && \
+	@echo Passo 2: Compilando headers dos cardgames/*.java...
+	@javac -classpath Java Java/proj/cardgames/Blackjack.java -d $(projdir)/bin/auto_gen/Java && \
 	cd $(projdir)/bin/auto_gen/Java && javah -jni proj.cardgames.Blackjack
 
-	@echo Passo 3: Compilando libBlackjack.so
+	@echo Passo 3: Compilando libBlackjack.so...
 	@cd Haskell && \
 	ghc $(ghc_includes) Blackjack.hs ../C/Blackjack.c -fforce-recomp \
 		-DUSE_JAVA_BACKEND -dynamic -shared -lHSrts-ghc$(ghc_version) \
@@ -91,22 +91,29 @@ clean:
 purge: cleanup clean
 
 
+.PHONY: compile
+compile:
+	@echo Compilando o código Java...
+	@javac -classpath Java $(shell find Java -type f -name '*.java') \
+		-d $(projdir)/bin/auto_gen/Java
+	@echo
 
 .PHONY: buildall
 buildall: libs build
 
 .PHONY: build
 build:
-	@echo Construindo o jar
-	@javac -classpath Java Java/proj/jogo/Main.java \
-		-d $(projdir)/bin/auto_gen/Java && \
-	cd $(projdir)/bin/auto_gen/Java && \
+	@echo Construindo o jar...
+	@# Adiciona o código Java ao jar
+	@cd $(projdir)/bin/auto_gen/Java && \
 	jar cvfe $(projdir)/bin/Jogo.jar $(mainclass) \
-		$(subst $(projdir)/bin/auto_gen/Java/,,$(shell find $(projdir)/bin/auto_gen/Java -name '*.class')) && \
-	cd $(projdir) && \
+		$(subst $(projdir)/bin/auto_gen/Java/,,$(shell find $(projdir)/bin/auto_gen/Java -name '*.class' -not -name JavaHaskellTest.class))
+	@# Adiciona os assets ao jar
+	@cd $(projdir) && \
 	jar -uf $(projdir)/bin/Jogo.jar \
-		$(subst $(projdir)/,,$(shell find $(projdir)/assets -type f -not -name README.md)) && \
-	cd bin && \
+		$(subst $(projdir)/,,$(shell find $(projdir)/assets -type f -not -name README.md))
+	@# Adiciona as libs ao jar
+	@cd $(projdir)/bin && \
 	jar -uf $(projdir)/bin/Jogo.jar \
 		$(subst $(projdir)/bin/,,$(shell find $(projdir)/bin/libs -type f -name '*.so'))
 	@echo
@@ -114,15 +121,18 @@ build:
 .PHONY: justrun
 justrun:
 	@echo Rodando o projeto com o comando: \
-	java -jar $(projdir)/bin/Jogo.jar
+	\"java -jar $(projdir)/bin/Jogo.jar\"...
 	@java -jar $(projdir)/bin/Jogo.jar
 
 .PHONY: run
-run: buildall justrun
+run: compile buildall justrun
+
+.PHONY: runjustjava
+runjustjava: compile build justrun
 
 .PHONY: images
 images:
-	@cd Haxe && \
+	cd Haxe && \
 	haxe -neko Main.n -lib format -main Main && \
 	neko Main.n $(projdir)/assets/img/final \
 		$(shell find $(projdir)/assets/img/original -type f -name '*.png')

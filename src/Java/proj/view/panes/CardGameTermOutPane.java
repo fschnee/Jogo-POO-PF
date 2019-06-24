@@ -1,31 +1,18 @@
-package proj.view;
+package proj.view.panes;
 
-import proj.view.GameTerm;
-import javax.swing.JTextPane;
-import javax.swing.JScrollPane;
+import proj.view.CardGameTerm;
+import proj.view.panes.GenericScrollableOutPane;
+import proj.view.Writeable;
 import javax.swing.text.*;
 import java.awt.*;
 
-public class GameTermOutPane implements Writeable
+public class CardGameTermOutPane extends GenericScrollableOutPane implements Writeable
 {
-  protected JTextPane tp;
-  protected JScrollPane sp;
-
-  public GameTermOutPane()
+  public CardGameTermOutPane()
   {
-    tp = new JTextPane();
-    tp.setBounds(0, 0, 600, 600);
-    tp.setEditable(false);
-    tp.setBackground(GameTerm.getColorScheme(GameTerm.BG));
+    super();
+    tp.setBackground(CardGameTerm.getColorScheme(CardGameTerm.BG));
     setupStyles();
-    ((DefaultCaret)tp.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-
-    sp = new JScrollPane(tp);
-  }
-
-  public JScrollPane getContent()
-  {
-    return this.sp;
   }
 
   public void setupStyles()
@@ -37,7 +24,7 @@ public class GameTermOutPane implements Writeable
     StyleConstants.setFontFamily(terminal, "VCR OSD Mono");
     // TODO: se não funcionar, carregar "Perfect DOS VGA 437"
     StyleConstants.setFontSize(terminal, 16);
-    StyleConstants.setForeground(terminal, GameTerm.getColorScheme(GameTerm.TEXT));
+    StyleConstants.setForeground(terminal, CardGameTerm.getColorScheme(CardGameTerm.TEXT));
   }
 
   @Override

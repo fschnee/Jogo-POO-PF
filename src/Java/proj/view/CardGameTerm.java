@@ -1,29 +1,29 @@
 package proj.view;
 
 import proj.view.Writeable;
-import proj.view.GameTermOutPane;
+import proj.view.panes.CardGameTermOutPane;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.BorderLayout;
 
-public class GameTerm
+public class CardGameTerm
 {
-  private JFrame frame;
-  private GameTermOutPane textout;
+  private JFrame window;
+  private CardGameTermOutPane textout;
 
-  public GameTerm()
+  public CardGameTerm()
   {
-    frame = new JFrame("Terminalis");
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setLayout(new BorderLayout());
-    frame.setSize(600, 600);
+    window = new JFrame("Terminalis");
+    window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    window.setLayout(new BorderLayout());
+    window.setSize(350, 350);
 
-    textout = new GameTermOutPane();
+    textout = new CardGameTermOutPane();
 
-    frame.add(textout.getContent());
-    frame.setVisible(true);
+    window.add(textout.getContent());
+    window.setVisible(true);
   }
 
   public static int BG = 0;

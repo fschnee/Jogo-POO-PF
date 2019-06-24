@@ -1,11 +1,11 @@
 package proj.jogo.mobs;
 
-public class CharacterAttributeSet
+public abstract class CharacterAttributeSet
 {
-  private int Strength;
-  private int Stamina;
-  private int Resolve;
-  private int Charisma;
-  private int Luck;
-  private int Accuracy;
+  public int Strength;
+  public int Stamina;
+  public int Resolve;
+  public int Charisma;
+  public int Luck;
+  public int Accuracy;
 }

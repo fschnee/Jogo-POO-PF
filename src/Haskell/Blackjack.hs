@@ -31,6 +31,7 @@ main = do
 -- 2.5 = jogador fez blackjack
 run :: CInt -> CInt -> Ptr () -> Ptr ()-> IO CFloat
 run cFlags seed jenv jobj = do
+  printGreeting isDebug isVerbose jenv jobj
   printFlags isDebug isVerbose useSeed (fromIntegral seed :: Int) jenv jobj
 
   if useSeed
@@ -43,7 +44,6 @@ run cFlags seed jenv jobj = do
   let shuffled = shuffle deck (decklen * 8) (randomRs (0, decklen - 1) g :: [Int])
   printDecks isDebug deck shuffled jenv jobj
 
-  printGreeting isDebug isVerbose jenv jobj
   let hands = firstdeal shuffled ([], []) True
   printHands isDebug isVerbose jenv jobj hands
 
