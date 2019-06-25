@@ -18,7 +18,8 @@ public class CardGameTerm
     window = new JFrame("Terminalis");
     window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     window.setLayout(new BorderLayout());
-    window.setSize(350, 350);
+    window.setSize(235, 400);
+    window.setResizable(false);
 
     textout = new CardGameTermOutPane();
 

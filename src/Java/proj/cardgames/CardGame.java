@@ -1,6 +1,7 @@
 package proj.cardgames;
 
 import proj.view.Writeable;
+import proj.Tools;
 import java.awt.Font;
 
 public abstract class CardGame
@@ -14,7 +15,13 @@ public abstract class CardGame
   public void sendToGUI(String str)
   {
     if(str.startsWith("--")) System.out.println(str);
-    else output.appendText(str + '\n', "terminal");
+    else
+    {
+      if(str.length() > 24)
+        for(String s : Tools.splitStringEvery(str, 24))
+           output.appendText(s + '\n', "terminal");
+      else output.appendText(str + '\n', "terminal");
+    }
   }
 
   public String getFromGUI() {return "PLACEHOLDER";}

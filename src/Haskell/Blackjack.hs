@@ -41,7 +41,7 @@ run cFlags seed jenv jobj = do
   g <- getStdGen
   let deck = makeDecks 6 Hidden
   let decklen = length deck
-  let shuffled = shuffle deck (decklen * 8) (randomRs (0, decklen - 1) g :: [Int])
+  let shuffled = fastShuffle deck decklen decklen (randoms g :: [Int])
   printDecks isDebug deck shuffled jenv jobj
 
   let hands = firstdeal shuffled ([], []) True

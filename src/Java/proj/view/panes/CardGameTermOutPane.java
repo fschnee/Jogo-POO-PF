@@ -41,7 +41,7 @@ public class CardGameTermOutPane extends GenericScrollableOutPane implements Wri
   public synchronized void appendText(String s, String style)
   {
     ArrayList<Integer> temp = new ArrayList<Integer>();
-    temp.add(Integer.valueOf(100));
+    temp.add(Integer.valueOf(55));
     t.addLast(new SlowText(style, s, temp));
   }
 

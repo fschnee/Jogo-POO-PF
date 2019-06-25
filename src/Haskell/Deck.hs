@@ -68,9 +68,18 @@ shuffle (c:x) n (k:w) = shuffle ((fst popped):(snd popped)) (n - 1) w
   where
     popped = popindex (c:x) [] k
 
--- TODO: otimizar, pois o operador (++) parece ser pesado
 popindex :: Eq t => [t] -> [t] -> Int -> (t, [t])
 popindex (c:x) seen 0 = (c, seen ++ x)
 popindex (c:x) seen num
   | x == []   = (c, seen)
   | otherwise = popindex x (seen ++ [c]) (abs num - 1)
+
+-- shuffle cardList -> swapsLeft -> decklength -> swapIndexes -> shuffledDeck
+fastShuffle :: [Card] -> Int -> Int -> [Int] -> [Card]
+fastShuffle [] _ _ _ = []
+fastShuffle xs 0 _ _ = xs
+fastShuffle xs _ 0 _ = []
+fastShuffle (c:x) s l (i:ri) = (fst popped):(fastShuffle (snd popped) (s - 1) (l - 1) ri)
+
+  where
+    popped = popindex (c:x) [] (i `mod` l)
