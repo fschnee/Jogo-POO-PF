@@ -1,9 +1,9 @@
 package proj.view;
 
-import javax.swing.JFrame;
-import java.awt.Color;
 import proj.view.panes.GameGUIOutPane;
-// import java.awt.Font;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import java.awt.Color;
 import java.awt.BorderLayout;
 
 public class GameGUI
@@ -32,10 +32,5 @@ public class GameGUI
   {
     int[] colours = {0x000000, 0xBCBBB2, 0xCEDABD, 0xF8F4C1};
     return new Color(colours[colour]);
-  }
-
-  public String prompt(String text)
-  {
-    return text;
   }
 }

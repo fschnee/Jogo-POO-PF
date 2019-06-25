@@ -18,8 +18,6 @@ public class GenericScrollableOutPane
     sp = new JScrollPane(tp);
   }
 
-  public JScrollPane getContent()
-  {
-    return this.sp;
-  }
+  public JTextPane getTextPane() {return this.tp;}
+  public JScrollPane getContent() {return this.sp;}
 }

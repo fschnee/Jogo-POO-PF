@@ -1,12 +1,13 @@
 package proj;
 
+import proj.json.*;
+import proj.resource.*;
 import java.io.IOException;
 import java.awt.*;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.net.URL;
-import proj.json.*;
 import java.util.HashMap;
 
 public abstract class ResourceLoader
@@ -48,11 +49,6 @@ public abstract class ResourceLoader
     }
   }
 
-  public static String getPrompt(String filename)
-  {
-    return "Placeholder";
-  }
-
   public static String getItemDescription(String itemname)
   {
     JSONEncoded item = null;
@@ -69,14 +65,9 @@ public abstract class ResourceLoader
 
     if (item != null)
     {
-      if(item.getType() == JSONValue.Obj)
-      {
-        HashMap<String, JSONEncoded> content = (HashMap<String, JSONEncoded>)item.getData();
-        if(content.get("description") != null)
-          if(content.get("description").getType() == JSONValue.Str)
-            return (String)(content.get("description").getData());
-      }
+      HashMap<String, JSONEncoded> content = (HashMap<String, JSONEncoded>)item.getData();
+      return ((String)(content.get("description").getData()));
     }
-    return "null";
+    else return "No description";
   }
 }

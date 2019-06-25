@@ -9,3 +9,13 @@ public class Character
 
   public Character() {}
 }
+
+class CharacterAttributeSet
+{
+  public int Strength;
+  public int Stamina;
+  public int Resolve;
+  public int Charisma;
+  public int Luck;
+  public int Accuracy;
+}

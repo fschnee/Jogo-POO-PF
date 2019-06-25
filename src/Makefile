@@ -108,6 +108,10 @@ build:
 	@cd $(projdir)/bin/auto_gen/Java && \
 	jar cvfe $(projdir)/bin/Jogo.jar $(mainclass) \
 		$(subst $(projdir)/bin/auto_gen/Java/,,$(shell find $(projdir)/bin/auto_gen/Java -name '*.class' -not -name JavaHaskellTest.class))
+	@# Adiciona as classes que tem $ no nome (subclasses no mesmo arquivo, classes anonimas) ao jar
+	@cd $(projdir)/bin/auto_gen/Java && \
+	jar -uf $(projdir)/bin/Jogo.jar \
+		$(subst $$,\$$,$(subst $(projdir)/bin/auto_gen/Java/,,$(shell find $(projdir)/bin/auto_gen/Java -name '*$$*.class')))
 	@# Adiciona os assets ao jar
 	@cd $(projdir) && \
 	jar -uf $(projdir)/bin/Jogo.jar \

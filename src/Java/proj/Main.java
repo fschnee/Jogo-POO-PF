@@ -1,10 +1,11 @@
 package proj;
 
-import javax.swing.SwingUtilities;
-import java.awt.*;
 import proj.ResourceLoader;
 import proj.jogo.mobs.Player;
 import proj.view.GameGUI;
+import proj.jogo.items.GameMachine;
+import javax.swing.SwingUtilities;
+import java.awt.*;
 
 public class Main
 {
@@ -13,6 +14,7 @@ public class Main
     ResourceLoader.loadFont("Perfect-DOS-VGA-437.ttf");
 
     GameGUI gui = new GameGUI();
-    Player p = new Player(gui.prompt(ResourceLoader.getPrompt("username")));
+    Player p = new Player("Teste");
+    new GameMachine().use(null);
   }
 }

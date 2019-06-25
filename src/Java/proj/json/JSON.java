@@ -8,7 +8,6 @@ public abstract class JSON
 {
   public static JSONEncoded parse(InputStream i) throws IOException
   {
-    // TODO: parse the input
     int l = 0;
     do
     {
@@ -37,7 +36,6 @@ public abstract class JSON
       try
       {
         l = i.read();
-
         if(l == -1) throw new IOException();
         else if(l == '}') return parent;
         else if(l != ' ' && l != '\n') //le o campo
@@ -55,6 +53,14 @@ public abstract class JSON
           else if(l >= '0' && l <= '9') fvalue = readnum(i);
 
           parent.addField(fname, fvalue);
+
+          do
+          {
+            l = i.read();
+            if(l == '}') return parent;
+            if(l == ',') break;
+            if(l != ' ' && l != '\n') throw new IOException();
+          }while(true);
         }
       }
       catch (IOException e)
@@ -89,8 +95,8 @@ public abstract class JSON
           {
             l = i.read();
             if(l == ']') return parent;
-            if(l != ' ' && l != '\n') throw new IOException();
             if(l == ',') break;
+            if(l != ' ' && l != '\n') throw new IOException();
           }while(true);
         }
       }

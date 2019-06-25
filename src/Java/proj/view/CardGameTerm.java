@@ -16,7 +16,7 @@ public class CardGameTerm
   public CardGameTerm()
   {
     window = new JFrame("Terminalis");
-    window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     window.setLayout(new BorderLayout());
     window.setSize(350, 350);
 
