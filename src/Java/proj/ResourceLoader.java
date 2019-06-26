@@ -12,6 +12,12 @@ import java.util.HashMap;
 
 public abstract class ResourceLoader
 {
+  public static void printFonts()
+  {
+    for(Font f : GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts())
+      System.out.println(f.getName());
+  }
+
   public static void loadLibrary(String libname)
   {
     try
@@ -70,4 +76,30 @@ public abstract class ResourceLoader
     }
     else return "No description";
   }
+
+  public static String getJsonField(String location, String filename, String fieldname)
+  {
+    JSONEncoded item = null;
+
+    try (InputStream f = ResourceLoader.class.getClassLoader().
+                         getResourceAsStream(location + filename))
+    {
+      item = JSON.parse(f);
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace();
+    }
+
+    if (item != null)
+    {
+      if (item.getType() == JSONValue.Obj)
+      {
+        HashMap<String, JSONEncoded> content = (HashMap<String, JSONEncoded>)item.getData();
+        if (content.get(fieldname) != null) return ((String)(content.get(fieldname).getData()));
+      }
+    }
+    return "Field not found: " + fieldname + "@" + location + filename;
+  }
+
 }

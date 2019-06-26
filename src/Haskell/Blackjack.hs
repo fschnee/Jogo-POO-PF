@@ -15,8 +15,11 @@ type CInt = Int
 type CFloat = Float
 #endif
 
+data HandFlags = Unknown | Busted | CanSplit
+  deriving (Eq, Ord, Show, Enum)
 data GameOptions = Debug | Verbose | UseSeed
   deriving (Eq, Ord, Show, Enum)
+type HandInfo = (Hand, Int)
 
 main :: IO ()
 main = do
@@ -45,7 +48,7 @@ run cFlags seed jenv jobj = do
   printDecks isDebug deck shuffled jenv jobj
 
   let hands = firstdeal shuffled ([], []) True
-  printHands isDebug isVerbose jenv jobj hands
+  loop [(snd hands, compose [Unknown]), (fst hands, compose [Unknown])] jenv jobj
 
   return (fromIntegral (1) :: CFloat)
 
@@ -91,6 +94,15 @@ printGreeting _ verbose jenv jobj
   | verbose == True = sendToOut jenv jobj $ "- Welcome to Blackjack -"
   | otherwise       = sendToOut jenv jobj $ "Blackjack:"
 
+--printHand isDealer isDebug isVerbose handnum hand jenv jobj
+printHand :: Bool -> Bool -> Bool -> Int -> Hand -> Ptr () -> Ptr () -> IO ()
+printHand False False False n hand jenv jobj =
+  sendToOut jenv jobj $ (show n) ++ ": " ++ (show hand)
+printHand False False True n hand jenv jobj =
+  sendToOut jenv jobj $ "Your hand #" ++ (show n) ++ " is:" ++ (show hand)
+printHand False True x n hand jenv jobj  = printHand False False x n hand jenv jobj
+-- fazer para mão do dealer
+
 printHands :: Bool -> Bool -> Ptr () -> Ptr () -> (Hand, Hand)-> IO ()
 printHands False False jenv jobj (p, d) =
   sendToOut jenv jobj $ (show p) ++ "\n" ++ (show d)
@@ -123,3 +135,9 @@ splitSum (c:x) currval
 
   where
     cardval = cardValue c
+
+-- the first hand is always the dealer's
+loop :: [HandInfo] -> Ptr () -> Ptr () -> IO ()
+loop hands jenv jobj = do
+  printHand False False True 1 (fst (hands!!1)) jenv jobj
+  return ()

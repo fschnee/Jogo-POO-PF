@@ -23,6 +23,11 @@ public abstract class JSON
       {
         e.printStackTrace();
       }
+      catch (NullPointerException e)
+      {
+        e.printStackTrace();
+        return new JSONNull();
+      }
     } while(true);
 
     return new JSONNull();

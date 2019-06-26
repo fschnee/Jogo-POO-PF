@@ -9,10 +9,20 @@ dia 15/06/19)
 
 ---
 
-##### Perfect DOS VGA 437 - Zeh Fernando
+##### Pixel Operator - Jayvee Enaguas
 
-Arquivo: `Perfect-DOS-VGA-437.ttf`
+Arquivos: `PixelOperatorMono.ttf`, `PixelOperatorMono-Bold.ttf`
 
-Nome em runtime: `Perfect DOS VGA 437`
+Nome em runtime: `Pixel Operator Mono`, `Pixel Operator Mono Bold`
 
-Font: [dafont](https://www.dafont.com/perfect-dos-vga-437.font) (como disponível dia 16/06/19)
+Fonte: [dafont](https://www.dafont.com/pt/pixel-operator.font) (como disponível dia 26/06/19)
+
+---
+
+##### Rainy Hearts - Camellina
+
+Arquivo: `rainyhearts.ttf`
+
+Nome em runtime: `rainyhearts`
+
+Fonte: [dafont](https://www.dafont.com/pt/rainyhearts.font) (como disponível dia 26/06/19)
