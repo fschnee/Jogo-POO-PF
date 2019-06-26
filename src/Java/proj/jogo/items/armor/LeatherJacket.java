@@ -24,6 +24,7 @@ public class LeatherJacket
     int ch = 0;
     int lu = 0;
     int ac = 0;
+    protection = 10;
 
     statchange = new ImmutableCharacterAttributeSet(str, vit, sta, ch, lu, ac);
   }
