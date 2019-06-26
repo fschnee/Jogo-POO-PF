@@ -1,7 +1,7 @@
 package proj;
 
 import proj.ResourceLoader;
-import proj.jogo.mobs.Player;
+import proj.jogo.items.armor.LeatherJacket;
 import proj.view.GameGUI;
 import java.awt.*;
 
@@ -14,9 +14,9 @@ public class Main
     ResourceLoader.loadFont("PixelOperatorMono-Bold.ttf");
 
     GameGUI gui = new GameGUI();
-    String sampletext = ResourceLoader.getJsonField("assets/text/","sampletext.json","text");
-    gui.getWritable().appendText(sampletext.substring(0, 38), "default-bold");
-    gui.getWritable().appendText(sampletext.substring(38), "default");
+    LeatherJacket j = new LeatherJacket();
+    gui.getWritable().appendText(j.getName() + ":\n", "default");
+    gui.getWritable().appendText(j.getDescription(), "default");
     // Player p = new Player("Teste");
   }
 }

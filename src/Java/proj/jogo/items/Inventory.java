@@ -31,13 +31,19 @@ public class Inventory
       {
         coincount++;
       }
-      this.storeditems.add(i);
+      else this.storeditems.add(i);
       this.currweight += i.getWeight();
       this.currvolume += i.getVolume();
     }
     else return false;
 
     return true;
+  }
+
+  public Boolean remove(Item it)
+  {
+    // TODO: impĺementar
+    return false;
   }
 
   public Boolean canStore(Item i)

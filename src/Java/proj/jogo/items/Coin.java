@@ -13,6 +13,7 @@ public class Coin implements Item
   public float getValue() {return 1;}
   public Boolean isTradeable() {return true;}
   public Boolean isUseable() {return false;}
+  public Boolean isSingleUse() {return false;}
   public String getDescription() {return description;}
 
   // TODO: Tem que haver um jeito melhor de fazer isso...
@@ -22,5 +23,6 @@ public class Coin implements Item
   public static float sgetValue() {return 1;}
   public static Boolean sisTradeable() {return true;}
   public static Boolean sisUseable() {return false;}
+  public static Boolean sisSingleUse() {return false;}
   public static String sgetDescription() {return description;}
 }

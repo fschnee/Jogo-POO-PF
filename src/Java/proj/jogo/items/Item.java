@@ -8,5 +8,6 @@ public interface Item
   public abstract float getVolume();
   public abstract Boolean isTradeable();
   public abstract Boolean isUseable();
+  public abstract Boolean isSingleUse();
   public abstract String getDescription();
 }
