@@ -1,3 +1,4 @@
 {
-  "description":"A bog-standard government-issued coin worth 1 Dono"
+  "name":"Coin",
+  "description":"A bog-standard government-issued coin worth 1 Dono."
 }

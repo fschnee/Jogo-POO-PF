@@ -5,19 +5,23 @@ import proj.ResourceLoader;
 
 public class Coin implements Item
 {
-  private static final String description = ResourceLoader.getItemDescription("Coin.json");
+  private static final String name = ResourceLoader.getJsonField("assets/text/items/",
+                                                                 "Coin.json",
+                                                                 "name");
+  private static final String description = ResourceLoader.getJsonField("assets/text/items/",
+                                                                        "Coin.json",
+                                                                        "description");
 
-  public String getName() {return "Coin";}
-  public float getWeight() {return 0.1f;}
-  public float getVolume() {return 1;}
-  public float getValue() {return 1;}
-  public Boolean isTradeable() {return true;}
-  public Boolean isUseable() {return false;}
-  public Boolean isSingleUse() {return false;}
-  public String getDescription() {return description;}
+  public String getName() {return sgetName();}
+  public float getWeight() {return sgetWeight();}
+  public float getVolume() {return sgetVolume();}
+  public float getValue() {return sgetValue();}
+  public Boolean isTradeable() {return sisTradeable();}
+  public Boolean isUseable() {return sisUseable();}
+  public Boolean isSingleUse() {return sisSingleUse();}
+  public String getDescription() {return sgetDescription();}
 
-  // TODO: Tem que haver um jeito melhor de fazer isso...
-  public static String sgetName() {return "Coin";}
+  public static String sgetName() {return name;}
   public static float sgetWeight() {return 0.1f;}
   public static float sgetVolume() {return 1;}
   public static float sgetValue() {return 1;}

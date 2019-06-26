@@ -9,7 +9,12 @@ import proj.jogo.common.CharacterActionResult;
 
 public class GameMachine implements SelfUsable, Item
 {
-  private static final String description = ResourceLoader.getItemDescription("GameMachine.json");
+  private static final String name = ResourceLoader.getJsonField("assets/text/items/",
+                                                                 "GameMachine.json",
+                                                                 "name");
+  private static final String description = ResourceLoader.getJsonField("assets/text/items/",
+                                                                        "GameMachine.json",
+                                                                        "description");
 
   public CharacterActionResult use(Character sender)
   {
@@ -19,7 +24,7 @@ public class GameMachine implements SelfUsable, Item
     return new CharacterActionResult(0, null, null);
   }
 
-  public String getName() {return "Game Machine #2597";}
+  public String getName() {return name;}
   public float getWeight() {return 0;}
   public float getValue()  {return 99999;}
   public float getVolume() {return 0;}
