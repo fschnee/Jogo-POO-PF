@@ -1,11 +1,12 @@
 package proj.jogo.items.armor;
 
 import proj.ResourceLoader;
+import proj.jogo.items.Item;
 import proj.jogo.items.armor.ProtectiveGear;
 import proj.jogo.common.CharacterAttributeSet;
 import proj.jogo.common.ImmutableCharacterAttributeSet;
 
-public class LeatherJacket
+public class LeatherJacket implements ProtectiveGear, Item
 {
   private static final String name = ResourceLoader.getJsonField("assets/text/items/armor/",
                                                                  "LeatherJacket.json",
@@ -29,9 +30,6 @@ public class LeatherJacket
     statchange = new ImmutableCharacterAttributeSet(str, vit, sta, ch, lu, ac);
   }
 
-  public String getName() {return name;}
-  public String getDescription() {return description;}
-
   public Boolean isFacewear() {return false;}
   public Boolean isChestwear() {return true;}
   public Boolean isHandwear() {return false;}
@@ -40,4 +38,13 @@ public class LeatherJacket
 
   public CharacterAttributeSet getStatChange() {return statchange;}
   public float getProtection() {return protection;}
+
+  public String getName() {return name;}
+  public float getWeight() {return 12;}
+  public float getValue()  {return 3 * protection;}
+  public float getVolume() {return 30;}
+  public Boolean isTradeable() {return true;}
+  public Boolean isUseable() {return false;}
+  public Boolean isSingleUse() {return false;}
+  public String getDescription() {return description;}
 }

@@ -1,36 +1,49 @@
 package proj.view;
 
 import proj.view.panes.GameGUIOutPane;
+import proj.view.CardgamePanel;
+import proj.view.StorytimePanel;
 import proj.view.Writeable;
+import proj.view.GUIPanel;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.Dimension;
 import java.awt.Color;
+import java.awt.CardLayout;
 import java.awt.BorderLayout;
-// import java.awt.GridBagLayout;
-// import java.awt.GridBagConstraints;
+import java.util.HashMap;
 
-public class GameGUI
+public class GameGUI extends JFrame
 {
-  private JFrame window;
-  private GameGUIOutPane textout;
-  private String state;
-  // private GridBagConstraints c;
+  private HashMap<String, GUIPanel> panels;
+  private JPanel panelholder;
+  private String currpanel;
 
   public GameGUI()
   {
-    state = "Storytime";
-    // c = new GridBagConstraints();
+    super("Game");
 
-    window = new JFrame("Game");
-    window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    window.setLayout(new BorderLayout());
-    window.setSize(800, 800);
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setLayout(new BorderLayout());
+    setSize(800, 800);
 
-    textout = new GameGUIOutPane();
+    panels = new HashMap<String, GUIPanel>();
+    panelholder = new JPanel();
+    panelholder.setLayout(new CardLayout());
+    panelholder.setPreferredSize(new Dimension(800, 800));
+    panelholder.setBackground(getColorScheme(BG));
 
-    window.add(textout.getContent());
-    //setupLayouts();
-    //updateLayout();
-    window.setVisible(true);
+    CardgamePanel cgt = new CardgamePanel();
+    StorytimePanel storytimepanel = new StorytimePanel();
+    panelholder.add(storytimepanel, "Storytime");
+    panelholder.add(cgt, "Terminal");
+    currpanel = "Storytime";
+    panels.put("Terminal", cgt);
+    panels.put("Storytime", storytimepanel);
+    panels.get(currpanel).resume();
+
+    getContentPane().add(panelholder, BorderLayout.CENTER);
+    setVisible(true);
   }
 
   public static int BG = 0;
@@ -43,35 +56,23 @@ public class GameGUI
     return new Color(colours[colour]);
   }
 
-  public void setState(String newstate)
+  public Writeable getTextout(String panel)
   {
-    if(this.state.equals(newstate)) return;
-
-    this.state = newstate;
-    updateLayout();
+    GUIPanel temp = panels.get(panel);
+    if(temp != null) return temp.getTextOut();
+    return null;
   }
+  public Writeable getTextout() {return panels.get(currpanel).getTextOut();}
 
-  // TODO: implementar cardLayout contendo varios GridBagLayout
-  public void setupLayouts()
+  public synchronized void setActivePane(String newactive)
   {
-  }
+    if(!newactive.equals(currpanel))
+    {
+      panels.get(currpanel).pause();
+      currpanel = newactive;
+      panels.get(newactive).resume();
+    }
 
-  // TODO: implementar cardLayout contendo varios GridBagLayout
-  public void updateLayout()
-  {
-    // Show just textout
-    if(state.equals("Storytime"))
-    {
-    }
-    // Show lifebars and menus
-    else if(state.equals("Fight"))
-    {
-    }
-    // Show inventory stuff
-    else if(state.equals("Inventory"))
-    {
-    }
+    ((CardLayout)panelholder.getLayout()).show(panelholder, newactive);
   }
-
-  public Writeable getWritable() {return this.textout;}
 }

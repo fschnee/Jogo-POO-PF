@@ -1,9 +1,8 @@
 package proj.view.panes;
 
-import proj.view.CardGameTerm;
+import proj.view.CardgamePanel;
 import proj.view.panes.WritableScrollableOutPane;
 import javax.swing.text.*;
-import javax.swing.JTextPane;
 import java.awt.*;
 
 public class CardGameTermOutPane extends WritableScrollableOutPane
@@ -11,9 +10,11 @@ public class CardGameTermOutPane extends WritableScrollableOutPane
   public CardGameTermOutPane()
   {
     super();
-    tp.setBackground(CardGameTerm.getColorScheme(CardGameTerm.BG));
+    tp.setBackground(CardgamePanel.getColorScheme(CardgamePanel.BG));
+    tp.setPreferredSize(new Dimension(230, 400));
     setupStyles();
     startWriterThread();
+    pause();
   }
 
   public void setupStyles()
@@ -25,6 +26,6 @@ public class CardGameTermOutPane extends WritableScrollableOutPane
     StyleConstants.setFontFamily(terminal, "VCR OSD Mono");
     // TODO: se não funcionar, carregar "Perfect DOS VGA 437"
     StyleConstants.setFontSize(terminal, 16);
-    StyleConstants.setForeground(terminal, CardGameTerm.getColorScheme(CardGameTerm.TEXT));
+    StyleConstants.setForeground(terminal, CardgamePanel.getColorScheme(CardgamePanel.TEXT));
   }
 }

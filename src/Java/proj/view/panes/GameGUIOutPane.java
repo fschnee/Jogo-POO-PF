@@ -5,6 +5,7 @@ import proj.view.panes.WritableScrollableOutPane;
 import proj.resource.SlowText;
 import java.util.ArrayList;
 import javax.swing.text.*;
+import java.awt.Dimension;
 
 public class GameGUIOutPane extends WritableScrollableOutPane
 {
@@ -14,6 +15,7 @@ public class GameGUIOutPane extends WritableScrollableOutPane
     tp.setBackground(GameGUI.getColorScheme(GameGUI.BG));
     setupStyles();
     startWriterThread();
+    pause();
   }
 
   @Override
@@ -27,7 +29,7 @@ public class GameGUIOutPane extends WritableScrollableOutPane
   @Override
   protected void startWriterThread()
   {
-    new Thread(new Runnable()
+    writer = new Thread(new Runnable()
     {
       @Override
       public void run()
@@ -42,7 +44,8 @@ public class GameGUIOutPane extends WritableScrollableOutPane
         }
         catch (InterruptedException e) {}
       }
-    }).start();
+    });
+    writer.start();
   }
 
   public void setupStyles()

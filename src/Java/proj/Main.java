@@ -19,13 +19,13 @@ public class Main
     LeatherJacket j = new LeatherJacket();
     Coin c = new Coin();
     GameMachine gm = new GameMachine();
-    gui.getWritable().appendText(j.getName() + ":\n", "default-bold");
-    gui.getWritable().appendText(j.getDescription() + '\n', "default");
-    gui.getWritable().appendText(c.getName() + ":\n", "default-bold");
-    gui.getWritable().appendText(c.getDescription() + '\n', "default");
-    gui.getWritable().appendText(gm.getName() + ":\n", "default-bold");
-    gui.getWritable().appendText(gm.getDescription() + '\n', "default");
-    gm.use(null);
+    // gui.getTextOut().appendText(j.getName() + ":\n", "default-bold");
+    // gui.getTextOut().appendText(j.getDescription() + '\n', "default");
+    // gui.getTextOut().appendText(c.getName() + ":\n", "default-bold");
+    // gui.getTextOut().appendText(c.getDescription() + '\n', "default");
+    // gui.getTextOut().appendText(gm.getName() + ":\n", "default-bold");
+    // gui.getTextOut().appendText(gm.getDescription() + '\n', "default");
+    gm.use(gui);
     // Player p = new Player("Teste");
   }
 }

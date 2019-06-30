@@ -4,10 +4,11 @@ import proj.ResourceLoader;
 import proj.cardgames.Blackjack;
 import proj.jogo.items.Item;
 import proj.jogo.items.SelfUsable;
-import proj.view.CardGameTerm;
+import proj.view.CardgamePanel;
 import proj.jogo.common.CharacterActionResult;
+import proj.view.GameGUI;
 
-public class GameMachine implements SelfUsable, Item
+public class GameMachine implements SpecialUsable, Item
 {
   private static final String name = ResourceLoader.getJsonField("assets/text/items/",
                                                                  "GameMachine.json",
@@ -16,12 +17,11 @@ public class GameMachine implements SelfUsable, Item
                                                                         "GameMachine.json",
                                                                         "description");
 
-  public CharacterActionResult use(Character sender)
+  @Override
+  public void use(Object sender)
   {
-    CardGameTerm cgt = new CardGameTerm();
-    new Blackjack(cgt.getTextOut()).play(0);
-
-    return new CharacterActionResult(0, null, null);
+    ((GameGUI)sender).setActivePane("Terminal");
+    new Blackjack(((GameGUI)sender).getTextout("Terminal")).play(0);
   }
 
   public String getName() {return name;}

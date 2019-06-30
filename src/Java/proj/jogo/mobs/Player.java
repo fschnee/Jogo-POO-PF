@@ -9,6 +9,7 @@ public class Player
   private float money;
   private Inventory stash;
   private Inventory backpacks;
+  private Team party;
 
   public Player(String name)
   {
