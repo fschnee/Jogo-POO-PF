@@ -2,7 +2,7 @@ package proj.cardgames;
 
 import proj.cardgames.CardGame;
 import proj.cardgames.GameOptions;
-import proj.view.Writeable;
+import proj.view.Writable;
 import proj.ResourceLoader;
 
 public class Blackjack extends CardGame
@@ -13,7 +13,7 @@ public class Blackjack extends CardGame
   }
   private native float callhaskell(int options, int seed);
 
-  public Blackjack(Writeable out)
+  public Blackjack(Writable out)
   {
     super();
 

@@ -1,6 +1,7 @@
 package proj.view;
 
-import proj.view.Writeable;
+import proj.Global;
+import proj.view.Writable;
 import proj.view.Pausable;
 import proj.view.panes.CardGameTermOutPane;
 import javax.swing.JPanel;
@@ -11,6 +12,8 @@ import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.FlowLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class CardgamePanel extends JPanel implements GUIPanel
 {
@@ -39,6 +42,14 @@ public class CardgamePanel extends JPanel implements GUIPanel
     JButton jbt1 = new JButton("Hit");
     JButton jbt2 = new JButton("Stand");
     JButton jbt3 = new JButton("Quit");
+    jbt3.addActionListener(new ActionListener()
+    {
+      @Override
+      public void actionPerformed(ActionEvent e)
+      {
+        Global.getGlobal().getGUI().setActivePane(Global.getGlobal().getGUI().getPrevPanel());
+      }
+    });
     c.gridx = 0;
     c.gridy = 3;
     c.gridwidth = 3;
@@ -56,7 +67,7 @@ public class CardgamePanel extends JPanel implements GUIPanel
 
   public synchronized void resume() {textout.resume();}
 
-  public Writeable getTextOut() {return textout;}
+  public Writable getTextOut() {return textout;}
 
   public static int BG = 0;
   public static int OTHER = 1;

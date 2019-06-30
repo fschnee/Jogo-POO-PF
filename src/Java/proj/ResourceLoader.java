@@ -55,28 +55,6 @@ public abstract class ResourceLoader
     }
   }
 
-  public static String getItemDescription(String itemname)
-  {
-    JSONEncoded item = null;
-
-    try (InputStream f = ResourceLoader.class.getClassLoader().
-                         getResourceAsStream("assets/text/items/" + itemname))
-    {
-      item = JSON.parse(f);
-    }
-    catch (IOException e)
-    {
-      e.printStackTrace();
-    }
-
-    if (item != null)
-    {
-      HashMap<String, JSONEncoded> content = (HashMap<String, JSONEncoded>)item.getData();
-      return ((String)(content.get("description").getData()));
-    }
-    else return "No description";
-  }
-
   public static String getJsonField(String location, String filename, String fieldname)
   {
     JSONEncoded item = null;

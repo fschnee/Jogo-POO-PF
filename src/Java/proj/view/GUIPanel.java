@@ -1,9 +1,9 @@
 package proj.view;
 
 import proj.view.Pausable;
-import proj.view.Writeable;
+import proj.view.Writable;
 
 public interface GUIPanel extends Pausable
 {
-  public Writeable getTextOut();
+  public Writable getTextOut();
 }

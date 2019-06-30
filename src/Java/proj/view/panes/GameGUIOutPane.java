@@ -26,6 +26,7 @@ public class GameGUIOutPane extends WritableScrollableOutPane
     t.addLast(new SlowText(style, s, temp));
   }
 
+  /*
   @Override
   protected void startWriterThread()
   {
@@ -47,6 +48,7 @@ public class GameGUIOutPane extends WritableScrollableOutPane
     });
     writer.start();
   }
+  */
 
   public void setupStyles()
   {

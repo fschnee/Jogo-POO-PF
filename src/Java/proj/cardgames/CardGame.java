@@ -1,13 +1,13 @@
 package proj.cardgames;
 
-import proj.view.Writeable;
+import proj.view.Writable;
 import proj.Tools;
 import java.awt.Font;
 
 public abstract class CardGame
 {
   protected Font outfont;
-  protected Writeable output;
+  protected Writable output;
 
   // Returns the ammount to be added to the player
   public abstract int play(int bet);

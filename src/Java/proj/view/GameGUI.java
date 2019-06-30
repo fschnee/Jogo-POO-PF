@@ -3,7 +3,7 @@ package proj.view;
 import proj.view.panes.GameGUIOutPane;
 import proj.view.CardgamePanel;
 import proj.view.StorytimePanel;
-import proj.view.Writeable;
+import proj.view.Writable;
 import proj.view.GUIPanel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -18,11 +18,15 @@ public class GameGUI extends JFrame
   private HashMap<String, GUIPanel> panels;
   private JPanel panelholder;
   private String currpanel;
+  private String prevpanel;
 
   public GameGUI()
   {
     super("Game");
+  }
 
+  public void setupGUI()
+  {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLayout(new BorderLayout());
     setSize(800, 800);
@@ -33,14 +37,16 @@ public class GameGUI extends JFrame
     panelholder.setPreferredSize(new Dimension(800, 800));
     panelholder.setBackground(getColorScheme(BG));
 
-    CardgamePanel cgt = new CardgamePanel();
     StorytimePanel storytimepanel = new StorytimePanel();
     panelholder.add(storytimepanel, "Storytime");
-    panelholder.add(cgt, "Terminal");
     currpanel = "Storytime";
-    panels.put("Terminal", cgt);
+    prevpanel = "Storytime";
     panels.put("Storytime", storytimepanel);
     panels.get(currpanel).resume();
+
+    CardgamePanel cgt = new CardgamePanel();
+    panelholder.add(cgt, "Terminal");
+    panels.put("Terminal", cgt);
 
     getContentPane().add(panelholder, BorderLayout.CENTER);
     setVisible(true);
@@ -56,18 +62,19 @@ public class GameGUI extends JFrame
     return new Color(colours[colour]);
   }
 
-  public Writeable getTextout(String panel)
+  public Writable getTextOut(String panel)
   {
     GUIPanel temp = panels.get(panel);
     if(temp != null) return temp.getTextOut();
     return null;
   }
-  public Writeable getTextout() {return panels.get(currpanel).getTextOut();}
+  public Writable getTextOut() {return panels.get(currpanel).getTextOut();}
 
   public synchronized void setActivePane(String newactive)
   {
     if(!newactive.equals(currpanel))
     {
+      prevpanel = currpanel;
       panels.get(currpanel).pause();
       currpanel = newactive;
       panels.get(newactive).resume();
@@ -75,4 +82,6 @@ public class GameGUI extends JFrame
 
     ((CardLayout)panelholder.getLayout()).show(panelholder, newactive);
   }
+
+  public synchronized String getPrevPanel() {return prevpanel;}
 }

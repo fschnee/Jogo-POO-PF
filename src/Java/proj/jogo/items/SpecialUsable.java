@@ -1,8 +1,8 @@
 package proj.jogo.items;
 
-import proj.jogo.common.CharacterActionResult;
+import proj.jogo.mobs.Character;
 
 public interface SpecialUsable
 {
-  public void use(Object sender);
+  public void use(Character sender);
 }

@@ -1,6 +1,9 @@
 package proj;
 
+import proj.Global;
 import proj.ResourceLoader;
+import proj.view.Writable;
+import proj.jogo.items.Item;
 import proj.jogo.items.armor.LeatherJacket;
 import proj.jogo.items.Coin;
 import proj.jogo.items.GameMachine;
@@ -16,16 +19,21 @@ public class Main
     ResourceLoader.loadFont("PixelOperatorMono-Bold.ttf");
 
     GameGUI gui = new GameGUI();
-    LeatherJacket j = new LeatherJacket();
-    Coin c = new Coin();
+    Global.init(gui);
+    gui.setupGUI();
+    Writable w = gui.getTextOut("Storytime");
+
     GameMachine gm = new GameMachine();
-    // gui.getTextOut().appendText(j.getName() + ":\n", "default-bold");
-    // gui.getTextOut().appendText(j.getDescription() + '\n', "default");
-    // gui.getTextOut().appendText(c.getName() + ":\n", "default-bold");
-    // gui.getTextOut().appendText(c.getDescription() + '\n', "default");
-    // gui.getTextOut().appendText(gm.getName() + ":\n", "default-bold");
-    // gui.getTextOut().appendText(gm.getDescription() + '\n', "default");
-    gm.use(gui);
-    // Player p = new Player("Teste");
+    w.appendText(gm.getName() + ":\n", "default-bold");
+    w.appendText(gm.getDescription() + "\n", "default");
+    gm.use(null);
+
+    Item c = new Coin();
+    w.appendText(c.getName() + ":\n", "default-bold");
+    w.appendText(c.getDescription() + "\n", "default");
+
+    Item l = new LeatherJacket();
+    w.appendText(l.getName() + ":\n", "default-bold");
+    w.appendText(l.getDescription() + "\n", "default");
   }
 }

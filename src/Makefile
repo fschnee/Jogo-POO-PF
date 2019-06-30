@@ -110,15 +110,15 @@ build:
 		$(subst $(projdir)/bin/auto_gen/Java/,,$(shell find $(projdir)/bin/auto_gen/Java -name '*.class' -not -name JavaHaskellTest.class))
 	@# Adiciona as classes que tem $ no nome (subclasses no mesmo arquivo, classes anonimas) ao jar
 	@cd $(projdir)/bin/auto_gen/Java && \
-	jar -uf $(projdir)/bin/Jogo.jar \
+	jar -uvf $(projdir)/bin/Jogo.jar \
 		$(subst $$,\$$,$(subst $(projdir)/bin/auto_gen/Java/,,$(shell find $(projdir)/bin/auto_gen/Java -name '*$$*.class')))
 	@# Adiciona os assets ao jar
 	@cd $(projdir) && \
-	jar -uf $(projdir)/bin/Jogo.jar \
+	jar -uvf $(projdir)/bin/Jogo.jar \
 		$(subst $(projdir)/,,$(shell find $(projdir)/assets -type f -not -name README.md))
 	@# Adiciona as libs ao jar
 	@cd $(projdir)/bin && \
-	jar -uf $(projdir)/bin/Jogo.jar \
+	jar -uvf $(projdir)/bin/Jogo.jar \
 		$(subst $(projdir)/bin/,,$(shell find $(projdir)/bin/libs -type f -name '*.so'))
 	@echo
 

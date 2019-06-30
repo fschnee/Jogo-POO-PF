@@ -1,12 +1,11 @@
 package proj.jogo.items;
 
+import proj.Global;
 import proj.ResourceLoader;
 import proj.cardgames.Blackjack;
 import proj.jogo.items.Item;
-import proj.jogo.items.SelfUsable;
-import proj.view.CardgamePanel;
-import proj.jogo.common.CharacterActionResult;
-import proj.view.GameGUI;
+import proj.jogo.items.SpecialUsable;
+import proj.jogo.mobs.Character;
 
 public class GameMachine implements SpecialUsable, Item
 {
@@ -18,10 +17,10 @@ public class GameMachine implements SpecialUsable, Item
                                                                         "description");
 
   @Override
-  public void use(Object sender)
+  public void use(Character sender)
   {
-    ((GameGUI)sender).setActivePane("Terminal");
-    new Blackjack(((GameGUI)sender).getTextout("Terminal")).play(0);
+    Global.getGlobal().getGUI().setActivePane("Terminal");
+    new Blackjack(Global.getGlobal().getGUI().getTextOut("Terminal")).play(0);
   }
 
   public String getName() {return name;}

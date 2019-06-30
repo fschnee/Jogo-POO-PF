@@ -1,7 +1,7 @@
 package proj.view.panes;
 
 import proj.view.panes.GenericScrollableOutPane;
-import proj.view.Writeable;
+import proj.view.Writable;
 import proj.view.Pausable;
 import proj.resource.SlowText;
 import proj.resource.SlowLetter;
@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.ArrayList;
 import javax.swing.text.StyledDocument;
 
-public class WritableScrollableOutPane extends GenericScrollableOutPane implements Writeable, Pausable
+public class WritableScrollableOutPane extends GenericScrollableOutPane implements Writable, Pausable
 {
   protected LinkedList<SlowText> t;
   protected SlowText currenttext;
@@ -45,12 +45,12 @@ public class WritableScrollableOutPane extends GenericScrollableOutPane implemen
 
   public synchronized void pause()
   {
-    writer.interrupt();
+    writer.suspend();
   }
 
   public synchronized void resume()
   {
-    startWriterThread();
+    writer.resume();
   }
 
   protected synchronized int write()
