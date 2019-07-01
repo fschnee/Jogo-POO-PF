@@ -40,9 +40,14 @@ public class Inventory
     return true;
   }
 
-  public Boolean remove(Item it)
+  public Boolean remove(Item i)
   {
-    // TODO: impĺementar
+    if(storeditems.remove(i))
+    {
+      this.currweight -= i.getWeight();
+      this.currvolume -= i.getVolume();
+      return true;
+    }
     return false;
   }
 
@@ -50,6 +55,13 @@ public class Inventory
   {
     if (this.currweight + i.getWeight() > this.maxweight) return false;
     else if (this.currvolume + i.getVolume() > this.maxvolume) return false;
+    else return true;
+  }
+
+  public Boolean canSwitch(Item i1, Item i2)
+  {
+    if (this.currweight + i1.getWeight() - i2.getWeight() > this.maxweight) return false;
+    else if (this.currvolume + i1.getVolume() - i2.getWeight() > this.maxvolume) return false;
     else return true;
   }
 

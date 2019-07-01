@@ -24,11 +24,11 @@ public class GameMachine implements SpecialUsable, Item
   }
 
   public String getName() {return name;}
+  public String getDescription() {return description;}
   public float getWeight() {return 0;}
   public float getValue()  {return 99999;}
   public float getVolume() {return 0;}
   public Boolean isTradeable() {return false;}
   public Boolean isUseable() {return true;}
   public Boolean isSingleUse() {return false;}
-  public String getDescription() {return description;}
 }

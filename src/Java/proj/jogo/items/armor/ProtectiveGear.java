@@ -4,14 +4,11 @@ import proj.jogo.common.CharacterAttributeSet;
 
 public interface ProtectiveGear
 {
-  public String getName();
-  public String getDescription();
-
-  public Boolean isFacewear();
+  public Boolean isHeadwear();
   public Boolean isChestwear();
   public Boolean isHandwear();
   public Boolean isLegwear();
-  public Boolean isShoewear();
+  public Boolean isFootwear();
 
   public CharacterAttributeSet getStatChange();
   public float getProtection();

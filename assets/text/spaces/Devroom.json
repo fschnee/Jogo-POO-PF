@@ -1,0 +1,7 @@
+{
+  "name":"Dev room",
+  "description":"A magical room probably not meant for you, chances are if you are here you are lost",
+  "classpath":"proj.jogo.spaces.Devroom",
+
+  "connections":["StartingCamp"]
+}

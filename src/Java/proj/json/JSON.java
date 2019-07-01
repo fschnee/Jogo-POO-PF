@@ -56,6 +56,7 @@ public abstract class JSON
           else if(l == 't' || l == 'f') fvalue = readbool(i);
           else if(l == 'n') fvalue = readnull(i);
           else if(l >= '0' && l <= '9') fvalue = readnum(i);
+          else if(l == '[') fvalue = parse(i, new JSONArr());
 
           parent.addField(fname, fvalue);
 
@@ -71,6 +72,7 @@ public abstract class JSON
       catch (IOException e)
       {
         e.printStackTrace();
+        System.exit(1);
       }
     }while(true);
   }
@@ -94,6 +96,7 @@ public abstract class JSON
           else if(l == 't' || l == 'f') parent.push(readbool(i));
           else if(l == 'n') parent.push(readnull(i));
           else if(l >= '0' && l <= '9') parent.push(readnum(i));
+          else if(l == '{') parent.push(parse(i, new JSONObj()));
 
           // lê o que tem depois do elemento
           do

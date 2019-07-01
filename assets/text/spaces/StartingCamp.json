@@ -1,0 +1,7 @@
+{
+  "name":"Starting Camp",
+  "description":"idk what to put here yet",
+  "classpath":"proj.jogo.spaces.StartingCamp",
+
+  "connections":["Devroom"]
+}

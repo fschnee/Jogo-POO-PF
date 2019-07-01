@@ -22,6 +22,7 @@ public class Character
     maxhealth = 0;
     energy = 0;
     maxenergy = 0;
+    armor = new ArmorSet();
   }
 
   public void calculateMaxHealth()

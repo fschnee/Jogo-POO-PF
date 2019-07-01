@@ -1,6 +1,7 @@
 package proj.jogo.common;
 
 import proj.jogo.common.CharacterAttributeSet;
+import proj.jogo.common.ImmutableCharacterAttributeSet;
 
 public class MutableCharacterAttributeSet implements CharacterAttributeSet
 {
@@ -26,5 +27,11 @@ public class MutableCharacterAttributeSet implements CharacterAttributeSet
     charisma = 0;
     luck = 0;
     accuracy = 0;
+  }
+
+  public ImmutableCharacterAttributeSet toImmutable()
+  {
+    return new ImmutableCharacterAttributeSet(strength, vitality, stamina,
+                                              charisma, luck, accuracy);
   }
 }
