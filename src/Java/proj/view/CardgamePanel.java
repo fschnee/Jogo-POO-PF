@@ -78,4 +78,9 @@ public class CardgamePanel extends JPanel implements GUIPanel
     int[] colours = {0x000000, 0xBCBBB2, 0xCEDABD, 0xF8F4C1};
     return new Color(colours[colour]);
   }
+
+  public void setInputEnabled() {}
+  public boolean isEnabled() {return false;}
+  public String getInput()  {return null;}
+  public void inputChannel(int c) {}
 }

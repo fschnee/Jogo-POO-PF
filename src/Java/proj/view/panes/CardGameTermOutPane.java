@@ -17,14 +17,13 @@ public class CardGameTermOutPane extends WritableScrollableOutPane
     pause();
   }
 
-  public void setupStyles()
+  protected void setupStyles()
   {
     StyledDocument doc = tp.getStyledDocument();
     Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
 
-    Style terminal = doc.addStyle("terminal", def);
+    Style terminal = doc.addStyle("default", def);
     StyleConstants.setFontFamily(terminal, "VCR OSD Mono");
-    // TODO: se não funcionar, carregar "Perfect DOS VGA 437"
     StyleConstants.setFontSize(terminal, 16);
     StyleConstants.setForeground(terminal, CardgamePanel.getColorScheme(CardgamePanel.TEXT));
   }

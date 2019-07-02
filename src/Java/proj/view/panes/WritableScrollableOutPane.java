@@ -5,9 +5,10 @@ import proj.view.Writable;
 import proj.view.Pausable;
 import proj.resource.SlowText;
 import proj.resource.SlowLetter;
+import javax.swing.text.StyledDocument;
+import javax.swing.text.Style;
 import java.util.LinkedList;
 import java.util.ArrayList;
-import javax.swing.text.StyledDocument;
 
 public class WritableScrollableOutPane extends GenericScrollableOutPane implements Writable, Pausable
 {
@@ -29,6 +30,12 @@ public class WritableScrollableOutPane extends GenericScrollableOutPane implemen
     t.addLast(new SlowText(style, s, temp));
   }
 
+  @Override
+  public synchronized void appendText(String s, String style, ArrayList<Integer> delays)
+  {
+    t.addLast(new SlowText(style, s, delays));
+  }
+
   protected void startWriterThread()
   {
     writer = new Thread(new Runnable()
@@ -43,15 +50,10 @@ public class WritableScrollableOutPane extends GenericScrollableOutPane implemen
     writer.start();
   }
 
-  public synchronized void pause()
-  {
-    writer.suspend();
-  }
-
-  public synchronized void resume()
-  {
-    writer.resume();
-  }
+  public synchronized void pause() {writer.suspend();}
+  public synchronized void resume() {writer.resume();}
+  public synchronized boolean isDone()
+  {return (t.size() == 0 && (currenttext == null || currenttext.isDone()));}
 
   protected synchronized int write()
   {
@@ -60,14 +62,16 @@ public class WritableScrollableOutPane extends GenericScrollableOutPane implemen
       if(t.size() == 0) return 10;
       else currenttext =  t.removeFirst();
     }
+
     SlowLetter tobeprinted = currenttext.getNext();
+    StyledDocument doc = tp.getStyledDocument();
+    char c = tobeprinted.getChar();
+    Style s = doc.getStyle(tobeprinted.getStyle());
 
     try
     {
-      StyledDocument doc = tp.getStyledDocument();
-      doc.insertString(doc.getLength(), String.valueOf(tobeprinted.getChar()), null);
-      doc.setCharacterAttributes(doc.getLength() - 1, 1,
-                                 doc.getStyle(tobeprinted.getStyle()), false);
+      doc.insertString(doc.getLength(), String.valueOf(c), null);
+      doc.setCharacterAttributes(doc.getLength() - 1, 1, s, false);
     }
     catch (Exception e)
     {

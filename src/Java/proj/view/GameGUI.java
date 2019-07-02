@@ -7,10 +7,14 @@ import proj.view.Writable;
 import proj.view.GUIPanel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.MatteBorder;
 import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.CardLayout;
 import java.awt.BorderLayout;
+import java.awt.KeyboardFocusManager;
+import java.awt.KeyEventDispatcher;
+import java.awt.event.KeyEvent;
 import java.util.HashMap;
 
 public class GameGUI extends JFrame
@@ -30,19 +34,25 @@ public class GameGUI extends JFrame
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLayout(new BorderLayout());
     setSize(800, 800);
+    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new CustomKeyHandler());
 
     panels = new HashMap<String, GUIPanel>();
     panelholder = new JPanel();
     panelholder.setLayout(new CardLayout());
     panelholder.setPreferredSize(new Dimension(800, 800));
     panelholder.setBackground(getColorScheme(BG));
+    panelholder.setBorder(new MatteBorder(12, 12, 12, 12, getColorScheme(BG)));
+
+    PlayerSetupPanel playersetuppanel = new PlayerSetupPanel();
+    panelholder.add(playersetuppanel, "Setup");
+    currpanel = "Setup";
+    prevpanel = "Setup";
+    panels.put("Setup", playersetuppanel);
+    panels.get(currpanel).resume();
 
     StorytimePanel storytimepanel = new StorytimePanel();
     panelholder.add(storytimepanel, "Storytime");
-    currpanel = "Storytime";
-    prevpanel = "Storytime";
     panels.put("Storytime", storytimepanel);
-    panels.get(currpanel).resume();
 
     CardgamePanel cgt = new CardgamePanel();
     panelholder.add(cgt, "Terminal");
@@ -52,13 +62,14 @@ public class GameGUI extends JFrame
     setVisible(true);
   }
 
+  // Color Info
   public static int BG = 0;
   public static int OTHER = 1;
   public static int TEXT = 2;
   public static int HIGHLIGHT = 3;
   public static Color getColorScheme(int colour)
   {
-    int[] colours = {0x000000, 0xBCBBB2, 0xCEDABD, 0xF8F4C1};
+    int[] colours = {0x000000, 0xBCBBB2, 0xCEDABD, 0xF8F490};
     return new Color(colours[colour]);
   }
 
@@ -68,7 +79,7 @@ public class GameGUI extends JFrame
     if(temp != null) return temp.getTextOut();
     return null;
   }
-  public Writable getTextOut() {return panels.get(currpanel).getTextOut();}
+  public synchronized Writable getTextOut() {return panels.get(currpanel).getTextOut();}
 
   public synchronized void setActivePane(String newactive)
   {
@@ -83,5 +94,17 @@ public class GameGUI extends JFrame
     ((CardLayout)panelholder.getLayout()).show(panelholder, newactive);
   }
 
+  public synchronized GUIPanel getPanel(String panel) {return panels.get(panel);}
   public synchronized String getPrevPanel() {return prevpanel;}
+
+  // Estava tendo problemas de foco usando KeyListener então...
+  private class CustomKeyHandler implements KeyEventDispatcher {
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent e) {
+        if (e.getID() == KeyEvent.KEY_PRESSED){
+            panels.get(currpanel).inputChannel(e.getKeyChar());
+        }
+        return false;
+    }
+  }
 }

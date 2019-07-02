@@ -2,13 +2,10 @@ package proj;
 
 import proj.Global;
 import proj.ResourceLoader;
-import proj.view.Writable;
-import proj.jogo.items.Item;
-import proj.jogo.items.armor.LeatherJacket;
-import proj.jogo.items.Coin;
-import proj.jogo.items.GameMachine;
 import proj.view.GameGUI;
+import proj.jogo.mobs.Player;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Main
 {
@@ -21,19 +18,28 @@ public class Main
     GameGUI gui = new GameGUI();
     Global.init(gui);
     gui.setupGUI();
-    Writable w = gui.getTextOut("Storytime");
+    gui.getTextOut("Storytime").appendText(ResourceLoader
+                                           .getJsonField("assets/text/",
+                                                         "intro.json",
+                                                         "text"),
+                                           "default");
+    gui.getTextOut("Setup").appendText(ResourceLoader
+                                       .getJsonField("assets/text/",
+                                                     "setup.json",
+                                                     "q1") + "\n> ",
+                                       "alt");
+    gui.getPanel("Setup").setInputEnabled();
+    while(gui.getPanel("Setup").isEnabled()) try{Thread.sleep(200);}catch(InterruptedException e){}
+    String pname = gui.getPanel("Setup").getInput();
+    Player p = new Player(pname);
 
-    GameMachine gm = new GameMachine();
-    w.appendText(gm.getName() + ":\n", "default-bold");
-    w.appendText(gm.getDescription() + "\n", "default");
-    gm.use(null);
-
-    Item c = new Coin();
-    w.appendText(c.getName() + ":\n", "default-bold");
-    w.appendText(c.getDescription() + "\n", "default");
-
-    Item l = new LeatherJacket();
-    w.appendText(l.getName() + ":\n", "default-bold");
-    w.appendText(l.getDescription() + "\n", "default");
+    ArrayList<Integer> temp = new ArrayList<Integer>();
+    temp.add(Integer.valueOf(300));
+    temp.add(Integer.valueOf(400));
+    temp.add(Integer.valueOf(500));
+    gui.getTextOut("Setup").appendText("So, " + pname + ", let me tell you a story then ", "alt");
+    gui.getTextOut("Setup").appendText(". . .", "alt", temp);
+    while(!gui.getTextOut("Setup").isDone()) try{Thread.sleep(200);}catch(InterruptedException e){}
+    gui.setActivePane("Storytime");
   }
 }

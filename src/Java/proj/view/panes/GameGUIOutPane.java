@@ -26,31 +26,7 @@ public class GameGUIOutPane extends WritableScrollableOutPane
     t.addLast(new SlowText(style, s, temp));
   }
 
-  /*
-  @Override
-  protected void startWriterThread()
-  {
-    writer = new Thread(new Runnable()
-    {
-      @Override
-      public void run()
-      {
-        try
-        {
-          while(true)
-          {
-            // do extra stuff (checar o teclado para skippar o texto)
-            Thread.sleep(write());
-          }
-        }
-        catch (InterruptedException e) {}
-      }
-    });
-    writer.start();
-  }
-  */
-
-  public void setupStyles()
+  protected void setupStyles()
   {
     StyledDocument doc = tp.getStyledDocument();
     Style def = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
