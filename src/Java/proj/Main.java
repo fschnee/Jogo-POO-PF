@@ -48,6 +48,7 @@ public class Main
     output.appendText("\n. . .\n", "alt", temp);
     output.appendText("???: ", "default-bold");
     output.appendText(ResourceLoader.getJsonField("assets/text/", "setup.json", "q1") + "\n> ", "alt");
+    while(!output.isDone()) try{Thread.sleep(200);}catch(InterruptedException e){}
     panel.setInputEnabled();
     while(panel.isEnabled()) try{Thread.sleep(200);}catch(InterruptedException e){}
     String pname = panel.getInput();
@@ -62,6 +63,7 @@ public class Main
     output.appendText("I see ", "alt");
     output.appendText(". . . ", "alt", temp);
     output.appendText(ResourceLoader.getJsonField("assets/text/", "setup.json", "q2") + pname + " ?\n> ", "alt");
+    while(!output.isDone()) try{Thread.sleep(200);}catch(InterruptedException e){}
     panel.setInputEnabled();
     while(panel.isEnabled()) try{Thread.sleep(200);}catch(InterruptedException e) {}
     output.appendText("???: ", "default-bold", temp2);
@@ -83,6 +85,6 @@ public class Main
     //temp = new ArrayList<Integer>();
     //temp.add(Integer.valueOf(40));
     //output.appendText(ResourceLoader.getJsonField("assets/text/", "sampletext.json", "text") + "\n", "alt", temp);
-    while(!gui.getTextOut("Setup").isDone()) try{Thread.sleep(200);}catch(InterruptedException e){}
+    while(!output.isDone()) try{Thread.sleep(200);}catch(InterruptedException e){}
   }
 }
