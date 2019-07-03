@@ -48,9 +48,10 @@ run cFlags seed jenv jobj = do
   printDecks isDebug deck shuffled jenv jobj
 
   let hands = firstdeal shuffled ([], []) True
-  loop [(snd hands, compose [Unknown]), (fst hands, compose [Unknown])] jenv jobj
+  finalhands <- loop [(snd hands, compose [Unknown]), (fst hands, compose [Unknown])] isDebug isVerbose jenv jobj 0
+  let winnings = calculateWinnings finalhands
 
-  return (fromIntegral (1) :: CFloat)
+  return (realToFrac (winnings) :: CFloat)
 
   where
     flags = fromIntegral cFlags :: Int
@@ -94,27 +95,40 @@ printGreeting _ verbose jenv jobj
   | verbose == True = sendToOut jenv jobj $ "- Welcome to Blackjack -"
   | otherwise       = sendToOut jenv jobj $ "Blackjack:"
 
---printHand isDealer isDebug isVerbose handnum hand jenv jobj
+-- printHand isDealer isDebug isVerbose handnum hand jenv jobj
+-- Não se preocupa, it just *works*
 printHand :: Bool -> Bool -> Bool -> Int -> Hand -> Ptr () -> Ptr () -> IO ()
 printHand False False False n hand jenv jobj =
   sendToOut jenv jobj $ (show n) ++ ": " ++ (show hand)
 printHand False False True n hand jenv jobj =
   sendToOut jenv jobj $ "Your hand #" ++ (show n) ++ " is:" ++ (show hand)
-printHand False True x n hand jenv jobj  = printHand False False x n hand jenv jobj
--- fazer para mão do dealer
+printHand False True x n hand jenv jobj = printHand False False x n hand jenv jobj
+printHand True  False False n hand jenv jobj =
+  sendToOut jenv jobj $ "D:" ++ (show hand)
+printHand True False True n hand jenv jobj =
+  sendToOut jenv jobj $ "The dealer's hand is:" ++ (show hand)
+printHand True True x n hand jenv jobj = do
+  sendToOut jenv jobj $ "-- Dealer's hand:" ++ (show (map (unhideCard) hand))
+  printHand True False x n hand jenv jobj
+  return ()
 
-printHands :: Bool -> Bool -> Ptr () -> Ptr () -> (Hand, Hand)-> IO ()
-printHands False False jenv jobj (p, d) =
-  sendToOut jenv jobj $ (show p) ++ "\n" ++ (show d)
-printHands False True jenv jobj (p, d) = do
-  sendToOut jenv jobj $ "Your hand is " ++ show p
-  sendToOut jenv jobj $ "The dealer's hand is " ++ show d
-  return ()
-printHands True x jenv jobj (p, d) = do
-  sendToOut jenv jobj $ "-- Your hand is " ++ show p
-  sendToOut jenv jobj $ "-- The dealer's hand is " ++ show (map (unhideCard) d)
-  printHands False x jenv jobj (p, d)
-  return ()
+printOptions :: [HandInfo] -> Int -> Ptr() -> Ptr () -> IO ()
+printOptions playerhands currhand jenv jobj = return ()
+
+printHelp :: Ptr () -> Ptr () -> IO ()
+printHelp jenv jobj = sendToOut jenv jobj $ "-> You can use one of these options [\"Hit\", \"Stand\", \"Split\"]"
+
+getInput :: Ptr () -> Ptr () -> IO String
+getInput jenv jobj = do
+  let possibleinputs = ["Hit", "Stand", "Split"]
+  input <- getFromIn jenv jobj
+  -- Se o input está compreendido nos possibleinputs
+  case (foldr (||) False (map (== input) possibleinputs)) of
+    True -> return input
+    False -> do
+      printHelp jenv jobj
+      x <- getInput jenv jobj
+      return x
 
 cardValue :: Card -> [Int]
 cardValue (FrenchCard v _ _)
@@ -136,8 +150,34 @@ splitSum (c:x) currval
   where
     cardval = cardValue c
 
--- the first hand is always the dealer's
-loop :: [HandInfo] -> Ptr () -> Ptr () -> IO ()
-loop hands jenv jobj = do
-  printHand False False True 1 (fst (hands!!1)) jenv jobj
-  return ()
+loop :: [HandInfo] -> Bool -> Bool -> Ptr () -> Ptr () -> Int -> IO [HandInfo]
+loop hands isDebug isVerbose jenv jobj currhand = do
+  let playerhands = tail hands
+  let dealerhand = head hands
+
+  printHand False isDebug isVerbose 1 (fst (hands!!1)) jenv jobj
+  printHand True isDebug isVerbose 0 (fst dealerhand) jenv jobj
+
+  input <- getInput jenv jobj
+  newplayerhands <- if input == "Hit"
+                      then return "5"
+                    else if input == "Stand"
+                      then return "6"
+                    else return "7"
+  newplayerhands2 <- case input of
+                       "Hit" -> case (1 == 0) of
+                         True -> return "1 is == 0"
+                         False -> return "1 != 0"
+                       "Stand" -> case (1 == 1) of
+                         True -> return "Stood"
+                         False -> return "expression"
+  sendToOut jenv jobj $ newplayerhands
+  sendToOut jenv jobj $ newplayerhands2
+
+  let newhands = hands
+
+  return ( newhands)
+
+
+calculateWinnings :: [HandInfo] -> Float
+calculateWinnings hands = 1

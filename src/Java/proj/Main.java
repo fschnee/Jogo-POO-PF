@@ -3,6 +3,8 @@ package proj;
 import proj.Global;
 import proj.ResourceLoader;
 import proj.view.GameGUI;
+import proj.view.Writable;
+import proj.view.GUIPanel;
 import proj.jogo.mobs.Player;
 import java.awt.*;
 import java.util.ArrayList;
@@ -18,28 +20,69 @@ public class Main
     GameGUI gui = new GameGUI();
     Global.init(gui);
     gui.setupGUI();
+
+    playSetup();
+    /*
     gui.getTextOut("Storytime").appendText(ResourceLoader
                                            .getJsonField("assets/text/",
                                                          "intro.json",
                                                          "text"),
                                            "default");
-    gui.getTextOut("Setup").appendText(ResourceLoader
-                                       .getJsonField("assets/text/",
-                                                     "setup.json",
-                                                     "q1") + "\n> ",
-                                       "alt");
-    gui.getPanel("Setup").setInputEnabled();
-    while(gui.getPanel("Setup").isEnabled()) try{Thread.sleep(200);}catch(InterruptedException e){}
-    String pname = gui.getPanel("Setup").getInput();
-    Player p = new Player(pname);
+    gui.setActivePane("Storytime");
+    */
+  }
 
+  public static void playSetup()
+  {
+    GameGUI gui = Global.getGlobal().getGUI();
+    GUIPanel panel = gui.getPanel("Setup");
+    Writable output = gui.getTextOut("Setup");
     ArrayList<Integer> temp = new ArrayList<Integer>();
+    ArrayList<Integer> temp2 = new ArrayList<Integer>();
+    temp2.add(Integer.valueOf(5));
+
+    // Name
+    temp.add(Integer.valueOf(300));
+    output.appendText("???: ", "default-bold");
+    output.appendText(ResourceLoader.getJsonField("assets/text/", "setup.json", "t1"), "alt");
+    output.appendText("\n. . .\n", "alt", temp);
+    output.appendText("???: ", "default-bold");
+    output.appendText(ResourceLoader.getJsonField("assets/text/", "setup.json", "q1") + "\n> ", "alt");
+    panel.setInputEnabled();
+    while(panel.isEnabled()) try{Thread.sleep(200);}catch(InterruptedException e){}
+    String pname = panel.getInput();
+    Global.init(new Player(pname));
+
+    // Purpose
+    temp = new ArrayList<Integer>();
     temp.add(Integer.valueOf(300));
     temp.add(Integer.valueOf(400));
     temp.add(Integer.valueOf(500));
-    gui.getTextOut("Setup").appendText("So, " + pname + ", let me tell you a story then ", "alt");
-    gui.getTextOut("Setup").appendText(". . .", "alt", temp);
+    output.appendText("???: ", "default-bold", temp2);
+    output.appendText("I see ", "alt");
+    output.appendText(". . . ", "alt", temp);
+    output.appendText(ResourceLoader.getJsonField("assets/text/", "setup.json", "q2") + pname + " ?\n> ", "alt");
+    panel.setInputEnabled();
+    while(panel.isEnabled()) try{Thread.sleep(200);}catch(InterruptedException e) {}
+    output.appendText("???: ", "default-bold", temp2);
+    output.appendText(ResourceLoader.getJsonField("assets/text/", "setup.json", "t2") + "\n", "alt");
+    // String purpose = panel.getInput();
+
+    temp = new ArrayList<Integer>();
+    temp.add(Integer.valueOf(60));
+    output.appendText("???-2: ", "default-bold", temp2);
+    output.appendText("Good, finally, yes.\n", "alt-p1", temp);
+    temp = new ArrayList<Integer>();
+    temp.add(Integer.valueOf(150));
+    output.appendText("???-3: ", "default-bold", temp2);
+    output.appendText("Sure . . .\n", "alt-p2", temp);
+    output.appendText("???-4: ", "default-bold", temp2);
+    output.appendText("Just start already!\n", "alt-p3");
+    output.appendText("???-1: ", "default-bold", temp2);
+    output.appendText(ResourceLoader.getJsonField("assets/text/", "setup.json", "t3") + "\n\n", "alt");
+    //temp = new ArrayList<Integer>();
+    //temp.add(Integer.valueOf(40));
+    //output.appendText(ResourceLoader.getJsonField("assets/text/", "sampletext.json", "text") + "\n", "alt", temp);
     while(!gui.getTextOut("Setup").isDone()) try{Thread.sleep(200);}catch(InterruptedException e){}
-    gui.setActivePane("Storytime");
   }
 }

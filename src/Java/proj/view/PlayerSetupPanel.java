@@ -7,6 +7,7 @@ import javax.swing.JTextField;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Dimension;
+import java.awt.Color;
 
 public class PlayerSetupPanel extends JPanel implements GUIPanel
 {
@@ -44,22 +45,36 @@ public class PlayerSetupPanel extends JPanel implements GUIPanel
   public synchronized void inputChannel(int c) {
     if(inputEnabled)
     {
-      if(c == '\n')
+      if(c == '\n') // Enter
       {
         inputEnabled = false;
         textout.appendText(String.valueOf((char)c), "default");
       }
-      else if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == ' '|| (c >= '0' && c <= '9'))
+      else if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == ' '
+              || (c >= '0' && c <= '9') || c == '\'' || c == '\"'
+              || c == '.' || c == ',')
       {
-        textout.appendText(String.valueOf((char)c), "default-user");
+        textout.appendText(String.valueOf((char)c), "alt-user");
         inputBuilder.append((char)c);
       }
-      else if(c == 8)
+      else if(c == 8) // Backspace
       {
         if(inputBuilder.length() > 0)
           inputBuilder.setLength(inputBuilder.length() - 1);
-        textout.appendText(String.valueOf((char)c), "default-user");
+        textout.appendText(String.valueOf((char)c), "alt-user");
       }
     }
+  }
+
+  // Color Info
+  public static int GM = 0;
+  public static int USER = 1;
+  public static int P1 = 2;
+  public static int P2 = 3;
+  public static int P3 = 4;
+  public static Color getColorScheme(int colour)
+  {
+    int[] colours = {0xCEDABD, 0xF8F490, 0xEB8CB7, 0xB18538, 0x33E0DD};
+    return new Color(colours[colour]);
   }
 }
