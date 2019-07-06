@@ -8,6 +8,7 @@ import proj.view.panes.TraversalHintsPane;
 import proj.view.panes.TraversalOutPane;
 import proj.jogo.spaces.Space;
 import proj.jogo.common.Interactable;
+import proj.jogo.mobs.Character;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -35,6 +36,8 @@ public class TraversalPanel extends JPanel implements GUIPanel
   private Space currentlocation;
   private GridBagConstraints c;
   private TraversalHintsPane hinttextout;
+  private int lookedaroundcount;
+  private Character selectedchar;
 
   public TraversalPanel()
   {
@@ -179,18 +182,11 @@ public class TraversalPanel extends JPanel implements GUIPanel
   public synchronized void switchLocationTo(Space s)
   {
     currentlocation = s;
-    // deleta o texto anterior
-    try
-    {
-      StyledDocument doc = textout.getTextPane().getStyledDocument();
-      doc.remove(0, doc.getLength());
-    } catch (BadLocationException e) {e.printStackTrace();}
+    lookedaroundcount = 0;
 
     ArrayList<Integer> temp = new ArrayList<Integer>();
     temp.add(Integer.valueOf(20));
-    textout.appendText("You are currently in " + s.getName() + ", a paper on the wall says \"" +
-                    s.getDescription() + "\"", "default", temp);
-    //temp.appendText(s.getDescription(), "alt", temp);
+    textout.appendText("You are currently in " + s.getName() + "\n", "default", temp);
 
     GridBagConstraints w = new GridBagConstraints();
     interactablesholder.removeAll();
@@ -216,8 +212,12 @@ public class TraversalPanel extends JPanel implements GUIPanel
         JButton interactablebutton = new JButton(i.getName());
         interactablebutton.addActionListener(new ActionListener()
         {
-          // stub
-          public void actionPerformed(ActionEvent a) {System.out.println(i.getName());}
+          public void actionPerformed(ActionEvent a)
+          {
+            if(selectedchar == null) hinttextout.appendText("You need to select someone " +
+                                                            "to interact with " + i.getName(), "default");
+            else i.interactUsing(selectedchar);
+          }
         });
         interactablesholder.add(interactablebutton, w);
         w.gridy += 1;
@@ -225,8 +225,22 @@ public class TraversalPanel extends JPanel implements GUIPanel
     }
   }
 
-  // stub
-  public void displayInfo() {}
+  public void displayInfo()
+  {
+    lookedaroundcount += 1;
+    if(lookedaroundcount> 1)
+    {
+      if(lookedaroundcount > 3) hinttextout.appendText("STOP LOOKING AROUND AND PLAY THE GAME DUDE", "default-bold");
+      else hinttextout.appendText("You have already looked around", "default");
+    }
+    else
+    {
+      ArrayList<Integer> temp = new ArrayList<Integer>();
+      temp.add(Integer.valueOf(20));
+      textout.appendTextNoClear("A paper on the wall says \"" + currentlocation.getDescription() + "\"", "default", temp);
+      hinttextout.appendText("You look around to see if you find anything of interest", "default");
+    }
+  }
 
   public synchronized void pause() {hinttextout.pause();}
   public synchronized void resume() {hinttextout.resume();}

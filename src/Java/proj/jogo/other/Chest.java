@@ -1,5 +1,6 @@
 package proj.jogo.other;
 
+import proj.Global;
 import proj.jogo.common.Interactable;
 import proj.jogo.items.Item;
 import proj.jogo.mobs.Character;
@@ -19,7 +20,11 @@ public class Chest implements Interactable
   public String getName() {return name;}
   public String getDescription() {return description;}
 
-  public void interactUsing(Character interactor) {}
+  public void interactUsing(Character interactor)
+  {
+    Global.getGlobal().setCurrentOpenedChest(this);
+    Global.getGlobal().getGUI().setActivePane("Chest");
+  }
 
   public void add(Item i)
   {

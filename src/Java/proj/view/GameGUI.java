@@ -58,8 +58,9 @@ public class GameGUI extends JFrame
     TraversalPanel traversalpanel = new TraversalPanel();
     panelholder.add(traversalpanel, "Traversal");
     panels.put("Traversal", traversalpanel);
-    // stub
+    // stubs
     panels.put("Inventory", traversalpanel);
+    panels.put("Chest", traversalpanel);
 
     CardgamePanel cgt = new CardgamePanel();
     panelholder.add(cgt, "Terminal");

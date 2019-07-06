@@ -6,14 +6,13 @@ import proj.jogo.items.armor.ArmorSet;
 
 public class Character implements Named
 {
-  private String name;
-  private MutableCharacterAttributeSet characteristics;  // Base stats;
-  private MutableCharacterAttributeSet stats;            // Stats after item use;
-  private ArmorSet armor;
-  private int health;
-  private int maxhealth;
-  private int energy;
-  private int maxenergy;
+  protected MutableCharacterAttributeSet characteristics;  // Base stats;
+  protected MutableCharacterAttributeSet stats;            // Stats after item use;
+  protected ArmorSet armor;
+  protected int health;
+  protected int maxhealth;
+  protected int energy;
+  protected int maxenergy;
 
   public Character()
   {
@@ -26,17 +25,7 @@ public class Character implements Named
     armor = new ArmorSet();
   }
 
-  public void calculateMaxHealth()
-  {
-    this.maxhealth = stats.vitality * 7;
-  }
-
-  public void calculateMaxEnergy()
-  {
-    this.maxhealth = stats.stamina * 2;
-  }
-
-  public String getName() {return name;}
+  public String getName() {return "Generic Character";}
   public String getDescription() {return "A generic character";}
   public int getHealth() {return this.health;}
   public int getEnergy() {return this.energy;}

@@ -8,10 +8,11 @@ import java.util.ArrayList;
 
 public class TraversalManager
 {
-  private int downrequests;
+  private int devroomrequests;
+
   public TraversalManager()
   {
-    downrequests = 0;
+    devroomrequests = 0;
   }
 
   public synchronized void goNorth()
@@ -48,16 +49,19 @@ public class TraversalManager
                                                    .getJsonField("assets/text/spaces/",
                                                                  "Devroom.json", "name")))
     {
-      downrequests += 1;
-      if(downrequests <= 3)
+      if(request.isHidden())
       {
-        if(downrequests == 1) Global.getGlobal().getGUI().getTextOut("Traversal")
-                              .appendText("You want to go down?", "default");
-        else if(downrequests == 2) Global.getGlobal().getGUI().getTextOut("Traversal")
-                                   .appendText("Are you sure about that?", "default");
-        else Global.getGlobal().getGUI().getTextOut("Traversal")
-             .appendText("I think there's nothing of interest there, forget it", "default");
-        return;
+        devroomrequests += 1;
+        if(devroomrequests <= 3)
+        {
+          if(devroomrequests == 1) Global.getGlobal().getGUI().getTextOut("Traversal")
+                                  .appendText("You want to go down?", "default");
+          else if(devroomrequests == 2) Global.getGlobal().getGUI().getTextOut("Traversal")
+                                       .appendText("Are you sure about that?", "default");
+          else Global.getGlobal().getGUI().getTextOut("Traversal")
+               .appendText("I think there's nothing of interest there, forget it", "default");
+          return;
+        }
       }
     }
     traverse(playerspace, request);
@@ -65,6 +69,7 @@ public class TraversalManager
 
   private synchronized void traverse(Space playerspace, Space request)
   {
+    devroomrequests = 0;
     if(request != null)
     {
       Global.getGlobal().getPlayer().setCurrentSpace(request);
@@ -83,6 +88,7 @@ public class TraversalManager
 
   private void printNothingThatWay()
   {
+    devroomrequests = 0;
     Global.getGlobal().getGUI().getTextOut("Traversal")
     .appendText("There is nothing of interest that way", "default");
   }

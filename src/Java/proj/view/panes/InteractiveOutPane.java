@@ -92,7 +92,8 @@ public class InteractiveOutPane extends WritableScrollableOutPane
 
       if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == ' ' || c == '\n'
          || c == '>' || (c >= '0' && c <= '9') || c == ',' || c == '.' || c == '!'
-         || c == '\'' || c == '\"' || c == '-' || c == '?' || c == ':')
+         || c == '\'' || c == '\"' || c == '-' || c == '?' || c == ':' || c == '['
+         || c == ']')
       {
         doc.insertString(doc.getLength(), String.valueOf(c), null);
         doc.setCharacterAttributes(doc.getLength() - 1, 1, s, false);

@@ -4,6 +4,7 @@ import proj.view.GameGUI;
 import proj.jogo.TraversalManager;
 import proj.jogo.spaces.Space;
 import proj.jogo.mobs.Player;
+import proj.jogo.other.Chest;
 import java.awt.Color;
 import java.util.HashMap;
 
@@ -13,6 +14,7 @@ public class Global
   private GameGUI g;
   private Player p;
   private TraversalManager tm;
+  private Chest currentopenedchest;
   private HashMap<String, Space> spaces;
 
   public static void init(GameGUI g)
@@ -42,6 +44,8 @@ public class Global
   public Player getPlayer() {return p;}
   public Space getSpace(String s) {return spaces.get(s);}
   public TraversalManager getTraversal() {return tm;}
+  public Chest getCurrentOpenedChest() {return currentopenedchest;}
+  public void setCurrentOpenedChest(Chest c) {currentopenedchest = c;}
 
   private Global()
   {

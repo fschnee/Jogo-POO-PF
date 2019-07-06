@@ -41,6 +41,18 @@ public class TraversalOutPane extends WritableScrollableOutPane
     t.addLast(new SlowText(style, s, delays));
   }
 
+  public synchronized void appendTextNoClear(String s, String style, ArrayList<Integer> delays)
+  {
+    t.addLast(new SlowText(style, s, delays));
+  }
+
+  public synchronized void appendTextNoClear(String s, String style)
+  {
+    ArrayList<Integer> temp = new ArrayList<Integer>();
+    temp.add(Integer.valueOf(80));
+    appendTextNoClear(s, style, temp);
+  }
+
   protected void setupStyles()
   {
     StyledDocument doc = tp.getStyledDocument();

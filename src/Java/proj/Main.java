@@ -78,6 +78,12 @@ public class Main
     output.appendText("Just start already!\n", "alt-p3");
     output.appendText("???-1: ", "default-bold", temp2);
     output.appendText(ResourceLoader.getJsonField("assets/text/", "setup.json", "t3") + "\n\n", "alt");
+    output.appendText(ResourceLoader.getJsonField("assets/text/", "setup.json", "t4"), "alt");
+    temp = new ArrayList<Integer>();
+    temp.add(Integer.valueOf(400));
+    output.appendText(" . . .", "alt", temp);
     while(!output.isDone()) try{Thread.sleep(200);}catch(InterruptedException e){}
+    // tempo extra para não cortar abruptamente
+    try{Thread.sleep(1000);}catch(InterruptedException e){}
   }
 }
