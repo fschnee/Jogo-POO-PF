@@ -1,7 +1,6 @@
 package proj.view.panes;
 
-import proj.view.GameGUI;
-import proj.view.PlayerSetupPanel;
+import proj.Global;
 import proj.view.panes.WritableScrollableOutPane;
 import proj.resource.SlowText;
 import proj.resource.SlowLetter;
@@ -16,7 +15,7 @@ public class InteractiveOutPane extends WritableScrollableOutPane
   public InteractiveOutPane()
   {
     super();
-    tp.setBackground(GameGUI.getColorScheme(GameGUI.BG));
+    tp.setBackground(Global.getColorScheme(Global.BG));
     setupStyles();
 
     // center text
@@ -38,23 +37,23 @@ public class InteractiveOutPane extends WritableScrollableOutPane
     Style defaultinho = doc.addStyle("default", def);
     StyleConstants.setFontFamily(defaultinho, "Pixel Operator Mono");
     StyleConstants.setFontSize(defaultinho, 20);
-    StyleConstants.setForeground(defaultinho, GameGUI.getColorScheme(GameGUI.TEXT));
+    StyleConstants.setForeground(defaultinho, Global.getColorScheme(Global.TEXT));
     Style defaultinho2 = doc.addStyle("default-bold", defaultinho);
     StyleConstants.setFontFamily(defaultinho2, "Pixel Operator Mono Bold");
 
     Style alt = doc.addStyle("alt", def);
     StyleConstants.setFontFamily(alt, "rainyhearts");
     StyleConstants.setFontSize(alt, 25);
-    StyleConstants.setForeground(alt, PlayerSetupPanel.getColorScheme(PlayerSetupPanel.GM));
+    StyleConstants.setForeground(alt, Global.getColorScheme(Global.GM));
     Style defaultinho3 = doc.addStyle("alt-user", alt);
-    StyleConstants.setForeground(defaultinho3, PlayerSetupPanel.getColorScheme(PlayerSetupPanel.USER));
+    StyleConstants.setForeground(defaultinho3, Global.getColorScheme(Global.USER));
     defaultinho3.addAttribute("userinput", true);
     Style altp1 = doc.addStyle("alt-p1", alt);
-    StyleConstants.setForeground(altp1, PlayerSetupPanel.getColorScheme(PlayerSetupPanel.P1));
+    StyleConstants.setForeground(altp1, Global.getColorScheme(Global.P1));
     Style altp2 = doc.addStyle("alt-p2", alt);
-    StyleConstants.setForeground(altp2, PlayerSetupPanel.getColorScheme(PlayerSetupPanel.P2));
+    StyleConstants.setForeground(altp2, Global.getColorScheme(Global.P2));
     Style altp3 = doc.addStyle("alt-p3", alt);
-    StyleConstants.setForeground(altp3, PlayerSetupPanel.getColorScheme(PlayerSetupPanel.P3));
+    StyleConstants.setForeground(altp3, Global.getColorScheme(Global.P3));
   }
 
   @Override
@@ -62,7 +61,7 @@ public class InteractiveOutPane extends WritableScrollableOutPane
   {
     ArrayList<Integer> temp = new ArrayList<Integer>();
     temp.add(Integer.valueOf(100));
-    t.addLast(new SlowText(style, s, temp));
+    appendText(s, style, temp);
   }
 
   @Override

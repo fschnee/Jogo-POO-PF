@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import javax.swing.text.*;
 import java.awt.Dimension;
 
-public class GameGUIOutPane extends WritableScrollableOutPane
+public class TraversalOutPane extends WritableScrollableOutPane
 {
-  public GameGUIOutPane()
+  public TraversalOutPane()
   {
     super();
     tp.setBackground(Global.getColorScheme(Global.BG));
@@ -24,6 +24,21 @@ public class GameGUIOutPane extends WritableScrollableOutPane
     ArrayList<Integer> temp = new ArrayList<Integer>();
     temp.add(Integer.valueOf(80));
     appendText(s, style, temp);
+  }
+
+  @Override
+  public synchronized void appendText(String s, String style, ArrayList<Integer> delays)
+  {
+    t.clear();
+    try
+    {
+      StyledDocument doc = tp.getStyledDocument();
+      doc.remove(0, doc.getLength());
+    }
+    catch (BadLocationException e) {e.printStackTrace();}
+    currenttext = null;
+
+    t.addLast(new SlowText(style, s, delays));
   }
 
   protected void setupStyles()

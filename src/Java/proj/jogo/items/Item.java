@@ -1,14 +1,13 @@
 package proj.jogo.items;
 
-public interface Item
-{
-  public abstract String getName();
-  public abstract String getDescription();
+import proj.jogo.common.Named;
 
-  public abstract float getWeight();
-  public abstract float getValue();
-  public abstract float getVolume();
-  public abstract Boolean isTradeable();
-  public abstract Boolean isUseable();
-  public abstract Boolean isSingleUse();
+public interface Item extends Named
+{
+  public float getWeight();
+  public float getValue();
+  public float getVolume();
+  public Boolean isTradeable();
+  public Boolean isUseable();
+  public Boolean isSingleUse();
 }

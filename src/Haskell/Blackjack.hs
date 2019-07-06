@@ -15,11 +15,11 @@ type CInt = Int
 type CFloat = Float
 #endif
 
-data HandFlags = Unknown | Busted | CanSplit
+data HandFlags = Unknown | Lost | CanSplit
   deriving (Eq, Ord, Show, Enum)
 data GameOptions = Debug | Verbose | UseSeed
   deriving (Eq, Ord, Show, Enum)
-type HandInfo = (Hand, Int)
+type HandInfo = (Hand, Int) -- (hand, handflags)
 
 main :: IO ()
 main = do
@@ -48,7 +48,8 @@ run cFlags seed jenv jobj = do
   printDecks isDebug deck shuffled jenv jobj
 
   let hands = firstdeal shuffled ([], []) True
-  finalhands <- loop [(snd hands, compose [Unknown]), (fst hands, compose [Unknown])] isDebug isVerbose jenv jobj 0
+  finalhands <- loop [(snd hands, compose [Unknown]), (fst hands, compose [Unknown])]
+                isDebug isVerbose True jenv jobj 0 (drop 5 shuffled)
   let winnings = calculateWinnings finalhands
 
   return (realToFrac (winnings) :: CFloat)
@@ -150,33 +151,48 @@ splitSum (c:x) currval
   where
     cardval = cardValue c
 
-loop :: [HandInfo] -> Bool -> Bool -> Ptr () -> Ptr () -> Int -> IO [HandInfo]
-loop hands isDebug isVerbose jenv jobj currhand = do
+loop :: [HandInfo] -> Bool -> Bool -> Bool -> Ptr () -> Ptr () -> Int -> Deck -> IO [HandInfo]
+--                           isPlayerTurn
+loop hands isDebug isVerbose True jenv jobj currhand deck = do
   let playerhands = tail hands
   let dealerhand = head hands
+  if (isBusted (fst(playerhands!!currhand)))
+    then do
+      sendToOut jenv jobj $ "You busted with a total of " ++
+                            show (smallest (splitSum (fst(playerhands!!currhand)) 0)) ++
+                            " on the hand " ++ show (fst(playerhands!!currhand))
+      return (hands)
+    else do
 
-  printHand False isDebug isVerbose 1 (fst (hands!!1)) jenv jobj
+  printHand False isDebug isVerbose (currhand + 1) (fst (playerhands!!(currhand))) jenv jobj
   printHand True isDebug isVerbose 0 (fst dealerhand) jenv jobj
 
   input <- getInput jenv jobj
-  newplayerhands <- if input == "Hit"
-                      then return "5"
-                    else if input == "Stand"
-                      then return "6"
-                    else return "7"
-  newplayerhands2 <- case input of
-                       "Hit" -> case (1 == 0) of
-                         True -> return "1 is == 0"
-                         False -> return "1 != 0"
-                       "Stand" -> case (1 == 1) of
-                         True -> return "Stood"
-                         False -> return "expression"
-  sendToOut jenv jobj $ newplayerhands
-  sendToOut jenv jobj $ newplayerhands2
+  newplayerhandsanddeck <- if (input == "Hit")
+      then return (hitHands playerhands currhand deck)
+      else return (playerhands, deck)
+  newhands <- loop (dealerhand:(fst newplayerhandsanddeck)) isDebug isVerbose
+              True jenv jobj currhand (snd newplayerhandsanddeck)
 
-  let newhands = hands
+  return (newhands)
 
-  return ( newhands)
+hitHands :: [HandInfo] -> Int -> Deck -> ([HandInfo], Deck)
+hitHands hands handtohit deck = hitHands' hands handtohit deck []
+  where
+    hitHands' :: [HandInfo] -> Int -> Deck -> [HandInfo] -> ([HandInfo], Deck)
+    hitHands' (c:x) 0 deck handsseen = (handsseen ++ [((fst c) ++ [(unhideCard ((take 1 deck)!!0))], snd c)] ++ x,
+                                        drop 1 deck)
+    hitHands' (c:x) handtohit deck handsseen = hitHands' hands (handtohit - 1) deck (handsseen ++ [c])
+
+
+smallest :: [Int] -> Int
+smallest (c:x) = smallest' x c
+  where
+    smallest' :: [Int] -> Int -> Int
+    smallest' [] prevsmallest = prevsmallest
+    smallest' (c:x) prevsmallest
+      | c < prevsmallest = smallest' x c
+      | otherwise        = smallest' x prevsmallest
 
 
 calculateWinnings :: [HandInfo] -> Float

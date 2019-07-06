@@ -1,6 +1,6 @@
 package proj.view.panes;
 
-import proj.view.CardgamePanel;
+import proj.Global;
 import proj.view.panes.WritableScrollableOutPane;
 import javax.swing.text.*;
 import java.awt.*;
@@ -10,7 +10,7 @@ public class CardGameTermOutPane extends WritableScrollableOutPane
   public CardGameTermOutPane()
   {
     super();
-    tp.setBackground(CardgamePanel.getColorScheme(CardgamePanel.BG));
+    tp.setBackground(Global.getColorScheme(Global.BG));
     tp.setPreferredSize(new Dimension(230, 400));
     setupStyles();
     startWriterThread();
@@ -25,6 +25,6 @@ public class CardGameTermOutPane extends WritableScrollableOutPane
     Style terminal = doc.addStyle("default", def);
     StyleConstants.setFontFamily(terminal, "VCR OSD Mono");
     StyleConstants.setFontSize(terminal, 16);
-    StyleConstants.setForeground(terminal, CardgamePanel.getColorScheme(CardgamePanel.TEXT));
+    StyleConstants.setForeground(terminal, Global.getColorScheme(Global.TEXT));
   }
 }

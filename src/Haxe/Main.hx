@@ -44,7 +44,8 @@ class Main
       for (y in 0...imginfo.height) {
         var coluna2 = new Array<Int>();
         for (x in 0...imginfo.width) {
-          coluna2.push(toGrayscale(imagem[y][x]));
+          if(imagem[y][x].a == 0) coluna2.push(0);
+          else coluna2.push(toGrayscale(imagem[y][x]));
         }
         imagem2.push(coluna2);
       }

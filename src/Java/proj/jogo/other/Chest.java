@@ -7,12 +7,17 @@ import java.util.ArrayList;
 
 public class Chest implements Interactable
 {
+  public static final String name = "Chest";
+  public static final String description = "A simple chest";
   private ArrayList<Item> contents;
 
   public Chest()
   {
     contents = new ArrayList<Item>();
   }
+
+  public String getName() {return name;}
+  public String getDescription() {return description;}
 
   public void interactUsing(Character interactor) {}
 

@@ -5,6 +5,7 @@ import proj.ResourceLoader;
 import proj.view.GameGUI;
 import proj.view.Writable;
 import proj.view.GUIPanel;
+import proj.jogo.TraversalManager;
 import proj.jogo.mobs.Player;
 import java.awt.*;
 import java.util.ArrayList;
@@ -20,16 +21,11 @@ public class Main
     GameGUI gui = new GameGUI();
     Global.init(gui);
     gui.setupGUI();
+    Global.init(new TraversalManager());
 
-    playSetup();
-    /*
-    gui.getTextOut("Storytime").appendText(ResourceLoader
-                                           .getJsonField("assets/text/",
-                                                         "intro.json",
-                                                         "text"),
-                                           "default");
-    gui.setActivePane("Storytime");
-    */
+    //playSetup();
+    Global.init(new Player("Fred"));
+    gui.setActivePane("Traversal");
   }
 
   public static void playSetup()
@@ -75,16 +71,13 @@ public class Main
     output.appendText("???-2: ", "default-bold", temp2);
     output.appendText("Good, finally, yes.\n", "alt-p1", temp);
     temp = new ArrayList<Integer>();
-    temp.add(Integer.valueOf(150));
+    temp.add(Integer.valueOf(200));
     output.appendText("???-3: ", "default-bold", temp2);
     output.appendText("Sure . . .\n", "alt-p2", temp);
     output.appendText("???-4: ", "default-bold", temp2);
     output.appendText("Just start already!\n", "alt-p3");
     output.appendText("???-1: ", "default-bold", temp2);
     output.appendText(ResourceLoader.getJsonField("assets/text/", "setup.json", "t3") + "\n\n", "alt");
-    //temp = new ArrayList<Integer>();
-    //temp.add(Integer.valueOf(40));
-    //output.appendText(ResourceLoader.getJsonField("assets/text/", "sampletext.json", "text") + "\n", "alt", temp);
     while(!output.isDone()) try{Thread.sleep(200);}catch(InterruptedException e){}
   }
 }

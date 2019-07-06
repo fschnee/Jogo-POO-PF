@@ -1,9 +1,10 @@
 package proj.jogo.mobs;
 
+import proj.jogo.common.Named;
 import proj.jogo.common.MutableCharacterAttributeSet;
 import proj.jogo.items.armor.ArmorSet;
 
-public class Character
+public class Character implements Named
 {
   private String name;
   private MutableCharacterAttributeSet characteristics;  // Base stats;
@@ -35,7 +36,8 @@ public class Character
     this.maxhealth = stats.stamina * 2;
   }
 
-  public String getName() {return this.name;}
+  public String getName() {return name;}
+  public String getDescription() {return "A generic character";}
   public int getHealth() {return this.health;}
   public int getEnergy() {return this.energy;}
 }

@@ -14,23 +14,26 @@ public class Devroom extends Space
   private static final String description = ResourceLoader.getJsonField("assets/text/spaces/",
                                                                         "Devroom.json", "description");
   private ArrayList<Interactable> interactables;
+  private boolean isHidden;
 
   public Devroom()
   {
     interactables = new ArrayList<Interactable>();
     Chest c = new Chest();
     interactables.add(c);
+    isHidden = true;
   }
 
-  public Space getUp() {return null;}
+  public Space getUp() {return Global.getGlobal().getSpace("Starting Camp");}
   public Space getDown() {return null;}
   public Space getNorth() {return null;}
-  public Space getSouth() {return Global.getGlobal().getSpace("StartingCamp");}
+  public Space getSouth() {return null;}
   public Space getWest() {return null;}
   public Space getEast() {return null;}
 
   public String getName() {return name;}
   public String getDescription() {return description;}
-  public Boolean isHidden() {return true;}
+  public boolean isHidden() {return isHidden;}
+  public void unhide() {isHidden = false;}
   public ArrayList<Interactable> getInteractables() {return interactables;}
 }

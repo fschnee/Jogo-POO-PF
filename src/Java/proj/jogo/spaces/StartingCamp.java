@@ -15,14 +15,15 @@ public class StartingCamp extends Space
   private static final ArrayList<Interactable> interactables = new ArrayList<Interactable>();
 
   public Space getUp() {return null;}
-  public Space getDown() {return null;}
-  public Space getNorth() {return Global.getGlobal().getSpace("Temproom");}
+  public Space getDown() {return Global.getGlobal().getSpace("Dev room");}
+  public Space getNorth() {return null;}
   public Space getSouth() {return null;}
   public Space getWest() {return null;}
   public Space getEast() {return null;}
 
   public String getName() {return name;}
   public String getDescription() {return description;}
-  public Boolean isHidden() {return false;}
+  public boolean isHidden() {return false;}
+  public void unhide() {}
   public ArrayList<Interactable> getInteractables() {return interactables;}
 }

@@ -7,7 +7,6 @@ import proj.view.panes.CardGameTermOutPane;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.awt.Dimension;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -64,21 +63,8 @@ public class CardgamePanel extends JPanel implements GUIPanel
   }
 
   public synchronized void pause() {textout.pause();}
-
   public synchronized void resume() {textout.resume();}
-
   public Writable getTextOut() {return textout;}
-
-  public static int BG = 0;
-  public static int OTHER = 1;
-  public static int TEXT = 2;
-  public static int HIGHLIGHT = 3;
-  public static Color getColorScheme(int colour)
-  {
-    int[] colours = {0x000000, 0xBCBBB2, 0xCEDABD, 0xF8F4C1};
-    return new Color(colours[colour]);
-  }
-
   public void setInputEnabled() {}
   public boolean isEnabled() {return false;}
   public String getInput()  {return null;}

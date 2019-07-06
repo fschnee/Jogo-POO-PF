@@ -3,8 +3,10 @@ package proj;
 import proj.json.*;
 import proj.resource.*;
 import proj.jogo.spaces.*;
-import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.Image;
 import java.awt.*;
+import java.io.IOException;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -111,7 +113,7 @@ public abstract class ResourceLoader
 
         spacesloaded.add(currentroom);
         ret.put((String)content.get("name").getData(), (Space)Class.forName((String)content.get("classpath").getData()).newInstance());
-        System.out.println("Loaded room: " + currentroom);
+        System.out.println("Loaded room: " + (String)content.get("name").getData());
       }
       catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
       {
@@ -120,5 +122,34 @@ public abstract class ResourceLoader
     }
 
     return ret;
+  }
+
+  public static Image loadImage(String imagename)
+  {
+    Image picture = null;
+
+    try
+    {
+      picture = ImageIO.read(ResourceLoader.class.getClassLoader().getResource("assets/img/final/" + imagename));
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace();
+      try
+      {
+        picture = ImageIO.read(ResourceLoader.class.getClassLoader().getResource("assets/img/original/" + imagename));
+      }
+      catch (IOException w)
+      {
+        w.printStackTrace();
+        try
+        {
+          picture = ImageIO.read(ResourceLoader.class.getClassLoader().getResource("assets/img/final/placeholder.png"));
+        }
+        catch (IOException k) {k.printStackTrace();}
+      }
+    }
+
+    return picture;
   }
 }

@@ -107,7 +107,7 @@ build:
 	@# Adiciona o código Java ao jar
 	@cd $(projdir)/bin/auto_gen/Java && \
 	jar cvfe $(projdir)/bin/Jogo.jar $(mainclass) \
-		$(subst $(projdir)/bin/auto_gen/Java/,,$(shell find $(projdir)/bin/auto_gen/Java -name '*.class' -not -name JavaHaskellTest.class))
+		$(subst $(projdir)/bin/auto_gen/Java/,,$(shell find $(projdir)/bin/auto_gen/Java -name '*.class' -not -name JavaHaskellTest.class -not -name "*$$10.class"))
 	@# Adiciona as classes que tem $ no nome (subclasses no mesmo arquivo, classes anonimas) ao jar
 	@cd $(projdir)/bin/auto_gen/Java && \
 	jar -uvf $(projdir)/bin/Jogo.jar \
@@ -136,7 +136,7 @@ runjustjava: compile build justrun
 
 .PHONY: images
 images:
-	cd Haxe && \
+	@cd Haxe && \
 	haxe -neko Main.n -lib format -main Main && \
 	neko Main.n $(projdir)/assets/img/final \
 		$(shell find $(projdir)/assets/img/original -type f -name '*.png')

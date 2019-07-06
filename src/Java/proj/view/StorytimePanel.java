@@ -30,7 +30,7 @@ public class StorytimePanel extends JPanel implements GUIPanel
 
   public synchronized void pause() {textout.pause();}
   public synchronized void resume() {textout.resume();}
-  public synchronized Writable getTextOut() {return textout;}
+  public Writable getTextOut() {return textout;}
   public void setInputEnabled() {}
   public boolean isEnabled() {return false;}
   public String getInput()  {return null;}

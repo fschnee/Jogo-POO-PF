@@ -27,7 +27,7 @@ public class WritableScrollableOutPane extends GenericScrollableOutPane implemen
   {
     ArrayList<Integer> temp = new ArrayList<Integer>();
     temp.add(Integer.valueOf(55));
-    t.addLast(new SlowText(style, s, temp));
+    appendText(s, style, temp);
   }
 
   @Override

@@ -15,6 +15,7 @@ public abstract class Space
 
   public abstract String getName();
   public abstract String getDescription();
-  public abstract Boolean isHidden();
+  public abstract boolean isHidden();
+  public abstract void unhide();
   public abstract ArrayList<Interactable> getInteractables();
 }
