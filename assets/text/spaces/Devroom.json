@@ -1,6 +1,9 @@
 {
   "name":"Dev room",
-  "description":"A magical room probably not meant for you, chances are if you are here you are lost",
+  "description":";This room is completely white with light emiting from it's walls."
+"; It is a bit hard to see with all the light drowning your eyes but looking around"
+"; you spot what seems to be the only thing in this room, a chest with a note above"
+"it that says 'This is a magical room probably not meant for you. Go away while you can', weird.",
   "classpath":"proj.jogo.spaces.Devroom",
 
   "connections":["StartingCamp"]

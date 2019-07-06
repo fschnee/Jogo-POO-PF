@@ -108,7 +108,11 @@ public class TraversalPanel extends JPanel implements GUIPanel
     JButton lookaroundbutton = new JButton("Look around");
     lookaroundbutton.addActionListener(new ActionListener()
     {
-      public void actionPerformed(ActionEvent e) {displayInfo();}
+      public void actionPerformed(ActionEvent e)
+      {
+        Global.getGlobal().getTraversal().resetSpecialRequests();
+        displayInfo();
+      }
     });
     JButton mapbutton = new JButton("Map");
     mapbutton.addActionListener(new ActionListener()
@@ -237,7 +241,7 @@ public class TraversalPanel extends JPanel implements GUIPanel
     {
       ArrayList<Integer> temp = new ArrayList<Integer>();
       temp.add(Integer.valueOf(20));
-      textout.appendTextNoClear("A paper on the wall says \"" + currentlocation.getDescription() + "\"", "default", temp);
+      textout.appendTextNoClear(currentlocation.getDescription(), "default", temp);
       hinttextout.appendText("You look around to see if you find anything of interest", "default");
     }
   }

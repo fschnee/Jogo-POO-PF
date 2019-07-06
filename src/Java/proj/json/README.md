@@ -7,3 +7,7 @@ Implementa apenas um pequeno [subconjunto](https://www.json.org/) dos arquivos
   sem uso de espaços;
   * Elementos de vetores sempre possuindo pelomenos um espaço depois
   (independente se tem ou não elemento depois)
+Alem disso tem um leve incremento, todas as strings que inciam pelo caractere `;`
+são consideradas de multiplas linhas, como pode ser visto em [`Devroom.json`][1]
+
+[1]: ../../../../assets/text/spaces/Devroom.json

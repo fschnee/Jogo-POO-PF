@@ -118,14 +118,49 @@ public abstract class JSON
   private static JSONStr readstring(InputStream i) throws IOException
   {
     int l = 0;
+    boolean multiline = false;
     StringBuilder str = new StringBuilder();
     do
     {
       try
       {
-        l = i.read();
-        if(l == -1) throw new IOException();
-        if(l == '\"') return new JSONStr(str.toString());
+        if(l == 0)
+        {
+          l = i.read();
+          if(l == ';')
+          {
+            multiline = true;
+            continue;
+          }
+        }
+        else
+        {
+          l = i.read();
+          if(l == -1) throw new IOException();
+        }
+
+        if(l == '\"')
+        {
+          if(multiline == false)
+          {
+            return new JSONStr(str.toString());
+          }
+          else
+          {
+            do
+            {
+              l = i.read();
+              if(l == '\"')
+              {
+                str.append((String)readstring(i).getData());
+                break;
+              }
+              if(l != ' ' && l != '\n') break;
+            }while(true);
+            return new JSONStr(str.toString());
+          }
+        }
+
         else str.append((char)l);
       }
       catch (IOException e)

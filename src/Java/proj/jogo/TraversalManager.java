@@ -69,7 +69,7 @@ public class TraversalManager
 
   private synchronized void traverse(Space playerspace, Space request)
   {
-    devroomrequests = 0;
+    resetSpecialRequests();
     if(request != null)
     {
       Global.getGlobal().getPlayer().setCurrentSpace(request);
@@ -91,6 +91,11 @@ public class TraversalManager
     devroomrequests = 0;
     Global.getGlobal().getGUI().getTextOut("Traversal")
     .appendText("There is nothing of interest that way", "default");
+  }
+
+  public void resetSpecialRequests()
+  {
+    devroomrequests = 0;
   }
 
   // stub

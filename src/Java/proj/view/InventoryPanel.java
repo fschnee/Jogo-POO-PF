@@ -1,6 +1,8 @@
 package proj.view;
 
-public class InventoryPanel implements GameGUI
+/*
+public class InventoryPanel implements GUIPanel
 {
 
 }
+*/
