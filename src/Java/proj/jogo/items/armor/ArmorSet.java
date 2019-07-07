@@ -116,4 +116,15 @@ public class ArmorSet
   {
     return overallstatchange.toImmutable();
   }
+
+  public int getProtection()
+  {
+    int protection = headwear.getProtection();
+    protection += chestwear.getProtection();
+    protection += handwear.getProtection();
+    protection += legwear.getProtection();
+    protection += shoes.getProtection();
+
+    return protection;
+  }
 }

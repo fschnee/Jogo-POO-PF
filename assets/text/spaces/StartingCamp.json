@@ -1,7 +1,9 @@
 {
-  "name":"Starting Camp",
-  "description":"idk what to put here yet",
+  "name":"Starting camp",
+  "description":";Around you is a dark forest that seems dangerous. To the north "
+";is the place you seek, however, in order to get there you need to go through the"
+" forest, fighting whatever you may find on your way. Are you ready for your adventure ?",
   "classpath":"proj.jogo.spaces.StartingCamp",
 
-  "connections":["Devroom"]
+  "connections":["Devroom", "SuperBadDarkMysteriousForest"]
 }

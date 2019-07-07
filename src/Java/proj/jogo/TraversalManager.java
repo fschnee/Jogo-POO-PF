@@ -2,6 +2,7 @@ package proj.jogo;
 
 import proj.Global;
 import proj.ResourceLoader;
+import proj.jogo.Battle;
 import proj.jogo.spaces.Space;
 import proj.view.TraversalPanel;
 import java.util.ArrayList;
@@ -73,6 +74,7 @@ public class TraversalManager
     if(request != null)
     {
       Global.getGlobal().getPlayer().setCurrentSpace(request);
+      if(request.getEnemies() != null) new Battle(request.getEnemies(), true);
       ((TraversalPanel)Global.getGlobal().getGUI().getPanel("Traversal")).switchLocationTo(request);
       if(request.isHidden())
       {

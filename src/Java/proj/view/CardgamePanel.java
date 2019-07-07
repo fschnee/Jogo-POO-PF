@@ -46,7 +46,7 @@ public class CardgamePanel extends JPanel implements GUIPanel
       @Override
       public void actionPerformed(ActionEvent e)
       {
-        Global.getGlobal().getGUI().setActivePane(Global.getGlobal().getGUI().getPrevPanel());
+        Global.getGlobal().getGUI().setActivePane("Traversal");
       }
     });
     c.gridx = 0;

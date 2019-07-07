@@ -13,4 +13,7 @@ public class Team
   }
 
   public void add(Character newintegrant) {integrants.add(newintegrant);}
+  public int size() {return integrants.size();}
+  public Character get(int i) {return integrants.get(i);}
+  public ArrayList<Character> get() {return integrants;}
 }

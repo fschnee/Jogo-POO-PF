@@ -2,8 +2,9 @@
   "t1":"... Helloooo, anyone there? are you even listening to me ?",
   "q1":"What will be your name, airhead ?",
   "q2":"And what is your charac-- your purpose, ",
-  "t2":"Thats good enough i guess, let's start then. Everyone ready ?",
-  "t3":"Just let me tell you the story first, calm down. It goes something like this:",
-  "t4":"[STORYHERE] . . . That is when your adventure begins, you find youselves woken
-up in a familiar place by a strange noise"
+  "t2":"Thats good enough i guess, let's start then. Everybody ready ?",
+  "t3":";Just let me do some world-building first, calm down. "
+"The story goes something like this:",
+  "t4":";[STORYHERE] . . . That is when your adventure begins, you find youselves woken"
+" up in a familiar place"
 }

@@ -11,5 +11,5 @@ public interface ProtectiveGear
   public Boolean isFootwear();
 
   public CharacterAttributeSet getStatChange();
-  public float getProtection();
+  public int getProtection();
 }

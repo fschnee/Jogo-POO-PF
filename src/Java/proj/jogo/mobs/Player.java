@@ -23,7 +23,7 @@ public class Player implements Named
     this.money = 0;
     this.stash = new Inventory(2500, 6000);
     this.backpacks = new Inventory(500, 2500);
-    this.currmap = Global.getGlobal().getSpace("Starting Camp");
+    this.currmap = Global.getGlobal().getSpace("Starting camp");
     this.party = new Team();
     party.add(new Healer());
     party.add(new Tank());
@@ -31,6 +31,7 @@ public class Player implements Named
 
   public String getName() {return this.name;}
   public String getDescription() {return "The game's player";}
+  public synchronized Team getParty() {return party;}
   public synchronized Space getCurrentSpace() {return this.currmap;}
   public synchronized void setCurrentSpace(Space s) {this.currmap = s;}
   public synchronized float getMoney() {return backpacks.getCoins();}

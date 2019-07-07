@@ -24,12 +24,7 @@ public class Devroom extends Space
     isHidden = true;
   }
 
-  public Space getUp() {return Global.getGlobal().getSpace("Starting Camp");}
-  public Space getDown() {return null;}
-  public Space getNorth() {return null;}
-  public Space getSouth() {return null;}
-  public Space getWest() {return null;}
-  public Space getEast() {return null;}
+  public Space getUp() {return Global.getGlobal().getSpace("Starting camp");}
 
   public String getName() {return name;}
   public String getDescription() {return description;}

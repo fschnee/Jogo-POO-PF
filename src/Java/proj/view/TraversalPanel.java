@@ -4,7 +4,7 @@ import proj.Global;
 import proj.ResourceLoader;
 import proj.view.GameGUI;
 import proj.view.GUIPanel;
-import proj.view.panes.TraversalHintsPane;
+import proj.view.panes.HintsOutPane;
 import proj.view.panes.TraversalOutPane;
 import proj.jogo.spaces.Space;
 import proj.jogo.common.Interactable;
@@ -14,7 +14,6 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
-import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.text.StyledDocument;
@@ -35,7 +34,7 @@ public class TraversalPanel extends JPanel implements GUIPanel
   private TraversalOutPane textout;
   private Space currentlocation;
   private GridBagConstraints c;
-  private TraversalHintsPane hinttextout;
+  private HintsOutPane hinttextout;
   private int lookedaroundcount;
   private Character selectedchar;
 
@@ -57,8 +56,7 @@ public class TraversalPanel extends JPanel implements GUIPanel
     c.gridheight = 2;
     add(textout.getTextPane(), c);
 
-
-    hinttextout = new TraversalHintsPane();
+    hinttextout = new HintsOutPane();
     hinttextout.resume();
     c.gridx = 0;
     c.gridy = 2;
@@ -180,7 +178,7 @@ public class TraversalPanel extends JPanel implements GUIPanel
     c.fill = GridBagConstraints.VERTICAL;
     menusholder.add(inventorybtn, c);
 
-    switchLocationTo(Global.getGlobal().getSpace("Starting Camp"));
+    switchLocationTo(Global.getGlobal().getSpace("Starting camp"));
   }
 
   public synchronized void switchLocationTo(Space s)
@@ -190,11 +188,11 @@ public class TraversalPanel extends JPanel implements GUIPanel
 
     ArrayList<Integer> temp = new ArrayList<Integer>();
     temp.add(Integer.valueOf(20));
-    textout.appendText("You are currently in " + s.getName() + "\n", "default", temp);
+    textout.appendText("You are currently in " + s.getName() + "\n", "default-bold", temp);
 
     GridBagConstraints w = new GridBagConstraints();
     interactablesholder.removeAll();
-    if(currentlocation.getInteractables().size() == 0)
+    if(currentlocation.getInteractables() == null || currentlocation.getInteractables().size() == 0)
     {
       remove(interactablesholder);
     }
@@ -211,20 +209,23 @@ public class TraversalPanel extends JPanel implements GUIPanel
       w.weighty = 1;
       w.weightx = 1;
       w.gridheight = 1;
-      for(Interactable i : currentlocation.getInteractables())
+      if(currentlocation.getInteractables() != null)
       {
-        JButton interactablebutton = new JButton(i.getName());
-        interactablebutton.addActionListener(new ActionListener()
+        for(Interactable i : currentlocation.getInteractables())
         {
-          public void actionPerformed(ActionEvent a)
+          JButton interactablebutton = new JButton(i.getName());
+          interactablebutton.addActionListener(new ActionListener()
           {
-            if(selectedchar == null) hinttextout.appendText("You need to select someone " +
-                                                            "to interact with " + i.getName(), "default");
-            else i.interactUsing(selectedchar);
-          }
-        });
-        interactablesholder.add(interactablebutton, w);
-        w.gridy += 1;
+            public void actionPerformed(ActionEvent a)
+            {
+              if(selectedchar == null) hinttextout.appendText("You need to select someone " +
+                                                              "to interact with " + i.getName(), "default");
+              else i.interactUsing(selectedchar);
+            }
+          });
+          interactablesholder.add(interactablebutton, w);
+          w.gridy += 1;
+        }
       }
     }
   }

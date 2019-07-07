@@ -1,0 +1,7 @@
+{
+  "name":"Super bad dark mysterious forest",
+  "description":"PLACEHOLDER",
+  "classpath":"proj.jogo.spaces.SuperBadDarkMysteriousForest",
+
+  "connections":["StartingCamp"]
+}

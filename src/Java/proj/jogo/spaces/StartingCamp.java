@@ -14,12 +14,8 @@ public class StartingCamp extends Space
                                                                         "StartingCamp.json", "description");
   private static final ArrayList<Interactable> interactables = new ArrayList<Interactable>();
 
-  public Space getUp() {return null;}
+  public Space getNorth() {return Global.getGlobal().getSpace("Super bad dark mysterious forest");}
   public Space getDown() {return Global.getGlobal().getSpace("Dev room");}
-  public Space getNorth() {return null;}
-  public Space getSouth() {return null;}
-  public Space getWest() {return null;}
-  public Space getEast() {return null;}
 
   public String getName() {return name;}
   public String getDescription() {return description;}

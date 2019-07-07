@@ -16,7 +16,7 @@ public class NoArmor implements ProtectiveGear, Item
                                                                         "description");
   private ImmutableCharacterAttributeSet statchange = new ImmutableCharacterAttributeSet(0, 0, 0,
                                                                                          0, 0, 0);
-  private static final float protection = 0;
+  private static final int protection = 0;
 
   public Boolean isHeadwear() {return true;}
   public Boolean isChestwear() {return true;}
@@ -25,7 +25,7 @@ public class NoArmor implements ProtectiveGear, Item
   public Boolean isFootwear() {return true;}
 
   public CharacterAttributeSet getStatChange() {return statchange;}
-  public float getProtection() {return protection;}
+  public int getProtection() {return protection;}
 
   public String getName() {return name;}
   public String getDescription() {return description;}

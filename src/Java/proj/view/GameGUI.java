@@ -1,10 +1,11 @@
 package proj.view;
 
 import proj.Global;
-import proj.view.panes.GameGUIOutPane;
 import proj.view.CardgamePanel;
-import proj.view.StorytimePanel;
 import proj.view.TraversalPanel;
+import proj.view.BattlePanel;
+import proj.view.BattlewonPanel;
+import proj.view.BattlelostPanel;
 import proj.view.Writable;
 import proj.view.GUIPanel;
 import javax.swing.JFrame;
@@ -23,7 +24,6 @@ public class GameGUI extends JFrame
   private HashMap<String, GUIPanel> panels;
   private JPanel panelholder;
   private String currpanel;
-  private String prevpanel;
 
   public GameGUI()
   {
@@ -47,13 +47,8 @@ public class GameGUI extends JFrame
     PlayerSetupPanel playersetuppanel = new PlayerSetupPanel();
     panelholder.add(playersetuppanel, "Setup");
     currpanel = "Setup";
-    prevpanel = "Setup";
     panels.put("Setup", playersetuppanel);
     panels.get(currpanel).resume();
-
-    StorytimePanel storytimepanel = new StorytimePanel();
-    panelholder.add(storytimepanel, "Storytime");
-    panels.put("Storytime", storytimepanel);
 
     TraversalPanel traversalpanel = new TraversalPanel();
     panelholder.add(traversalpanel, "Traversal");
@@ -61,6 +56,16 @@ public class GameGUI extends JFrame
     // stubs
     panels.put("Inventory", traversalpanel);
     panels.put("Chest", traversalpanel);
+
+    BattlePanel battlepanel = new BattlePanel();
+    panelholder.add("Battle", battlepanel);
+    panels.put("Battle", battlepanel);
+    BattlewonPanel battlewonpanel = new BattlewonPanel();
+    panelholder.add("Battlewon", battlewonpanel);
+    panels.put("Battlewon", battlewonpanel);
+    BattlelostPanel battlelostpanel = new BattlelostPanel();
+    panelholder.add("Battlelost", battlelostpanel);
+    panels.put("Battlelost", battlelostpanel);
 
     CardgamePanel cgt = new CardgamePanel();
     panelholder.add(cgt, "Terminal");
@@ -82,7 +87,6 @@ public class GameGUI extends JFrame
   {
     if(!newactive.equals(currpanel))
     {
-      prevpanel = currpanel;
       panels.get(currpanel).pause();
       currpanel = newactive;
       panels.get(newactive).resume();
@@ -92,7 +96,6 @@ public class GameGUI extends JFrame
   }
 
   public synchronized GUIPanel getPanel(String panel) {return panels.get(panel);}
-  public synchronized String getPrevPanel() {return prevpanel;}
 
   // Estava tendo problemas de foco usando KeyListener então...
   private class CustomKeyHandler implements KeyEventDispatcher {

@@ -2,6 +2,7 @@ package proj;
 
 import proj.view.GameGUI;
 import proj.jogo.TraversalManager;
+import proj.jogo.Battle;
 import proj.jogo.spaces.Space;
 import proj.jogo.mobs.Player;
 import proj.jogo.other.Chest;
@@ -15,6 +16,7 @@ public class Global
   private Player p;
   private TraversalManager tm;
   private Chest currentopenedchest;
+  private Battle activebattle;
   private HashMap<String, Space> spaces;
 
   public static void init(GameGUI g)
@@ -46,6 +48,8 @@ public class Global
   public TraversalManager getTraversal() {return tm;}
   public Chest getCurrentOpenedChest() {return currentopenedchest;}
   public void setCurrentOpenedChest(Chest c) {currentopenedchest = c;}
+  public Battle getActiveBattle() {return activebattle;}
+  public void setActiveBattle(Battle b) {activebattle = b;}
 
   private Global()
   {
