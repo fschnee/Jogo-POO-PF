@@ -34,13 +34,13 @@ public class GameGUI extends JFrame
   {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLayout(new BorderLayout());
-    setSize(800, 800);
+    setSize(900, 700);
     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new CustomKeyHandler());
 
     panels = new HashMap<String, GUIPanel>();
     panelholder = new JPanel();
     panelholder.setLayout(new CardLayout());
-    panelholder.setPreferredSize(new Dimension(800, 800));
+    panelholder.setPreferredSize(new Dimension(900, 700));
     panelholder.setBackground(Global.getColorScheme(Global.BG));
     panelholder.setBorder(new MatteBorder(12, 12, 12, 12, Global.getColorScheme(Global.BG)));
 

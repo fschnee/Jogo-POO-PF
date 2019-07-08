@@ -28,6 +28,18 @@ public class BattleOutPane extends WritableScrollableOutPane
     appendText(s, style, temp);
   }
 
+  public void clear()
+  {
+    t.clear();
+    try
+    {
+      StyledDocument doc = tp.getStyledDocument();
+      doc.remove(0, doc.getLength());
+    }
+    catch (BadLocationException e) {e.printStackTrace();}
+    currenttext = null;
+  }
+
   protected void setupStyles()
   {
     StyledDocument doc = tp.getStyledDocument();

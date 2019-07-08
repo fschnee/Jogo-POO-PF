@@ -47,11 +47,22 @@ public class Character implements Named
     else health -= Math.round(atk.getDamage() * (float)armor.getProtection()/100);
   }
 
-  // Placeholder, logica de ataque vai aqui
+  // Pega o primeiro inimigo que achar e ataca com o que da mais dano que consegue usar
   public void signalForAttack()
   {
-    Global.getGlobal().getActiveBattle().attack(Global.getGlobal().getActiveBattle().getAllies().get(0), moves.get(0));
+    for(Character target : Global.getGlobal().getActiveBattle().getAllies().get())
+      if(target.getHealth() > 0)
+      {
+        Attack atkToUse = moves.get(0);
+        for(Attack a : moves) if(canUse(a) && (a.getDamage() > atkToUse.getDamage())) atkToUse = a;
+        Global.getGlobal().getActiveBattle().attack(target, atkToUse);
+        return;
+      }
   }
+
+  public boolean canUse(Attack a) {return (energy - a.getEnergyConsumption()) >= 0;}
+  public void restoreEnergy() {if(++energy > maxenergy) energy = maxenergy;}
+  public void removeEnergy(int e) {energy -= e;}
   public ArrayList<Attack> getMoves() {return moves;}
   public String getName() {return "Generic Character";}
   public String getDescription() {return "A generic character";}

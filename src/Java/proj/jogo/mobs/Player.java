@@ -5,6 +5,7 @@ import proj.jogo.common.Named;
 import proj.jogo.mobs.Team;
 import proj.jogo.mobs.Healer;
 import proj.jogo.mobs.Tank;
+import proj.jogo.mobs.DPS;
 import proj.jogo.items.Inventory;
 import proj.jogo.spaces.Space;
 
@@ -12,7 +13,6 @@ public class Player implements Named
 {
   private String name;
   private float money;
-  private Inventory stash;
   private Inventory backpacks;
   private Space currmap;
   private Team party;
@@ -21,12 +21,12 @@ public class Player implements Named
   {
     this.name = name;
     this.money = 0;
-    this.stash = new Inventory(2500, 6000);
-    this.backpacks = new Inventory(500, 2500);
+    this.backpacks = new Inventory(100000, 100000);
     this.currmap = Global.getGlobal().getSpace("Starting camp");
     this.party = new Team();
     party.add(new Healer());
     party.add(new Tank());
+    party.add(new DPS());
   }
 
   public String getName() {return this.name;}

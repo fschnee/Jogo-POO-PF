@@ -5,27 +5,28 @@ import proj.ResourceLoader;
 import proj.jogo.spaces.Space;
 import proj.jogo.common.Interactable;
 import proj.jogo.mobs.Team;
-import proj.jogo.mobs.Viper;
+import proj.jogo.mobs.Ogre;
+import proj.jogo.mobs.Dwarf;
 import java.util.ArrayList;
 
-public class SuperBadDarkMysteriousForest extends Space
+public class YabadabadooEntrance extends Space
 {
   private static final String name = ResourceLoader.getJsonField("assets/text/spaces/",
-                                                                 "SuperBadDarkMysteriousForest.json", "name");
+                                                                 "YabadabadooEntrance.json", "name");
   private static final String description = ResourceLoader.getJsonField("assets/text/spaces/",
-                                                                        "SuperBadDarkMysteriousForest.json", "description");
+                                                                        "YabadabadooEntrance.json", "description");
   private boolean isHidden;
   private Team enemies;
 
-  public SuperBadDarkMysteriousForest()
+  public YabadabadooEntrance()
   {
     isHidden = true;
     enemies = new Team();
-    enemies.add(new Viper());
+    enemies.add(new Ogre());
+    enemies.add(new Dwarf());
   }
 
-  public Space getSouth() {return Global.getGlobal().getSpace("Starting camp");}
-  public Space getWest() {return Global.getGlobal().getSpace("Castle of Yabadabadoo entrance");}
+  public Space getEast() {return Global.getGlobal().getSpace("Super bad dark mysterious forest");}
 
   public String getName() {return name;}
   public String getDescription() {return description;}

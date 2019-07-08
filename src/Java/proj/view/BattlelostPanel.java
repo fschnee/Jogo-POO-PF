@@ -13,6 +13,7 @@ public class BattlelostPanel extends JPanel implements GUIPanel
   public BattlelostPanel()
   {
     super();
+    setBackground(Global.getColorScheme(Global.BG));
 
     textout = new BattleOutPane();
     textout.appendText("You lost, press ENTER to quit", "default-bold");

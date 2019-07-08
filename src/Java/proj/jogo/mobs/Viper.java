@@ -1,6 +1,7 @@
 package proj.jogo.mobs;
 
 import proj.ResourceLoader;
+import proj.jogo.mobs.Character;
 import proj.jogo.mobs.ViperBite;
 
 public class Viper extends Character
@@ -17,7 +18,6 @@ public class Viper extends Character
     calculateMaxEnergy();
     energy = maxenergy;
 
-    moves.clear();
     moves.add(new ViperBite());
   }
 

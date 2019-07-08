@@ -1,7 +1,10 @@
 {
   "name":"Super bad dark mysterious forest",
-  "description":"PLACEHOLDER",
+  "description":";You can't see further then your own feet in this dense forest."
+"; Walking very carefully north you see a sign that reads 'EAST: Castle of Duke Yabadabadoo'."
+"; Claire says to the group 'This forest even smells dangerous, it might be a good idea to"
+" leave this place at once'.",
   "classpath":"proj.jogo.spaces.SuperBadDarkMysteriousForest",
 
-  "connections":["StartingCamp"]
+  "connections":["StartingCamp", "YabadabadooEntrance"]
 }

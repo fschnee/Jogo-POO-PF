@@ -92,6 +92,7 @@ public class BattlePanel extends JPanel implements GUIPanel
     allylabels.clear();
     enemypanels.clear();
     enemylabels.clear();
+    selectedtarget = null;
     try
     {
       StyledDocument doc = textout.getTextPane().getStyledDocument();
@@ -148,12 +149,17 @@ public class BattlePanel extends JPanel implements GUIPanel
         {
           public void actionPerformed(ActionEvent e)
           {
-            if(ch.getName().equals(turnowner.getName()))
+            if(ch.getHealth() > 0)
             {
-              if(selectedtarget != null) currentbattle.attack(selectedtarget, a);
-              else hintout.appendText(ch.getName() + " is not targeting any enemy", "default");
+              if(ch.getName().equals(turnowner.getName()))
+              {
+                if(ch.canUse(a) == false) hintout.appendText(ch.getName() + " is too tired for that move", "default");
+                else if(selectedtarget != null) currentbattle.attack(selectedtarget, a);
+                else hintout.appendText(ch.getName() + " is not targeting any enemy", "default");
+              }
+              else hintout.appendText("It's not " + ch.getName() + "'s turn, it's " + turnowner.getName() + "'s", "default");
             }
-            else hintout.appendText("It's not " + ch.getName() + "'s turn, it's " + turnowner.getName() + "'s", "default");
+            else hintout.appendText(ch.getName() + " already fainted", "default");
           }
         });
         characterpanel.add(attackbutton, k);
@@ -196,19 +202,39 @@ public class BattlePanel extends JPanel implements GUIPanel
       {
         public void actionPerformed(ActionEvent e)
         {
-          if(selectedtarget != null)
+          if(en.getHealth() > 0)
           {
-            ((TitledBorder)enemypanels.get(selectedtarget.getName()).getBorder()).setTitleColor(Global.getColorScheme(Global.TEXT));
-            enemypanels.get(selectedtarget.getName()).repaint();
+            if(selectedtarget != null)
+            {
+              ((TitledBorder)enemypanels.get(selectedtarget.getName()).getBorder()).setTitleColor(Global.getColorScheme(Global.TEXT));
+              enemypanels.get(selectedtarget.getName()).repaint();
+            }
+            ((TitledBorder)enemypanel.getBorder()).setTitleColor(Global.getColorScheme(Global.P2));
+            enemypanel.repaint();
+            selectedtarget = en;
           }
-          ((TitledBorder)enemypanel.getBorder()).setTitleColor(Global.getColorScheme(Global.P2));
-          enemypanel.repaint();
-          selectedtarget = en;
+          else hintout.appendText(en.getName() + " already fainted", "default");
         }
       });
       enemypanel.add(targetbutton, k);
+      k.gridy += 1;
 
-      enemiespanel.add(enemypanel, c);
+      JButton examinebutton = new JButton("Examine this enemy");
+      examinebutton.addActionListener(new ActionListener()
+      {
+        public void actionPerformed(ActionEvent e)
+        {
+          textout.appendText("-----Examining enemy-----\n", "default");
+          textout.appendText("Name: " + en.getName() + "\nDescription: " + en.getDescription(), "default");
+          textout.appendText("\n--Moves--\n", "default");
+          for(Attack a : en.getMoves())
+            textout.appendText(a.getName() + ": " + a.getDescription() + ". Does " + a.getDamage() +
+                               " damage and consumes " + a.getEnergyConsumption() + " energy\n", "default");
+        }
+      });
+      enemypanel.add(examinebutton, k);
+
+      enemiespanel.add(enemypanel, w);
       w.gridy += 1;
     }
 
@@ -226,15 +252,8 @@ public class BattlePanel extends JPanel implements GUIPanel
     textout.appendText(atk.getDamage() + " damage", "default-bold");
     textout.appendText(". ", "default");
     boolean enemyturnowner = currentbattle.getEnemies().get().contains(turnowner);
-    if(enemyturnowner == false)
-    {
-      ((TitledBorder)enemypanels.get(selectedtarget.getName()).getBorder())
-        .setTitleColor(Global.getColorScheme(Global.TEXT));
-      enemypanels.get(selectedtarget.getName()).repaint();
-      selectedtarget = null;
-    }
-
     JPanel turnownerpanel;
+    if(selectedtarget != null && selectedtarget.getHealth() <= 0) selectedtarget = null;
     if(enemyturnowner == false)
       turnownerpanel = allypanels.get(turnowner.getName());
     else turnownerpanel = enemypanels.get(turnowner.getName());
@@ -266,16 +285,34 @@ public class BattlePanel extends JPanel implements GUIPanel
     for(Character ally : currentbattle.getAllies().get())
     {
       allylabels.get(ally.getName()).setText(ally.getHealth() + "/" + ally.getMaxHealth() + "HP " +
-                                             ally.getMaxEnergy() + "/" + ally.getMaxEnergy() + "EN");
+                                             ally.getEnergy() + "/" + ally.getMaxEnergy() + "EN");
+      if(ally.getHealth() <= 0)
+      {
+        ((TitledBorder)allypanels.get(ally.getName()).getBorder()).setTitleColor(Global.getColorScheme(Global.DEAD));
+        allypanels.get(ally.getName()).repaint();
+      }
     }
     for(Character enemy : currentbattle.getEnemies().get())
     {
       enemylabels.get(enemy.getName()).setText(enemy.getHealth() + "/" + enemy.getMaxHealth() + "HP " +
-                                               enemy.getMaxEnergy() + "/" + enemy.getMaxEnergy() + "EN");
+                                               enemy.getEnergy() + "/" + enemy.getMaxEnergy() + "EN");
+      if(selectedtarget != null && selectedtarget.getName().equals(enemy.getName()))
+        ((TitledBorder)enemypanels.get(enemy.getName()).getBorder()).setTitleColor(Global.getColorScheme(Global.P2));
+      if(enemy.getHealth() <= 0)
+      {
+        ((TitledBorder)enemypanels.get(enemy.getName()).getBorder()).setTitleColor(Global.getColorScheme(Global.DEAD));
+        enemypanels.get(enemy.getName()).repaint();
+      }
     }
   }
 
-  public synchronized void pause() {textout.pause();hintout.pause();}
+  public synchronized void pause()
+  {
+    textout.clear();
+    textout.pause();
+    hintout.appendText(" ","default");
+    hintout.pause();
+  }
   public synchronized void resume() {textout.resume();hintout.resume();}
   public Writable getTextOut() {return textout;}
   public void setInputEnabled() {}

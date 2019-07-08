@@ -12,7 +12,7 @@ public class Tank extends Character
   public Tank()
   {
     super();
-    characteristics.vitality = 2;
+    characteristics.vitality = 3;
     characteristics.stamina = 2;
     calculateMaxHealth();
     health = maxhealth;

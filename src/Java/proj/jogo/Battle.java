@@ -46,6 +46,7 @@ public class Battle
       }
     if(wonbattle)
     {
+      Global.getGlobal().getPlayer().getCurrentSpace().deleteEnemies();
       Global.getGlobal().getGUI().setActivePane("Battlewon");
       return;
     }
@@ -58,16 +59,29 @@ public class Battle
     Team attacking;
     if(playerturn == true) attacking = playerteam;
     else attacking = enemyteam;
+    attacking.get(currcharacter).removeEnergy(atk.getEnergyConsumption());
 
     int attacker = currcharacter;
+    getNextAttacker(attacking);
+    if(playerturn) playerteam.get(currcharacter).restoreEnergy();
+    else enemyteam.get(currcharacter).restoreEnergy();
+
+    ((BattlePanel)Global.getGlobal().getGUI().getPanel("Battle"))
+    .signalAttack(attacking.get(attacker), target, atk);
+  }
+
+  private void getNextAttacker(Team attacking)
+  {
     if(++currcharacter >= attacking.size())
     {
       currcharacter = 0;
       playerturn = !playerturn;
     }
 
-    ((BattlePanel)Global.getGlobal().getGUI().getPanel("Battle"))
-    .signalAttack(attacking.get(attacker), target, atk);
+    if(playerturn && playerteam.get(currcharacter).getHealth() <= 0)
+      getNextAttacker(playerteam);
+    else if(!playerturn && enemyteam.get(currcharacter).getHealth() <= 0)
+      getNextAttacker(enemyteam);
   }
 
   public Team getAllies() {return playerteam;}

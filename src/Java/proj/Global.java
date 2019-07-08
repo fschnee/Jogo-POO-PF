@@ -65,10 +65,11 @@ public class Global
   public static int P2 = 3;
   public static int P3 = 4;
   public static int BG = 5;
+  public static int DEAD = 6;
   public static Color getColorScheme(int colour)
   {
     int[] colours = {0xCEDABD, 0xF8F490, 0xEB8CB7, 0xB18538, 0x33E0DD,
-                     0x000000};
+                     0x000000, 0x333333};
     return new Color(colours[colour]);
   }
 }

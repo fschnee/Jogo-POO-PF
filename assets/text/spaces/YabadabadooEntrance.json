@@ -1,0 +1,8 @@
+{
+  "name":"Castle of Yabadabadoo entrance",
+  "description":";Damn, turns out the guy who wrote that sign doesn't know anything "
+"about directions.",
+  "classpath":"proj.jogo.spaces.YabadabadooEntrance",
+
+  "connections":["SuperBadDarkMysteriousForest"]
+}
