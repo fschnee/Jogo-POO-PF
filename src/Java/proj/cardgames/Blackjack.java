@@ -1,5 +1,6 @@
 package proj.cardgames;
 
+import proj.Global;
 import proj.cardgames.CardGame;
 import proj.cardgames.GameOptions;
 import proj.view.Writable;

@@ -23,6 +23,7 @@ public class Inventory
     this.coincount = 0;
   }
 
+  public ArrayList<Item> getItems() {return storeditems;}
   public Boolean insert(Item i)
   {
     if(this.canStore(i))

@@ -19,7 +19,6 @@ data HandFlags = Unknown | Lost | CanSplit
   deriving (Eq, Ord, Show, Enum)
 data GameOptions = Debug | Verbose | UseSeed
   deriving (Eq, Ord, Show, Enum)
-type HandInfo = (Hand, Int) -- (hand, handflags)
 
 main :: IO ()
 main = do
@@ -48,11 +47,32 @@ run cFlags seed jenv jobj = do
   printDecks isDebug deck shuffled jenv jobj
 
   let hands = firstdeal shuffled ([], []) True
-  finalhands <- loop [(snd hands, compose [Unknown]), (fst hands, compose [Unknown])]
+  finalhands <- loop [snd hands, fst hands]
                 isDebug isVerbose True jenv jobj 0 (drop 5 shuffled)
-  let winnings = calculateWinnings finalhands
+  if(isBusted (finalhands!!0))
+    then sendToOut jenv jobj $ "The dealer busted with a total of " ++
+                               show (smallest (splitSum (finalhands!!0) 0)) ++
+                               " with the hand " ++ show (map unhideCard (finalhands!!0)) ++
+                               " against your " ++ show (closestTo21 (splitSum (finalhands!!1) 0)) ++
+                               " on the hand " ++ show (finalhands!!1)
+    else if (playerWon finalhands)
+      then sendToOut jenv jobj $ "The dealer lost with a total of " ++
+                                 show (case (closestTo21 (splitSum (finalhands!!0) 0) == 0) of
+                                   True -> smallest (splitSum (finalhands!!0) 0)
+                                   False -> closestTo21 (splitSum (finalhands!!0) 0)) ++
+                                 " with the hand " ++ show (map unhideCard (finalhands!!0)) ++
+                                 " against your " ++ show (closestTo21 (splitSum (finalhands!!1) 0)) ++
+                                 " on the hand " ++ show (finalhands!!1)
+      else sendToOut jenv jobj $ "The dealer won with a total of " ++
+                                 show (closestTo21 (splitSum (finalhands!!0) 0)) ++
+                                 " with the hand " ++ show (map unhideCard (finalhands!!0)) ++
+                                 " against your " ++
+                                 show (case (closestTo21 (splitSum (finalhands!!1) 0) == 0) of
+                                   True -> smallest (splitSum (finalhands!!1) 0)
+                                   False -> closestTo21 (splitSum (finalhands!!1) 0)) ++
+                                 " on the hand " ++ show (finalhands!!1)
 
-  return (realToFrac (winnings) :: CFloat)
+  return (realToFrac (1) :: CFloat)
 
   where
     flags = fromIntegral cFlags :: Int
@@ -60,6 +80,10 @@ run cFlags seed jenv jobj = do
     isVerbose = flags `has` Verbose
     useSeed   = flags `has` UseSeed
 
+playerWon :: [Hand] -> Bool
+playerWon xs
+  | closestTo21 (splitSum (xs!!1) 0) >= closestTo21 (splitSum (xs!!0) 0) = True
+  | otherwise = False
 
 -- shuffled deck -> (PlayerHand, DealerHand) -> giveToDealer -> (PlayerHand, DealerHand)
 firstdeal :: Deck -> (Hand, Hand)-> Bool -> (Hand, Hand)
@@ -113,15 +137,15 @@ printHand True True x n hand jenv jobj = do
   printHand True False x n hand jenv jobj
   return ()
 
-printOptions :: [HandInfo] -> Int -> Ptr() -> Ptr () -> IO ()
+printOptions :: [Hand] -> Int -> Ptr() -> Ptr () -> IO ()
 printOptions playerhands currhand jenv jobj = return ()
 
 printHelp :: Ptr () -> Ptr () -> IO ()
-printHelp jenv jobj = sendToOut jenv jobj $ "-> You can use one of these options [\"Hit\", \"Stand\", \"Split\"]"
+printHelp jenv jobj = sendToOut jenv jobj $ "-> You can use one of these options [\"Hit\", \"Stand\"]"
 
 getInput :: Ptr () -> Ptr () -> IO String
 getInput jenv jobj = do
-  let possibleinputs = ["Hit", "Stand", "Split"]
+  let possibleinputs = ["Hit", "Stand"]
   input <- getFromIn jenv jobj
   -- Se o input está compreendido nos possibleinputs
   case (foldr (||) False (map (== input) possibleinputs)) of
@@ -151,39 +175,51 @@ splitSum (c:x) currval
   where
     cardval = cardValue c
 
-loop :: [HandInfo] -> Bool -> Bool -> Bool -> Ptr () -> Ptr () -> Int -> Deck -> IO [HandInfo]
---                           isPlayerTurn
-loop hands isDebug isVerbose True jenv jobj currhand deck = do
+loop :: [Hand] -> Bool -> Bool -> Bool -> Ptr () -> Ptr () -> Int -> Deck -> IO [Hand]
+loop hands isDebug isVerbose isPlayerTurn jenv jobj currhand deck = do
   let playerhands = tail hands
   let dealerhand = head hands
-  if (isBusted (fst(playerhands!!currhand)))
+  if (isBusted (playerhands!!currhand))
     then do
       sendToOut jenv jobj $ "You busted with a total of " ++
-                            show (smallest (splitSum (fst(playerhands!!currhand)) 0)) ++
-                            " on the hand " ++ show (fst(playerhands!!currhand))
+                            show (smallest (splitSum (playerhands!!currhand) 0)) ++
+                            " on the hand " ++ show (playerhands!!currhand)
       return (hands)
     else do
 
-  printHand False isDebug isVerbose (currhand + 1) (fst (playerhands!!(currhand))) jenv jobj
-  printHand True isDebug isVerbose 0 (fst dealerhand) jenv jobj
+  printHand False isDebug isVerbose (currhand + 1) (playerhands!!currhand) jenv jobj
+  printHand True isDebug isVerbose 0 dealerhand jenv jobj
 
-  input <- getInput jenv jobj
+  input <- if isPlayerTurn
+    then getInput jenv jobj
+    else return "Stand"
   newplayerhandsanddeck <- if (input == "Hit")
       then return (hitHands playerhands currhand deck)
       else return (playerhands, deck)
+  if (input == "Stand")
+    then do
+      let dealermano = dealerHit dealerhand (snd newplayerhandsanddeck)
+      return (fst dealermano:fst newplayerhandsanddeck)
+    else do
+
   newhands <- loop (dealerhand:(fst newplayerhandsanddeck)) isDebug isVerbose
               True jenv jobj currhand (snd newplayerhandsanddeck)
 
   return (newhands)
 
-hitHands :: [HandInfo] -> Int -> Deck -> ([HandInfo], Deck)
+hitHands :: [Hand] -> Int -> Deck -> ([Hand], Deck)
 hitHands hands handtohit deck = hitHands' hands handtohit deck []
   where
-    hitHands' :: [HandInfo] -> Int -> Deck -> [HandInfo] -> ([HandInfo], Deck)
-    hitHands' (c:x) 0 deck handsseen = (handsseen ++ [((fst c) ++ [(unhideCard ((take 1 deck)!!0))], snd c)] ++ x,
+    hitHands' :: [Hand] -> Int -> Deck -> [Hand] -> ([Hand], Deck)
+    hitHands' (c:x) 0 deck handsseen = (handsseen ++ [c ++ [(unhideCard ((take 1 deck)!!0))]] ++ x,
                                         drop 1 deck)
     hitHands' (c:x) handtohit deck handsseen = hitHands' hands (handtohit - 1) deck (handsseen ++ [c])
 
+
+dealerHit :: Hand -> Deck -> (Hand, Deck)
+dealerHit dealerhand deck = case (foldr (&&) True (map (> 17) (splitSum dealerhand 0))) of
+  True -> (dealerhand, deck)
+  False -> dealerHit (dealerhand ++ (take 1 deck)) (drop 1 deck)
 
 smallest :: [Int] -> Int
 smallest (c:x) = smallest' x c
@@ -195,5 +231,17 @@ smallest (c:x) = smallest' x c
       | otherwise        = smallest' x prevsmallest
 
 
-calculateWinnings :: [HandInfo] -> Float
+closestTo21 :: [Int] -> Int
+closestTo21 (c:x)
+  | c <= 21 = closestTo21' x c
+  | otherwise = closestTo21' x 0
+
+  where
+    closestTo21' :: [Int] -> Int -> Int
+    closestTo21' [] closest = closest
+    closestTo21' (c:x) closest
+      | c - 21 > closest - 21 && c - 21 <= 0 = closestTo21' x c
+      | otherwise = closestTo21' x closest
+
+calculateWinnings :: [Hand] -> Float
 calculateWinnings hands = 1

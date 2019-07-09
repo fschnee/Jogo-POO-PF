@@ -2,30 +2,17 @@ package proj.view.panes;
 
 import proj.Global;
 import proj.view.panes.WritableScrollableOutPane;
-import proj.resource.SlowText;
-import java.util.ArrayList;
 import javax.swing.text.*;
-import java.awt.Dimension;
 
-public class BattleOutPane extends WritableScrollableOutPane
+public class DefaultOutPane extends WritableScrollableOutPane
 {
-  public BattleOutPane()
+  public DefaultOutPane()
   {
     super();
     tp.setBackground(Global.getColorScheme(Global.BG));
     setupStyles();
-    StyledDocument doc = tp.getStyledDocument();
-    doc.setParagraphAttributes(0, doc.getLength(), doc.getStyle("centered"), false);
     startWriterThread();
     pause();
-  }
-
-  @Override
-  public synchronized void appendText(String s, String style)
-  {
-    ArrayList<Integer> temp = new ArrayList<Integer>();
-    temp.add(Integer.valueOf(10));
-    appendText(s, style, temp);
   }
 
   public void clear()
@@ -49,9 +36,15 @@ public class BattleOutPane extends WritableScrollableOutPane
 
     Style defaultinho = doc.addStyle("default", def);
     StyleConstants.setFontFamily(defaultinho, "Pixel Operator Mono");
-    StyleConstants.setFontSize(defaultinho, 22);
+    StyleConstants.setFontSize(defaultinho, 20);
     StyleConstants.setForeground(defaultinho, Global.getColorScheme(Global.TEXT));
     Style defaultinho2 = doc.addStyle("default-bold", defaultinho);
     StyleConstants.setFontFamily(defaultinho2, "Pixel Operator Mono Bold");
+    Style c1 = doc.addStyle("default-c1", defaultinho);
+    StyleConstants.setForeground(c1, Global.getColorScheme(Global.P1));
+    Style c2 = doc.addStyle("default-c2", defaultinho);
+    StyleConstants.setForeground(c2, Global.getColorScheme(Global.P2));
+    Style c3 = doc.addStyle("default-c3", defaultinho);
+    StyleConstants.setForeground(c3, Global.getColorScheme(Global.P3));
   }
 }

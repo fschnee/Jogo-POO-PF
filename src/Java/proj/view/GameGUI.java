@@ -6,6 +6,8 @@ import proj.view.TraversalPanel;
 import proj.view.BattlePanel;
 import proj.view.BattlewonPanel;
 import proj.view.BattlelostPanel;
+import proj.view.InventoryPanel;
+import proj.view.UsablesPanel;
 import proj.view.Writable;
 import proj.view.GUIPanel;
 import javax.swing.JFrame;
@@ -45,17 +47,23 @@ public class GameGUI extends JFrame
     panelholder.setBorder(new MatteBorder(12, 12, 12, 12, Global.getColorScheme(Global.BG)));
 
     PlayerSetupPanel playersetuppanel = new PlayerSetupPanel();
-    panelholder.add(playersetuppanel, "Setup");
+    panelholder.add("Setup", playersetuppanel);
     currpanel = "Setup";
     panels.put("Setup", playersetuppanel);
     panels.get(currpanel).resume();
 
     TraversalPanel traversalpanel = new TraversalPanel();
-    panelholder.add(traversalpanel, "Traversal");
+    panelholder.add("Traversal", traversalpanel);
     panels.put("Traversal", traversalpanel);
-    // stubs
-    panels.put("Inventory", traversalpanel);
-    panels.put("Chest", traversalpanel);
+
+    InventoryPanel inventorypanel = new InventoryPanel();
+    panelholder.add("Inventory", inventorypanel);
+    panels.put("Inventory", inventorypanel);
+    panels.put("Chest", inventorypanel);
+
+    UsablesPanel usablespanel = new UsablesPanel();
+    panelholder.add("Usables", usablespanel);
+    panels.put("Usables", usablespanel);
 
     BattlePanel battlepanel = new BattlePanel();
     panelholder.add("Battle", battlepanel);
@@ -68,8 +76,8 @@ public class GameGUI extends JFrame
     panels.put("Battlelost", battlelostpanel);
 
     CardgamePanel cgt = new CardgamePanel();
-    panelholder.add(cgt, "Terminal");
-    panels.put("Terminal", cgt);
+    panelholder.add("GameMachine", cgt);
+    panels.put("GameMachine", cgt);
 
     getContentPane().add(panelholder, BorderLayout.CENTER);
     setVisible(true);
@@ -100,11 +108,13 @@ public class GameGUI extends JFrame
   // Estava tendo problemas de foco usando KeyListener então...
   private class CustomKeyHandler implements KeyEventDispatcher {
     @Override
-    public boolean dispatchKeyEvent(KeyEvent e) {
-        if (e.getID() == KeyEvent.KEY_PRESSED){
-            panels.get(currpanel).inputChannel(e.getKeyChar());
-        }
-        return false;
+    public boolean dispatchKeyEvent(KeyEvent e)
+    {
+      if (e.getID() == KeyEvent.KEY_PRESSED)
+      {
+          panels.get(currpanel).inputChannel(e.getKeyChar());
+      }
+      return false;
     }
   }
 }

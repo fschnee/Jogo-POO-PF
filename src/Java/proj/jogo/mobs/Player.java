@@ -7,6 +7,8 @@ import proj.jogo.mobs.Healer;
 import proj.jogo.mobs.Tank;
 import proj.jogo.mobs.DPS;
 import proj.jogo.items.Inventory;
+import proj.jogo.items.Potion;
+import proj.jogo.items.GameMachine;
 import proj.jogo.spaces.Space;
 
 public class Player implements Named
@@ -27,6 +29,12 @@ public class Player implements Named
     party.add(new Healer());
     party.add(new Tank());
     party.add(new DPS());
+
+    for(int i = 0; i < 5; ++i)
+    {
+      backpacks.insert(new Potion());
+    }
+    backpacks.insert(new GameMachine());
   }
 
   public String getName() {return this.name;}

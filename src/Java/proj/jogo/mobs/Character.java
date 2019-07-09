@@ -5,6 +5,7 @@ import proj.jogo.common.Named;
 import proj.jogo.common.MutableCharacterAttributeSet;
 import proj.jogo.items.armor.ArmorSet;
 import proj.jogo.mobs.NoAttack;
+import proj.jogo.common.CharacterActionResult;
 import java.util.ArrayList;
 
 public class Character implements Named
@@ -47,6 +48,11 @@ public class Character implements Named
     else health -= Math.round(atk.getDamage() * (float)armor.getProtection()/100);
   }
 
+  public void applyAction(CharacterActionResult action)
+  {
+    if(health + action.getHealthChange() > maxhealth) health = maxhealth;
+    else health += action.getHealthChange();
+  }
   // Pega o primeiro inimigo que achar e ataca com o que da mais dano que consegue usar
   public void signalForAttack()
   {

@@ -169,6 +169,27 @@ public class BattlePanel extends JPanel implements GUIPanel
       alliespanel.add(characterpanel, w);
       w.gridy += 1;
     }
+    JPanel otherpanel = new JPanel(new GridBagLayout());
+    otherpanel.setBackground(Global.getColorScheme(Global.BG));
+    otherpanel.setBorder(new TitledBorder(new LineBorder(Global.getColorScheme(Global.TEXT), 5), "Other"));
+    ((TitledBorder)otherpanel.getBorder()).setTitleColor(Global.getColorScheme(Global.TEXT));
+    ((TitledBorder)otherpanel.getBorder()).setTitleFont(new Font("Pixel Operator Mono Bold", Font.PLAIN, 18));
+    alliespanel.add(otherpanel, w);
+    w.gridy += 1;
+
+    GridBagConstraints l = new GridBagConstraints();
+    l.weightx = 1;
+    l.weighty = 1;
+    l.fill = GridBagConstraints.BOTH;
+    JButton inventorybutton = new JButton();
+    inventorybutton.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        Global.getGlobal().getGUI().setActivePane("Inventory");
+      }
+    });
+    otherpanel.add(inventorybutton, l);
 
     w = new GridBagConstraints();
     w.fill = GridBagConstraints.BOTH;
@@ -308,7 +329,7 @@ public class BattlePanel extends JPanel implements GUIPanel
 
   public synchronized void pause()
   {
-    textout.clear();
+    if(Global.getGlobal().isInBattle() == false) textout.clear();
     textout.pause();
     hintout.appendText(" ","default");
     hintout.pause();

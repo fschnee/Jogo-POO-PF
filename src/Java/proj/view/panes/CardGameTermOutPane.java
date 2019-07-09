@@ -11,7 +11,6 @@ public class CardGameTermOutPane extends WritableScrollableOutPane
   {
     super();
     tp.setBackground(Global.getColorScheme(Global.BG));
-    tp.setPreferredSize(new Dimension(230, 400));
     setupStyles();
     startWriterThread();
     pause();

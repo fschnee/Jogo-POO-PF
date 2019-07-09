@@ -17,6 +17,7 @@ public class Global
   private TraversalManager tm;
   private Chest currentopenedchest;
   private Battle activebattle;
+  private boolean inbattle;
   private HashMap<String, Space> spaces;
 
   public static void init(GameGUI g)
@@ -49,7 +50,9 @@ public class Global
   public Chest getCurrentOpenedChest() {return currentopenedchest;}
   public void setCurrentOpenedChest(Chest c) {currentopenedchest = c;}
   public Battle getActiveBattle() {return activebattle;}
-  public void setActiveBattle(Battle b) {activebattle = b;}
+  public void setActiveBattle(Battle b) {activebattle = b;inbattle = true;}
+  public void setBattleEnd() {inbattle = false;}
+  public boolean isInBattle() {return inbattle;}
 
   private Global()
   {

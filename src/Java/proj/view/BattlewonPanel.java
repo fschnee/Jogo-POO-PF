@@ -18,7 +18,6 @@ public class BattlewonPanel extends JPanel implements GUIPanel
     setBackground(Global.getColorScheme(Global.BG));
 
     textout = new BattleOutPane();
-    textout.appendText("You won, press ENTER to continue", "default-bold");
 
     add(textout.getTextPane(), BorderLayout.CENTER);
   }
@@ -32,6 +31,7 @@ public class BattlewonPanel extends JPanel implements GUIPanel
   {
     textout.resume();
     textout.appendText("You won, press ENTER to continue", "default-bold");
+    Global.getGlobal().setBattleEnd();
   }
   public Writable getTextOut() {return textout;}
   public void setInputEnabled() {}

@@ -25,7 +25,6 @@ public class CardgamePanel extends JPanel implements GUIPanel
 
     c = new GridBagConstraints();
     setLayout(new GridBagLayout());
-    setPreferredSize(new Dimension(800, 800));
 
     textout = new CardGameTermOutPane();
     c.gridx = 0;
@@ -64,7 +63,7 @@ public class CardgamePanel extends JPanel implements GUIPanel
 
   public synchronized void pause() {textout.pause();}
   public synchronized void resume() {textout.resume();}
-  public Writable getTextOut() {return textout;}
+  public synchronized Writable getTextOut() {return textout;}
   public void setInputEnabled() {}
   public boolean isEnabled() {return false;}
   public String getInput()  {return null;}
