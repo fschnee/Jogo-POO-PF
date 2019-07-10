@@ -102,7 +102,10 @@ public class UsablesPanel extends JPanel implements GUIPanel
   public void update()
   {
     itemspanel.removeAll();
+    itemspanel.repaint();
     characterselectpanel.removeAll();
+    characterselectpanel.repaint();
+    repaint();
 
     GridBagConstraints j = new GridBagConstraints();
     j.weightx = 1;

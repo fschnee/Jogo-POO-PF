@@ -23,8 +23,7 @@ public class Main
     gui.setupGUI();
     Global.init(new TraversalManager());
 
-    //playSetup();
-    Global.init(new Player("Fred"));
+    playSetup();
     gui.setActivePane("Traversal");
   }
 

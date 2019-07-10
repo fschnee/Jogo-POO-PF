@@ -1,6 +1,7 @@
 package proj.view;
 
 import proj.Global;
+import proj.view.BattlePanel;
 import proj.jogo.mobs.Character;
 import javax.swing.JPanel;
 import javax.swing.JButton;
@@ -36,7 +37,11 @@ public class InventoryPanel extends JPanel implements GUIPanel
     {
       public void actionPerformed(ActionEvent e)
       {
-        if(Global.getGlobal().isInBattle()) Global.getGlobal().getGUI().setActivePane("Battle");
+        if(Global.getGlobal().isInBattle())
+        {
+          Global.getGlobal().getGUI().setActivePane("Battle");
+          ((BattlePanel)Global.getGlobal().getGUI().getPanel("Battle")).updateCharacterStatus();
+        }
         else Global.getGlobal().getGUI().setActivePane("Traversal");
       }
     });

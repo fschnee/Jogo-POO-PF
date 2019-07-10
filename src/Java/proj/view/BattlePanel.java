@@ -181,7 +181,7 @@ public class BattlePanel extends JPanel implements GUIPanel
     l.weightx = 1;
     l.weighty = 1;
     l.fill = GridBagConstraints.BOTH;
-    JButton inventorybutton = new JButton();
+    JButton inventorybutton = new JButton("Inventory");
     inventorybutton.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -301,7 +301,7 @@ public class BattlePanel extends JPanel implements GUIPanel
     if(enemyturnowner == true) currentbattle.advanceTurn();
   }
 
-  private void updateCharacterStatus()
+  public void updateCharacterStatus()
   {
     for(Character ally : currentbattle.getAllies().get())
     {
@@ -329,12 +329,19 @@ public class BattlePanel extends JPanel implements GUIPanel
 
   public synchronized void pause()
   {
-    if(Global.getGlobal().isInBattle() == false) textout.clear();
+    if(Global.getGlobal().isInBattle() == false)
+    {
+      textout.clear();
+      hintout.appendText(" ","default");
+    }
     textout.pause();
-    hintout.appendText(" ","default");
     hintout.pause();
   }
-  public synchronized void resume() {textout.resume();hintout.resume();}
+  public synchronized void resume()
+  {
+    textout.resume();
+    hintout.resume();
+  }
   public Writable getTextOut() {return textout;}
   public void setInputEnabled() {}
   public boolean isEnabled() {return false;}
